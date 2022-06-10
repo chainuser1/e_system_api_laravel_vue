@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 class LoginController extends Controller
 {
     /*
@@ -36,5 +38,20 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function getToken(Request $request)
+    {
+        $request->request->add([
+            'grant_type' => 'password',
+            'client_id' => "2",
+            'client_secret' => "xTne4UjtX2OqJ5zU4HJcL6ZMlxnGGyML18gAE2dX",
+            'username' => $request->username,
+            'password' => $request->password
+        ]);
+
+        $requestToken = Request::create(env('APP_URL').'/oauth/token', 'POST');
+        $response = Route::dispatch($requestToken);
+        return $response;
     }
 }
