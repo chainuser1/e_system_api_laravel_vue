@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/token','Auth\LoginController@getToken');
+// Route::post('/token','Auth\LoginController@getToken');
+Route::post('/register','Auth\RegisterController@register');
+Route::post('/login','Auth\LoginController@store');
+Route::delete('/logout','Auth\LoginController@destroy');
+
+
 Route::apiResource('students', 'StudentController');
 Route::apiResource('personnels', 'PersonnelController');
