@@ -6,26 +6,27 @@
             <div class="col-md-6 col-md-offset-3" style="margin:0 auto;">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please sign in</h3>
+                        <h1 class="panel-title text-danger" style="text-align: center;"><i class="fa-solid fa-user"></i></h1>
                     </div>
-                    <div class="panel-body">
-                        <form  @submit.prevent="login">
-                           
+                    <div class="panel-body" :style="formButton.styleCursor" :disabled="formButton.disabled">
+                        <form role="form" @submit.prevent="login">
+
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" v-model="username" placeholder="username" name="username" type="text"
-                                        autofocus>
+                                    <input class="form-control" v-model="username" placeholder="username"
+                                        name="username" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" v-model="password"  placeholder="Password" name="password" type="password"
-                                        value="">
+                                    <input class="form-control" v-model="password" placeholder="Password"
+                                        name="password" type="password" value="">
                                 </div>
-                                <div class="checkbox">
+                                <!-- <div class="checkbox">
                                     <label>
                                         <input name="remember" v-model="remember" type="checkbox" value="Remember Me">Remember Me
                                     </label>
-                                </div>
-                                <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+                                </div> -->
+                                <button :style="formButton.styleCursor" :disabled="formButton.disabled" type="submit"
+                                    :class="formButton.class" class="btn btn-lg  btn-block">{{formButton.text}}</button>
                             </fieldset>
                         </form>
                     </div>
@@ -47,22 +48,46 @@ export default {
             remember: false,
             errors: [],
             success: false,
-            message: ''
+            message: '',
+
+            formButton:{
+                text: 'Login',
+                class: 'btn-success',
+                disabled: false,
+                styleCursor: {
+                    cursor: 'pointer'
+                }   
+            }
+
         }   
     },
     methods:{
         login(){
-           Axios.post('/login', {
+            this.formButton.text = 'Logging in...';
+            this.formButton.class = 'btn-secondary';
+            this.formButton.disabled = true;
+            this.formButton.styleCursor = {
+                cursor: 'wait'
+            };
+           axios.post('/login', {
                 username: this.username,
                 password: this.password,
-                remember: this.remember
+                _token: window.Laravel.csrfToken
             })
             .then(({data})=>{
                 console.log(data)
             })
-            .catch(error => {
-                this.errors = error.response.data.errors;
-            });
+            .catch((error) => {
+                // use vue-izitoast to show error message
+                this.$toast.error(error.response.data.message, 'Error')
+            }).finally(()=>{
+                this.formButton.text = 'Login';
+                this.formButton.class = 'btn-success';
+                this.formButton.disabled = false;
+                this.formButton.styleCursor = {
+                    cursor: 'pointer'
+                };
+            })
         }
     }
 }

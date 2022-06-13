@@ -14,16 +14,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 // any web route goes here
-Route::view('/{any}', 'spa')->where('any', '.*');
+// where any not equal to api or login or register goes to spa.blade.php
+// Route::view('/{path?}', 'spa')->where('path', '^(?!api).*$');
+Route::view('/{path?}', 'spa')->where('path', '^(?!api|login|register).*$');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Auth::routes(['verify'=>true]);
+// Auth::routes(['verify'=>true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');

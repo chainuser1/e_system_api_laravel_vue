@@ -18,6 +18,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 <body>
     <div id="app">
@@ -82,14 +86,16 @@
         // window Auth
         window.Auth = {!! json_encode([
             'user' => Auth::user(),
-            'token' => csrf_token(),
             'loggedIn' =>  Auth::check()
         ]) !!};
+
         window.Urls = @json([
             'api'=> url('/api'),
-            'login'=> route('login')
-        ])
-        console.log(Auth);
+            'login'=> url('/api/login'),
+        ]);
+        window.Laravel = @json([
+            'csrfToken' => csrf_token()
+        ]);
     </script>
     <script src="{{asset('js/app.js')}}"></script>
 </body>
