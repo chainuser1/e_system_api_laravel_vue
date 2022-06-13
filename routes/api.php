@@ -22,6 +22,8 @@ Route::post('/register','Auth\RegisterController@register');
 Route::post('/login','Auth\LoginController@store');
 Route::delete('/logout','Auth\LoginController@destroy');
 
+Route::middleware(['auth:api'])->group(function () {
+    Route::apiResource('students', 'StudentController');
+    Route::apiResource('personnels', 'PersonnelController');
+});
 
-Route::apiResource('students', 'StudentController');
-Route::apiResource('personnels', 'PersonnelController');
