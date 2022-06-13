@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// any web route goes here
+Route::view('/{any}', 'spa')->where('any', '.*');
+
 Route::get('/', function () {
     return view('welcome');
 });

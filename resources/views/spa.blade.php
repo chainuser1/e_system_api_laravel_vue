@@ -40,14 +40,16 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                           <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ __('Account') }}
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <!-- vue-router-links -->
+                                    <router-link class="dropdown-item" :to="{name:'login'}">{{ __('Login') }}</router-link>
+                                    <router-link class="dropdown-item" :to="{name:'register'}">Register</router-link>
+                                </div>
                             </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -73,17 +75,22 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <router-view></router-view>
         </main>
     </div>
     <script>
         // window Auth
         window.Auth = {!! json_encode([
-            'user' => "{{ Auth::user() }}",
-            'token' => "{{csrf_token()}}",
-            'loggedIn' => "{{ Auth::check() }}"
+            'user' => Auth::user(),
+            'token' => csrf_token(),
+            'loggedIn' =>  Auth::check()
         ]) !!};
-        console.log("Hello World");
+        window.Urls = @json([
+            'api'=> url('/api'),
+            'login'=> route('login')
+        ])
+        console.log(Auth);
     </script>
+    <script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>

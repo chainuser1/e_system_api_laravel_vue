@@ -8,13 +8,40 @@ require('./bootstrap');
 
 
 window.Vue = require('vue');
+
+// import plugin
+
+import router from './router';
+import policies from './policies';
+
+
+Vue.prototype.authorize = (policy, model)=>{
+    if(!window.Auth.signedIn) return false;
+
+    if(typeof policy === 'string' && typeof model === 'object'){
+        const user = window.Auth.user;
+        return policies[policy](user, model);
+        // authorize(user, model);
+    }
+}
+
+// use plugin
+
 import VueIziToast from 'vue-izitoast';
 
-import 'izitoast/dist/css/iziToast.css';
-or
+
+
 import 'izitoast/dist/css/iziToast.min.css';
+import Vue from 'vue';
+
+
+// using VueIziToast
+
 
 Vue.use(VueIziToast);
+
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -27,7 +54,6 @@ Vue.use(VueIziToast);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -36,4 +62,5 @@ Vue.use(VueIziToast);
 
 const app = new Vue({
     el: '#app',
+    router
 });
