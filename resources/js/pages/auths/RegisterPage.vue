@@ -9,12 +9,32 @@
                         </h1>
                     </div>
                     <div class="panel-body" :style="formButton.styleCursor">
+                        <!-- form for verifying Membership Number before Registration -->
+                        <form role="form" @submit.prevent="verifyNumberInput">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" v-model="membershipNumber" placeholder="Employee Number/Student Number"
+                                        name="membershipNumber" type="text" autofocus>
+                                </div>
+                            </fieldset> 
+                        </form>
                         <form role="form" @submit.prevent="register">
                             <fieldset>
                                 <div class="form-group">
                                     <input :disabled="formButton.disabled" class="form-control" v-model="username"
                                         placeholder="username" name="username" type="text" autofocus>
                                 </div>
+                                <!-- name -->
+                                <div class="form-group">
+                                    <input :disabled="formButton.disabled" class="form-control" v-model="name"
+                                        placeholder="Name" name="name" type="text">
+                                </div>
+                                <!-- email -->
+                                <div class="form-group">
+                                    <input :disabled="formButton.disabled" class="form-control" v-model="email"
+                                        placeholder="Email" name="email" type="email">
+                                </div>
+
                                 <div class="form-group">
                                     <input :disabled="formButton.disabled" class="form-control" v-model="password"
                                         placeholder="Password" name="password" type="password" value="">
@@ -43,9 +63,22 @@ export default {
     name: 'RegisterPage',
     data() {
         return {
-            username: '',
-            password: '',
-            password_confirmation: '',
+            user:{
+                membership_number: '',
+                username: '',
+                password: '',
+                password_confirmation: '',
+                name: '',
+                email: '',
+                role: '',
+                status: '',
+            },
+
+            user_full_name:{
+                first_name: '',
+                last_name: '',
+                middle_name: '',
+            },
 
             formButton: {
                 text: 'Register',
@@ -54,7 +87,10 @@ export default {
                 styleCursor: {
                     cursor: 'pointer'
                 }
-            }
+            },
+
+            
+            
         }
     },
     methods: {
@@ -63,6 +99,10 @@ export default {
             this.formButton.styleCursor.cursor = 'wait';
             this.formButton.text = 'Registering...';
             this.formButton.class = 'btn-warning';
+        },
+
+        verifyNumberInput(){
+
         }
     }
 }

@@ -22,11 +22,13 @@ Route::post('/verify_srn','Auth\RegisterController@verifySrn')->name('api.auth.v
 Route::post('/register','Auth\RegisterController@register')->name('api.auth.register');
 Route::post('/login','Auth\LoginController@store')->name('api.auth.login');
 Route::delete('/logout','Auth\LoginController@destroy')->name('api.auth.logout');
-Route::apiResource('students', 'StudentController')->only(['index', 'show']);
+// verify_srn
+
+
+
+
 Route::middleware(['auth:api'])->group(function () {
-    Route::apiResource('students', 'StudentController')->only([
-         'store', 'update', 'destroy'
-    ]);
+    Route::apiResource('students', 'StudentController');
     Route::apiResource('personnels', 'PersonnelController');
 });
 

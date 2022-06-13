@@ -2049,13 +2049,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'RegisterPage',
   data: function data() {
     return {
-      username: '',
-      password: '',
-      password_confirmation: '',
+      user: {
+        membership_number: '',
+        username: '',
+        password: '',
+        password_confirmation: '',
+        name: '',
+        email: '',
+        role: '',
+        status: ''
+      },
+      user_full_name: {
+        first_name: '',
+        last_name: '',
+        middle_name: ''
+      },
       formButton: {
         text: 'Register',
         "class": 'btn-secondary',
@@ -2072,7 +2104,8 @@ __webpack_require__.r(__webpack_exports__);
       this.formButton.styleCursor.cursor = 'wait';
       this.formButton.text = 'Registering...';
       this.formButton["class"] = 'btn-warning';
-    }
+    },
+    verifyNumberInput: function verifyNumberInput() {}
   }
 });
 
@@ -38496,6 +38529,51 @@ var render = function () {
                     on: {
                       submit: function ($event) {
                         $event.preventDefault()
+                        return _vm.verifyNumberInput.apply(null, arguments)
+                      },
+                    },
+                  },
+                  [
+                    _c("fieldset", [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.membershipNumber,
+                              expression: "membershipNumber",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            placeholder: "Employee Number/Student Number",
+                            name: "membershipNumber",
+                            type: "text",
+                            autofocus: "",
+                          },
+                          domProps: { value: _vm.membershipNumber },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.membershipNumber = $event.target.value
+                            },
+                          },
+                        }),
+                      ]),
+                    ]),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "form",
+                  {
+                    attrs: { role: "form" },
+                    on: {
+                      submit: function ($event) {
+                        $event.preventDefault()
                         return _vm.register.apply(null, arguments)
                       },
                     },
@@ -38527,6 +38605,64 @@ var render = function () {
                                 return
                               }
                               _vm.username = $event.target.value
+                            },
+                          },
+                        }),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.name,
+                              expression: "name",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            disabled: _vm.formButton.disabled,
+                            placeholder: "Name",
+                            name: "name",
+                            type: "text",
+                          },
+                          domProps: { value: _vm.name },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.name = $event.target.value
+                            },
+                          },
+                        }),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.email,
+                              expression: "email",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            disabled: _vm.formButton.disabled,
+                            placeholder: "Email",
+                            name: "email",
+                            type: "email",
+                          },
+                          domProps: { value: _vm.email },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.email = $event.target.value
                             },
                           },
                         }),
