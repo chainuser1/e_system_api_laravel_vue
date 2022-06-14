@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Validator;
 class LoginController extends Controller
 {
     /*
@@ -80,17 +80,29 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
+        $validator = Validator::make($request->all('email', 'password'), [
+        'email' => 'required|string|email|max:255',
+        'password' => 'required|string|min:6'
+        ]);
 
-        if (auth()->attempt($credentials)) {
-            $token = auth('web')->user()->createToken(env('APP_NAME'))->accessToken;
-            return response()->json(['token' => $token], 200);
-        } else {
-            return response()->json(['error' => 'UnAuthorised'], 401);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);
+        };
+
+        if(Auth::guard('web')->attempt(['email' => request('email'), 'password' => request('password')])){
+            $user = Auth::guard('web')->user();
+            $success['token'] = $user->createToken(env('PASSPORT_CLIENT_SECRET'))-> accessToken;
+            return response()->json(['success' => $success], 200);
         }
+        else{
+            return response()->json(['error'=>'Can not log in with the data provide.'], 401);
+        }        
     }
    
+    public function logout(Request $request)
+    {
+        Auth::guard('web')->logout();
+        // redirect to login page
+        return redirect('/');
+    }
 }

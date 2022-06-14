@@ -2151,18 +2151,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.formButton["class"] = 'btn-secondary';
       axios.post('/register', _objectSpread(_objectSpread({}, this.user), {}, {
         _token: this._token
-      })).then(function (response) {
-        _this.$toast.success('Registration Successful!', 'Success', {
-          position: 'top-right',
-          duration: 5000
-        }); // wait after 2 seconds then redirect to login
-        // set time out
-
-
-        setTimeout(function () {
-          _this.$router.push('/login');
-        }, 2000);
-      })["catch"](function (error) {
+      }))["catch"](function (error) {
         _this.formButton.disabled = false;
         _this.formButton.styleCursor.cursor = 'pointer';
         _this.formButton.text = 'Register';
@@ -6625,7 +6614,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* set float to left only for input.form-control with an <i> after it */\n/* ignore the other input */\ninput.form-control[name=\"confirm_password\"][data-v-73aa05df],input.form-control[name=\"membershipNumber\"][data-v-73aa05df] {\n      float: left;\n}\n  \n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* set float to left only for input.form-control with an <i> after it */\n/* ignore the other input */\ninput.form-control[name=\"confirm_password\"][data-v-73aa05df],input.form-control[name=\"membershipNumber\"][data-v-73aa05df] {\n      float: left;\n}\n  \n", ""]);
 
 // exports
 

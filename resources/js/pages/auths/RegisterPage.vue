@@ -135,27 +135,16 @@ export default {
                 ...this.user,
                 _token: this._token,
             })
-                .then(response => {
-                    this.$toast.success('Registration Successful!', 'Success', {
-                        position: 'top-right',
-                        duration: 5000
-                    });
-                    // wait after 2 seconds then redirect to login
-                    // set time out
-                    setTimeout(() => {
-                        this.$router.push('/login');
-                    }, 2000);
-                })
-                .catch(error => {
-                    this.formButton.disabled = false;
-                    this.formButton.styleCursor.cursor = 'pointer';
-                    this.formButton.text = 'Register';
-                    this.formButton.class = 'btn-danger';
-                    // use for loop to display all errors, with timeout of 2 seconds
-                    for(let error of error.response.data.errors){
-                        this.toast.error(error,'Error')
-                    }
-                });
+            .catch(error => {
+                this.formButton.disabled = false;
+                this.formButton.styleCursor.cursor = 'pointer';
+                this.formButton.text = 'Register';
+                this.formButton.class = 'btn-danger';
+                // use for loop to display all errors, with timeout of 2 seconds
+                for(let error of error.response.data.errors){
+                    this.toast.error(error,'Error')
+                }
+            });
         },
 
         verifyNumberInput(){

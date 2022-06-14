@@ -43,21 +43,10 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                        @guest
-                           <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ __('Account') }}
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <!-- vue-router-links -->
-                                    <a class="dropdown-item" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                    <router-link class="dropdown-item" :to="{name:'register'}">Register</router-link>
-                                </div>
-                            </li>
-                        @else
+                        @if (Auth::guard('web')->check())
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::guard('web')->user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -72,7 +61,21 @@
                                     </form>
                                 </div>
                             </li>
-                        @endguest
+                            
+                        @else
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ __('Account') }}
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <!-- vue-router-links -->
+                                    <a class="dropdown-item" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <router-link class="dropdown-item" :to="{name:'register'}">Register</router-link>
+                                </div>
+                            </li>
+                        @endif
+                           
+                       
                     </ul>
                 </div>
             </div>
@@ -85,8 +88,8 @@
     <script>
         // window Auth
         window.Auth = {!! json_encode([
-            'user' => Auth::user(),
-            'loggedIn' =>  Auth::check()
+            'user' => Auth::guard('web')->user(),
+            'loggedIn' =>  Auth::guard('web')->check()
         ]) !!};
 
         window.Urls = @json([
@@ -96,6 +99,7 @@
         window.Laravel = @json([
             'csrfToken' => csrf_token()
         ]);
+        console.log(window.Auth);
     </script>
     <script src="{{asset('js/app.js')}}"></script>
 </body>

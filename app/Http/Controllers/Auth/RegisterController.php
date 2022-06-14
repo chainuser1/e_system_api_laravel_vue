@@ -95,10 +95,11 @@ class RegisterController extends Controller
         ]);
 
         if($user)
-            return response()->json([
-                "success"=>true,
-                "message"=> $req->name.' '.'has been successfully registered.'
-            ],201);
+            // return response()->json([
+            //     "success"=>true,
+            //     "message"=> $req->name.' '.'has been successfully registered.'
+            // ],201);
+            return redirect()->route('login')->with('success','You have successfully registered. Please login to continue.');
     }
 
     protected function verifySrn(Request $request)
