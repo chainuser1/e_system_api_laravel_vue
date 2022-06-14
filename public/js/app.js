@@ -1963,7 +1963,8 @@ __webpack_require__.r(__webpack_exports__);
         styleCursor: {
           cursor: 'pointer'
         }
-      }
+      },
+      _token: window.Laravel.csrfToken
     };
   },
   methods: {
@@ -1979,7 +1980,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/login', {
         username: this.username,
         password: this.password,
-        _token: window.Laravel.csrfToken
+        _token: this._token
       }).then(function (_ref) {
         var data = _ref.data;
         console.log(data);
@@ -2086,7 +2087,8 @@ __webpack_require__.r(__webpack_exports__);
       user_full_name: {
         first_name: '',
         last_name: '',
-        middle_name: ''
+        middle_name: '',
+        name_suffix: ''
       },
       formButton: {
         text: 'Register',
@@ -2095,7 +2097,8 @@ __webpack_require__.r(__webpack_exports__);
         styleCursor: {
           cursor: 'pointer'
         }
-      }
+      },
+      _token: window.Laravel.csrfToken
     };
   },
   methods: {
@@ -2105,7 +2108,29 @@ __webpack_require__.r(__webpack_exports__);
       this.formButton.text = 'Registering...';
       this.formButton["class"] = 'btn-warning';
     },
-    verifyNumberInput: function verifyNumberInput() {}
+    verifyNumberInput: function verifyNumberInput() {
+      var _this = this;
+
+      axios.post('/verify_srn', {
+        membership_number: this.user.membership_number,
+        _token: this._token
+      }).then(function (_ref) {
+        var data = _ref.data;
+        console.log(data);
+      })["catch"](function (error) {
+        console.log(error);
+      })["finally"](function () {
+        _this.formButton.disabled = false;
+        _this.formButton.styleCursor.cursor = 'pointer';
+        _this.formButton.text = 'Register';
+        _this.formButton["class"] = 'btn-secondary';
+      });
+    }
+  },
+  computed: {
+    fullName: function fullName() {
+      return this.user_full_name.first_name + ' ' + this.user_full_name.middle_name + ' ' + this.user_full_name.last_name + ' ' + this.user_full_name.name_suffix;
+    }
   }
 });
 
@@ -38541,8 +38566,8 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.membershipNumber,
-                              expression: "membershipNumber",
+                              value: _vm.membership_number,
+                              expression: "membership_number",
                             },
                           ],
                           staticClass: "form-control",
@@ -38552,13 +38577,13 @@ var render = function () {
                             type: "text",
                             autofocus: "",
                           },
-                          domProps: { value: _vm.membershipNumber },
+                          domProps: { value: _vm.membership_number },
                           on: {
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.membershipNumber = $event.target.value
+                              _vm.membership_number = $event.target.value
                             },
                           },
                         }),
@@ -38586,8 +38611,8 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.username,
-                              expression: "username",
+                              value: _vm.user.username,
+                              expression: "user.username",
                             },
                           ],
                           staticClass: "form-control",
@@ -38598,13 +38623,17 @@ var render = function () {
                             type: "text",
                             autofocus: "",
                           },
-                          domProps: { value: _vm.username },
+                          domProps: { value: _vm.user.username },
                           on: {
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.username = $event.target.value
+                              _vm.$set(
+                                _vm.user,
+                                "username",
+                                $event.target.value
+                              )
                             },
                           },
                         }),
@@ -38612,30 +38641,14 @@ var render = function () {
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group" }, [
                         _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.name,
-                              expression: "name",
-                            },
-                          ],
                           staticClass: "form-control",
                           attrs: {
-                            disabled: _vm.formButton.disabled,
+                            disabled: true,
                             placeholder: "Name",
                             name: "name",
                             type: "text",
                           },
-                          domProps: { value: _vm.name },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.name = $event.target.value
-                            },
-                          },
+                          domProps: { value: _vm.fullName },
                         }),
                       ]),
                       _vm._v(" "),
@@ -38645,8 +38658,8 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.email,
-                              expression: "email",
+                              value: _vm.user.email,
+                              expression: "user.email",
                             },
                           ],
                           staticClass: "form-control",
@@ -38656,13 +38669,13 @@ var render = function () {
                             name: "email",
                             type: "email",
                           },
-                          domProps: { value: _vm.email },
+                          domProps: { value: _vm.user.email },
                           on: {
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.email = $event.target.value
+                              _vm.$set(_vm.user, "email", $event.target.value)
                             },
                           },
                         }),
@@ -38674,8 +38687,8 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.password,
-                              expression: "password",
+                              value: _vm.user.password,
+                              expression: "user.password",
                             },
                           ],
                           staticClass: "form-control",
@@ -38686,13 +38699,17 @@ var render = function () {
                             type: "password",
                             value: "",
                           },
-                          domProps: { value: _vm.password },
+                          domProps: { value: _vm.user.password },
                           on: {
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.password = $event.target.value
+                              _vm.$set(
+                                _vm.user,
+                                "password",
+                                $event.target.value
+                              )
                             },
                           },
                         }),
@@ -38704,8 +38721,8 @@ var render = function () {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.password_confirmation,
-                              expression: "password_confirmation",
+                              value: _vm.user.password_confirmation,
+                              expression: "user.password_confirmation",
                             },
                           ],
                           staticClass: "form-control",
@@ -38716,13 +38733,17 @@ var render = function () {
                             type: "password",
                             value: "",
                           },
-                          domProps: { value: _vm.password_confirmation },
+                          domProps: { value: _vm.user.password_confirmation },
                           on: {
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
                               }
-                              _vm.password_confirmation = $event.target.value
+                              _vm.$set(
+                                _vm.user,
+                                "password_confirmation",
+                                $event.target.value
+                              )
                             },
                           },
                         }),

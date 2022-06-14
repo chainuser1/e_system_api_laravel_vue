@@ -57,8 +57,8 @@ export default {
                 styleCursor: {
                     cursor: 'pointer'
                 }   
-            }
-
+            },
+            _token: window.Laravel.csrfToken,
         }   
     },
     methods:{
@@ -72,7 +72,7 @@ export default {
            axios.post('/login', {
                 username: this.username,
                 password: this.password,
-                _token: window.Laravel.csrfToken
+                _token: this._token
             })
             .then(({data})=>{
                 console.log(data)

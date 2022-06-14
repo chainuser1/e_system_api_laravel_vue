@@ -57,6 +57,9 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'username' => ['string', 'max:255', 'unique:users'],
+            // role enum is: student, instructor, staff, admin
+            'role' => ['required', 'string', 'max:255','in:student,instructor,staff,admin'],
+            'membership_number' => ['required', 'string', 'max:255', 'unique:users'],   
         ]);
     }
 
@@ -73,6 +76,8 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'username' => empty($data['username']) ? $data['email'] : $data['username'],
+            'role' => $data['role'],
+            'membership_number' => $data['membership_number'],
         ]);
     }
 
@@ -87,7 +92,7 @@ class RegisterController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid employee number or membership number',
+                'message' => 'Invalid employee number or student number',
                 'errors' => $validator->errors()
             ], 400);
         }
@@ -105,7 +110,7 @@ class RegisterController extends Controller
         }
         
         // if either exists
-        if ($personnel) {
+        elseif ($personnel) {
             return response()->json([
                 'success' => true,
                 'message' => 'Employee number is valid',
@@ -114,7 +119,7 @@ class RegisterController extends Controller
             ], 200);
         }
 
-        if ($student) {
+        elseif ($student) {
             return response()->json([
                 'success' => true,
                 'message' => 'Student number is valid',

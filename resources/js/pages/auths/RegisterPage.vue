@@ -13,7 +13,7 @@
                         <form role="form" @submit.prevent="verifyNumberInput">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" v-model="membershipNumber" placeholder="Employee Number/Student Number"
+                                    <input class="form-control" v-model="membership_number" placeholder="Employee Number/Student Number"
                                         name="membershipNumber" type="text" autofocus>
                                 </div>
                             </fieldset> 
@@ -21,27 +21,27 @@
                         <form role="form" @submit.prevent="register">
                             <fieldset>
                                 <div class="form-group">
-                                    <input :disabled="formButton.disabled" class="form-control" v-model="username"
+                                    <input :disabled="formButton.disabled" class="form-control" v-model="user.username"
                                         placeholder="username" name="username" type="text" autofocus>
                                 </div>
                                 <!-- name -->
                                 <div class="form-group">
-                                    <input :disabled="formButton.disabled" class="form-control" v-model="name"
-                                        placeholder="Name" name="name" type="text">
+                                    <input :disabled="true"  class="form-control" 
+                                        placeholder="Name" name="name" type="text" :value="fullName" >
                                 </div>
                                 <!-- email -->
                                 <div class="form-group">
-                                    <input :disabled="formButton.disabled" class="form-control" v-model="email"
+                                    <input :disabled="formButton.disabled" class="form-control" v-model="user.email"
                                         placeholder="Email" name="email" type="email">
                                 </div>
 
                                 <div class="form-group">
-                                    <input :disabled="formButton.disabled" class="form-control" v-model="password"
+                                    <input :disabled="formButton.disabled" class="form-control" v-model="user.password"
                                         placeholder="Password" name="password" type="password" value="">
                                 </div>
                                 <div class="form-group">
                                     <input :disabled="formButton.disabled" class="form-control"
-                                        v-model="password_confirmation" placeholder="Password Confirmation"
+                                        v-model="user.password_confirmation" placeholder="Password Confirmation"
                                         name="password_confirmation" type="password" value="">
                                 </div>
                             </fieldset>
@@ -78,6 +78,7 @@ export default {
                 first_name: '',
                 last_name: '',
                 middle_name: '',
+                name_suffix: '',
             },
 
             formButton: {
@@ -88,7 +89,7 @@ export default {
                     cursor: 'pointer'
                 }
             },
-
+            _token: window.Laravel.csrfToken,
             
             
         }
@@ -102,7 +103,28 @@ export default {
         },
 
         verifyNumberInput(){
+            axios.post('/verify_srn', {
+                membership_number: this.user.membership_number,
+                _token: this._token,
+            }).then(({data})=>{
+                console.log(data)
+            }).catch((error)=>{
+                console.log(error)
+            }).finally(()=>{
+                this.formButton.disabled = false;
+                this.formButton.styleCursor.cursor = 'pointer';
+                this.formButton.text = 'Register';
+                this.formButton.class = 'btn-secondary';
+            })
+        }
+    },
 
+    computed:{
+        fullName(){
+            return this.user_full_name.first_name + ' ' +
+             this.user_full_name.middle_name + ' ' +
+              this.user_full_name.last_name+ ' ' +
+              this.user_full_name.name_suffix;
         }
     }
 }
