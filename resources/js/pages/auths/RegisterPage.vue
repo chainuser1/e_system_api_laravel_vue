@@ -1,20 +1,20 @@
 <template>
     <div class="container">
-        <!-- Registration of User using bootstrap -->
-        <div class="row">
-            <div class="col-md-6 col-offset-3" style="margin:0 auto;">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h1 class="panel-title text-danger" style="text-align: center;"><i class="fa-solid fa-user"></i>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                    <div class="card-header">
+                        <h1 class="panel-title text-danger" style="text-align: center;">
+                            Register
                         </h1>
                         <!-- loading  -->
                     </div>
-                    <div class="panel-body" :style="formButton.styleCursor">
+                    <div class="card-body" :style="formButton.styleCursor">
                         <!-- form for verifying Membership Number before Registration -->
                         <form role="form" @submit.prevent="verifyNumberInput">
                             <fieldset>
-                                <div class="form-group">
-                                    <input :disabled="verify.state" class="form-control"
+                                <div class="form-group divide">
+                                    <input :disabled="verify.state" class="form-control "
                                         v-model="user.membership_number" placeholder="Employee Number/Student Number"
                                         name="membershipNumber" type="text" autofocus>
                                     <!--                                     if verify.found =='true' then show the following -->
@@ -54,7 +54,7 @@
                                         placeholder="Password" name="password" type="password" value="">
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group divide">
                                     <input :disabled="formButton.disabled" class="form-control"
                                         v-model="user.password_confirmation" placeholder="Password Confirmation"
                                         name="password_confirmation" type="password">
@@ -134,6 +134,11 @@ export default {
                 // email:this.user.email,
                 ...this.user,
                 _token: this._token,
+            }).then(()=>{
+                // if registration is successful
+                // redirect to login page with success message
+               window.location.href='/e_system_api/public/login'
+
             })
             .catch(error => {
                 this.formButton.disabled = false;
@@ -142,7 +147,7 @@ export default {
                 this.formButton.class = 'btn-danger';
                 // use for loop to display all errors, with timeout of 2 seconds
                 for(let error of error.response.data.errors){
-                    this.toast.error(error,'Error')
+                    this.$toast.error(error,'Error')
                 }
             });
         },
@@ -150,6 +155,7 @@ export default {
         verifyNumberInput(){
             // set loading to true for axios
             this.verify.loading = true;
+            this.formButton.styleCursor.cursor = 'wait';
             axios.post('/verify_srn', {
                 membership_number: this.user.membership_number,
                 _token: this._token,
@@ -157,22 +163,31 @@ export default {
 
                 let {data} = res.data;
                 // exclude middle name and suffix if empty to create name
-                this.user.name = data.first_name + ' ' + data.last_name;
+                this.user.name = data.first_name + ' ' + data.last_name
+                + (data.middle_name ? ' ' + data.middle_name : '')+ (data.suffix ? ' ' + data.suffix : '');
                 this.user.role = res.data.type
                 this.formButton.disabled = false;
                 this.verify.state = true;
+                this.formButton.class = 'btn-danger';
+                this.formButton.styleCursor.cursor = 'pointer';
                 this.verify.found = 1;
                 this.formButton.text = "Register as "+this.user.role
             }).catch((error)=>{
                 this.verify.found = 0;
                 this.$toast.error(error.response.data.message);
-            }).finally(()=>{
-                this.formButton.disabled = false;
-                this.formButton.styleCursor.cursor = 'pointer';
+                this.formButton.disabled = true;
+                //pointer or cursor disabled
+                this.formButton.styleCursor.cursor = 'not-allowed';
                 this.formButton.text = 'Register';
                 this.formButton.class = 'btn-secondary';
+                this.verify.state = false;
+                
+                this.verify.found = 0;
+            }).finally(()=>{
                 this.verify.loading = false;
-            })
+                
+                this.verify.found = -1;
+            });
         }
     },
 
@@ -196,9 +211,13 @@ export default {
 <style  scoped>
   /* set float to left only for input.form-control with an <i> after it */
   /* ignore the other input */
-    input.form-control[name="confirm_password"],input.form-control[name="membershipNumber"] {
-        float: left;
-        
+    .divide{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .divide input{
+        max-width:90% !important;
     }
     
 </style>

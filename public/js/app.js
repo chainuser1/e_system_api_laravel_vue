@@ -2151,7 +2151,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.formButton["class"] = 'btn-secondary';
       axios.post('/register', _objectSpread(_objectSpread({}, this.user), {}, {
         _token: this._token
-      }))["catch"](function (error) {
+      })).then(function () {
+        // if registration is successful
+        // redirect to login page with success message
+        window.location.href = '/e_system_api/public/login';
+      })["catch"](function (error) {
         _this.formButton.disabled = false;
         _this.formButton.styleCursor.cursor = 'pointer';
         _this.formButton.text = 'Register';
@@ -2164,7 +2168,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           for (_iterator.s(); !(_step = _iterator.n()).done;) {
             var _error = _step.value;
 
-            _this.toast.error(_error, 'Error');
+            _this.$toast.error(_error, 'Error');
           }
         } catch (err) {
           _iterator.e(err);
@@ -2178,28 +2182,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       // set loading to true for axios
       this.verify.loading = true;
+      this.formButton.styleCursor.cursor = 'wait';
       axios.post('/verify_srn', {
         membership_number: this.user.membership_number,
         _token: this._token
       }).then(function (res) {
         var data = res.data.data; // exclude middle name and suffix if empty to create name
 
-        _this2.user.name = data.first_name + ' ' + data.last_name;
+        _this2.user.name = data.first_name + ' ' + data.last_name + (data.middle_name ? ' ' + data.middle_name : '') + (data.suffix ? ' ' + data.suffix : '');
         _this2.user.role = res.data.type;
         _this2.formButton.disabled = false;
         _this2.verify.state = true;
+        _this2.formButton["class"] = 'btn-danger';
+        _this2.formButton.styleCursor.cursor = 'pointer';
         _this2.verify.found = 1;
         _this2.formButton.text = "Register as " + _this2.user.role;
       })["catch"](function (error) {
         _this2.verify.found = 0;
 
         _this2.$toast.error(error.response.data.message);
-      })["finally"](function () {
-        _this2.formButton.disabled = false;
-        _this2.formButton.styleCursor.cursor = 'pointer';
+
+        _this2.formButton.disabled = true; //pointer or cursor disabled
+
+        _this2.formButton.styleCursor.cursor = 'not-allowed';
         _this2.formButton.text = 'Register';
         _this2.formButton["class"] = 'btn-secondary';
+        _this2.verify.state = false;
+        _this2.verify.found = 0;
+      })["finally"](function () {
         _this2.verify.loading = false;
+        _this2.verify.found = -1;
       });
     }
   },
@@ -6614,7 +6626,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* set float to left only for input.form-control with an <i> after it */\n/* ignore the other input */\ninput.form-control[name=\"confirm_password\"][data-v-73aa05df],input.form-control[name=\"membershipNumber\"][data-v-73aa05df] {\n      float: left;\n}\n  \n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* set float to left only for input.form-control with an <i> after it */\n/* ignore the other input */\n.divide[data-v-73aa05df]{\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n}\n.divide input[data-v-73aa05df]{\n      max-width:90% !important;\n}\n  \n", ""]);
 
 // exports
 
@@ -38661,293 +38673,278 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        {
-          staticClass: "col-md-6 col-offset-3",
-          staticStyle: { margin: "0 auto" },
-        },
-        [
-          _c("div", { staticClass: "panel panel-default" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "panel-body", style: _vm.formButton.styleCursor },
-              [
-                _c(
-                  "form",
-                  {
-                    attrs: { role: "form" },
-                    on: {
-                      submit: function ($event) {
-                        $event.preventDefault()
-                        return _vm.verifyNumberInput.apply(null, arguments)
-                      },
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-body", style: _vm.formButton.styleCursor },
+            [
+              _c(
+                "form",
+                {
+                  attrs: { role: "form" },
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      return _vm.verifyNumberInput.apply(null, arguments)
                     },
                   },
-                  [
-                    _c("fieldset", [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.user.membership_number,
-                              expression: "user.membership_number",
-                            },
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            disabled: _vm.verify.state,
-                            placeholder: "Employee Number/Student Number",
-                            name: "membershipNumber",
-                            type: "text",
-                            autofocus: "",
+                },
+                [
+                  _c("fieldset", [
+                    _c("div", { staticClass: "form-group divide" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.user.membership_number,
+                            expression: "user.membership_number",
                           },
-                          domProps: { value: _vm.user.membership_number },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.user,
-                                "membership_number",
-                                $event.target.value
-                              )
-                            },
+                        ],
+                        staticClass: "form-control ",
+                        attrs: {
+                          disabled: _vm.verify.state,
+                          placeholder: "Employee Number/Student Number",
+                          name: "membershipNumber",
+                          type: "text",
+                          autofocus: "",
+                        },
+                        domProps: { value: _vm.user.membership_number },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.user,
+                              "membership_number",
+                              $event.target.value
+                            )
                           },
-                        }),
-                        _vm._v(" "),
-                        _vm.verify.found == 1
-                          ? _c("i", {
-                              staticClass: "fa-solid fa-check text-success",
-                              staticStyle: { display: "inline" },
-                            })
-                          : _vm.verify.found == 0
-                          ? _c("i", {
-                              staticClass: "fa-solid fa-times text-danger",
-                              staticStyle: { display: "inline" },
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.verify.loading
-                          ? _c("i", {
-                              staticClass: "fa-solid fa-spinner fa-spin",
-                              staticStyle: { display: "inline" },
-                            })
-                          : _vm._e(),
-                      ]),
+                        },
+                      }),
+                      _vm._v(" "),
+                      _vm.verify.found == 1
+                        ? _c("i", {
+                            staticClass: "fa-solid fa-check text-success",
+                            staticStyle: { display: "inline" },
+                          })
+                        : _vm.verify.found == 0
+                        ? _c("i", {
+                            staticClass: "fa-solid fa-times text-danger",
+                            staticStyle: { display: "inline" },
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.verify.loading
+                        ? _c("i", {
+                            staticClass: "fa-solid fa-spinner fa-spin",
+                            staticStyle: { display: "inline" },
+                          })
+                        : _vm._e(),
                     ]),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "form",
-                  {
-                    attrs: { role: "form" },
-                    on: {
-                      submit: function ($event) {
-                        $event.preventDefault()
-                        return _vm.register.apply(null, arguments)
-                      },
+                  ]),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  attrs: { role: "form" },
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      return _vm.register.apply(null, arguments)
                     },
                   },
-                  [
-                    _c("fieldset", [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.user.username,
-                              expression: "user.username",
-                            },
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            disabled: _vm.formButton.disabled,
-                            placeholder: "username",
-                            name: "username",
-                            type: "text",
-                            autofocus: "",
+                },
+                [
+                  _c("fieldset", [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.user.username,
+                            expression: "user.username",
                           },
-                          domProps: { value: _vm.user.username },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.user,
-                                "username",
-                                $event.target.value
-                              )
-                            },
-                          },
-                        }),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.user.name,
-                              expression: "user.name",
-                            },
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            disabled: "",
-                            placeholder: "Name",
-                            name: "name",
-                            type: "text",
-                          },
-                          domProps: { value: _vm.user.name },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(_vm.user, "name", $event.target.value)
-                            },
-                          },
-                        }),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.user.email,
-                              expression: "user.email",
-                            },
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            disabled: _vm.formButton.disabled,
-                            placeholder: "Email",
-                            name: "email",
-                            type: "email",
-                          },
-                          domProps: { value: _vm.user.email },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(_vm.user, "email", $event.target.value)
-                            },
-                          },
-                        }),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.user.password,
-                              expression: "user.password",
-                            },
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            disabled: _vm.formButton.disabled,
-                            placeholder: "Password",
-                            name: "password",
-                            type: "password",
-                            value: "",
-                          },
-                          domProps: { value: _vm.user.password },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.user,
-                                "password",
-                                $event.target.value
-                              )
-                            },
-                          },
-                        }),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.user.password_confirmation,
-                              expression: "user.password_confirmation",
-                            },
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            disabled: _vm.formButton.disabled,
-                            placeholder: "Password Confirmation",
-                            name: "password_confirmation",
-                            type: "password",
-                          },
-                          domProps: { value: _vm.user.password_confirmation },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.user,
-                                "password_confirmation",
-                                $event.target.value
-                              )
-                            },
-                          },
-                        }),
-                        _vm._v(" "),
-                        _vm.password_match == false
-                          ? _c("i", {
-                              staticClass: "fa-solid fa-times text-danger",
-                              staticStyle: { display: "inline" },
-                            })
-                          : _c("i", {
-                              staticClass: "fa-solid fa-check text-success",
-                              staticStyle: { display: "inline" },
-                            }),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-lg  btn-block",
-                        class: _vm.formButton.class,
-                        style: _vm.formButton.styleCursor,
+                        ],
+                        staticClass: "form-control",
                         attrs: {
                           disabled: _vm.formButton.disabled,
-                          type: "submit",
+                          placeholder: "username",
+                          name: "username",
+                          type: "text",
+                          autofocus: "",
                         },
+                        domProps: { value: _vm.user.username },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.user, "username", $event.target.value)
+                          },
+                        },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.user.name,
+                            expression: "user.name",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          disabled: "",
+                          placeholder: "Name",
+                          name: "name",
+                          type: "text",
+                        },
+                        domProps: { value: _vm.user.name },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.user, "name", $event.target.value)
+                          },
+                        },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.user.email,
+                            expression: "user.email",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          disabled: _vm.formButton.disabled,
+                          placeholder: "Email",
+                          name: "email",
+                          type: "email",
+                        },
+                        domProps: { value: _vm.user.email },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.user, "email", $event.target.value)
+                          },
+                        },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.user.password,
+                            expression: "user.password",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          disabled: _vm.formButton.disabled,
+                          placeholder: "Password",
+                          name: "password",
+                          type: "password",
+                          value: "",
+                        },
+                        domProps: { value: _vm.user.password },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.user, "password", $event.target.value)
+                          },
+                        },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group divide" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.user.password_confirmation,
+                            expression: "user.password_confirmation",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          disabled: _vm.formButton.disabled,
+                          placeholder: "Password Confirmation",
+                          name: "password_confirmation",
+                          type: "password",
+                        },
+                        domProps: { value: _vm.user.password_confirmation },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.user,
+                              "password_confirmation",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _vm.password_match == false
+                        ? _c("i", {
+                            staticClass: "fa-solid fa-times text-danger",
+                            staticStyle: { display: "inline" },
+                          })
+                        : _c("i", {
+                            staticClass: "fa-solid fa-check text-success",
+                            staticStyle: { display: "inline" },
+                          }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-lg  btn-block",
+                      class: _vm.formButton.class,
+                      style: _vm.formButton.styleCursor,
+                      attrs: {
+                        disabled: _vm.formButton.disabled,
+                        type: "submit",
                       },
-                      [_vm._v(_vm._s(_vm.formButton.text))]
-                    ),
-                  ]
-                ),
-              ]
-            ),
-          ]),
-        ]
-      ),
+                    },
+                    [_vm._v(_vm._s(_vm.formButton.text))]
+                  ),
+                ]
+              ),
+            ]
+          ),
+        ]),
+      ]),
     ]),
   ])
 }
@@ -38956,14 +38953,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "panel-heading" }, [
+    return _c("div", { staticClass: "card-header" }, [
       _c(
         "h1",
         {
           staticClass: "panel-title text-danger",
           staticStyle: { "text-align": "center" },
         },
-        [_c("i", { staticClass: "fa-solid fa-user" })]
+        [_vm._v("\n                        Register\n                    ")]
       ),
     ])
   },

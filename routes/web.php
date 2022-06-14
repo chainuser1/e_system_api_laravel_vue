@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Route;
 // any web route goes here
 // where any not equal to api or login or register goes to spa.blade.php
 // Route::view('/{path?}', 'spa')->where('path', '^(?!api).*$');
-Route::view('/{path?}', 'spa')->where('path', '^(?!api|login|register).*$');
+Route::view('/{path?}', 'spa')->where('path', '^(?!api|register|login|home).*$');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('spa');
 });
 
 Auth::routes(['verify'=>true]);

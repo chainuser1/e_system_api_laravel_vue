@@ -80,22 +80,29 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all('email', 'password'), [
-        'email' => 'required|string|email|max:255',
-        'password' => 'required|string|min:6'
+        $validator = Validator::make($request->all('username', 'password'), [
+        'username' => 'required|string|max:255',
+        'password' => 'required|string|min:7|max:25',
         ]);
+  
 
         if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);
-        };
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
-        if(Auth::guard('web')->attempt(['email' => request('email'), 'password' => request('password')])){
+        if(Auth::guard('web')->attempt(['username' => request('username'), 'password' => request('password')])){
             $user = Auth::guard('web')->user();
             $success['token'] = $user->createToken(env('PASSPORT_CLIENT_SECRET'))-> accessToken;
-            return response()->json(['success' => $success], 200);
+            // return back with errors using redirect() back()
+            return redirect()->route('home')->with('success', 'You are logged in');
         }
         else{
-            return response()->json(['error'=>'Can not log in with the data provide.'], 401);
+            // 
+            return redirect()->back()
+                ->withErrors(['These credentials do not match our records.'])
+                ->withInput();
         }        
     }
    

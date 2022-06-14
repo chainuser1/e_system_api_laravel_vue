@@ -21,7 +21,16 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <style>
+        .fa {
+            font-size: 1.5em;
+        }
+        /* turn outline for all .form-control into red */
+        .form-control:focus {
+            outline: none;
+            border-color: #ff0000;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -83,6 +92,7 @@
 
         <main class="py-4">
             <router-view></router-view>
+            @yield('content')
         </main>
     </div>
     <script>
@@ -99,7 +109,6 @@
         window.Laravel = @json([
             'csrfToken' => csrf_token()
         ]);
-        console.log(window.Auth);
     </script>
     <script src="{{asset('js/app.js')}}"></script>
 </body>
