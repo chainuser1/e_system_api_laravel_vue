@@ -15,7 +15,7 @@ class ModifyInstructorsColumnsInInstructors extends Migration
     {
         Schema::table('instructors', function (Blueprint $table) {
             // rename the table instructors to personnel
-            $table->rename('personnels');
+            // $table->rename('personnels');
             //employee number is unique
         });
     }

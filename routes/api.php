@@ -19,13 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 // Route::post('/token','Auth\LoginController@getToken');
 Route::post('/verify_srn','Auth\RegisterController@verifySrn')->name('api.auth.verify_srn');
-Route::post('/register','Auth\RegisterController@register')->name('api.auth.register');
-Route::post('/login','Auth\LoginController@store')->name('api.auth.login');
-Route::delete('/logout','Auth\LoginController@destroy')->name('api.auth.logout');
+Route::post('/register','Auth\RegisterController@create')->name('api.auth.register');
+// Route::post('/login','Auth\LoginController@store')->name('api.auth.login');
+// Route::delete('/logout','Auth\LoginController@destroy')->name('api.auth.logout');
 // verify_srn
-
-
-
 
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('students', 'StudentController');

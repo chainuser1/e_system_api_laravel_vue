@@ -50,7 +50,7 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <!-- vue-router-links -->
-                                    <router-link class="dropdown-item" :to="{name:'login'}">{{ __('Login') }}</router-link>
+                                    <a class="dropdown-item" href="{{ route('login') }}">{{ __('Login') }}</a>
                                     <router-link class="dropdown-item" :to="{name:'register'}">Register</router-link>
                                 </div>
                             </li>

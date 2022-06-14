@@ -72,14 +72,17 @@ export default {
            axios.post('/login', {
                 username: this.username,
                 password: this.password,
-                _token: this._token
+                // _token: this._token
             })
             .then(({data})=>{
-                console.log(data)
+                this.$toast.success("Login Successfully","Success")
+                console.log(window.Auth)
             })
             .catch((error) => {
                 // use vue-izitoast to show error message
-                this.$toast.error(error.response.data.message, 'Error')
+                this.$toast.error(error.response.data.message, 'Error',{
+
+                })
             }).finally(()=>{
                 this.formButton.text = 'Login';
                 this.formButton.class = 'btn-success';

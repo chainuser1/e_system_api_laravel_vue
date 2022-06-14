@@ -13,7 +13,7 @@ class CreateInstructorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('instructors', function (Blueprint $table) {
+        Schema::create('personnels', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });

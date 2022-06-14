@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 class LoginController extends Controller
 {
     /*
@@ -42,16 +43,13 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|max:25',
-            'password' => 'required|string|min:8|max:25',
-        ]);
         $request->request->add([
             'grant_type' => 'password',
-            'client_id' => "2",
-            'client_secret' => "xTne4UjtX2OqJ5zU4HJcL6ZMlxnGGyML18gAE2dX",
+            'client_id' => 4,
+            'client_secret' => "CaHWzQmN8kGNUuxHdM3VYvJx7GyWARghkBHYYpVz",
             'username' => $request->username,
-            'password' => $request->password
+            // include password
+            'password'=>$request->password,
         ]);
 
         $requestToken = Request::create(env('APP_URL').'/oauth/token', 'POST');
@@ -62,9 +60,9 @@ class LoginController extends Controller
     public function getToken(Request $request)
     {
         $request->request->add([
-            'grant_type' => 'password',
-            'client_id' => "2",
-            'client_secret' => "xTne4UjtX2OqJ5zU4HJcL6ZMlxnGGyML18gAE2dX",
+            'grant_type'=>'password',
+            'client_id' => env('PASSPORT_CLIENT_ID'),
+            'client_secret' => env('PASSPORT_CLIENT_SECRET'),
             'username' => $request->username,
             'password' => $request->password
         ]);

@@ -50,18 +50,18 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'username' => ['string', 'max:255', 'unique:users'],
-            // role enum is: student, instructor, staff, admin
-            'role' => ['required', 'string', 'max:255','in:student,instructor,staff,admin'],
-            'membership_number' => ['required', 'string', 'max:255', 'unique:users'],   
-        ]);
-    }
+    // protected function validator(array $data)
+    // {
+    //     return Validator::make($data, [
+    //         'name' => ['required', 'string', 'max:255'],
+    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+    //         'password' => ['required', 'string', 'min:8', 'confirmed'],
+    //         'username' => ['string', 'max:255', 'unique:users'],
+    //         // role enum is: student, instructor, staff, admin
+    //         'role' => ['required', 'string', 'max:255','in:student,instructor,staff,admin'],
+    //         'membership_number' => ['required', 'string', 'max:255', 'unique:users'],   
+    //     ]);
+    // }
 
     /**
      * Create a new user instance after a valid registration.
@@ -69,16 +69,36 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(Request $req)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'username' => empty($data['username']) ? $data['email'] : $data['username'],
-            'role' => $data['role'],
-            'membership_number' => $data['membership_number'],
+        // create a validator for request
+        $validator = Validator::make($req->all(),[
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'username' => ['string', 'max:255', 'unique:users'],
+            'role' => ['required', 'string', 'max:255','in:student,instructor,staff,admin'],
+            'membership_number' => ['required', 'string', 'max:255', 'unique:users'], 
         ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors(),400);
+        }
+
+        $user = User::create([
+            "membership_number"=>$req->membership_number,
+            "name"=>$req->name,
+            "role"=>$req->role,
+            "username"=>$req->username,
+            "email"=>$req->email,
+            "password"=>Hash::make($req->password)
+        ]);
+
+        if($user)
+            return response()->json([
+                "success"=>true,
+                "message"=> $req->name.' '.'has been successfully registered.'
+            ],201);
     }
 
     protected function verifySrn(Request $request)
@@ -98,23 +118,25 @@ class RegisterController extends Controller
         }
 
         // check if the employee number exists
-        $personnel = Personnel::where('employee_number', $request->membership_number)->first();
+        
+        $personnel =  Personnel::where('employee_number', $request->membership_number)->first();
         $student = Student::where('student_number', $request->membership_number)->first();
 
-        // if neither exists
-        if (!$personnel && !$student) {
+        // if both return null, then the employee number does not exist
+        if($personnel == null && $student == null) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid employee number or student number',
+                'membership_number' => $request->membership_number,
+                'errors' => $validator->errors()
             ], 400);
         }
-        
         // if either exists
         elseif ($personnel) {
             return response()->json([
                 'success' => true,
-                'message' => 'Employee number is valid',
-                'type' => 'personnel',
+                'message' => 'Employee number is exists',
+                'type' => $personnel->type,
                 'data' => $personnel
             ], 200);
         }
@@ -122,7 +144,7 @@ class RegisterController extends Controller
         elseif ($student) {
             return response()->json([
                 'success' => true,
-                'message' => 'Student number is valid',
+                'message' => 'Student number exists',
                 'type' => 'student',
                 'data' => $student
             ], 200);
