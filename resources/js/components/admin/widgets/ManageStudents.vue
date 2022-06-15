@@ -2,16 +2,21 @@
     <div>
         <div class="form-group row col-md-7 ">
             <!-- search -->
-            <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Search" v-model="filter.search">
-                <!-- create radio buttons for the filter type -->
-                <div class="form-check">
-                    <input :checked="filter.type==='student_number'" class="form-check-input" type="radio" name="filter"
-                        id="filter-all" value="student_number" v-model="filter.type">
-                    <label class="form-check-label" for="filter-all">
-                        Student Number
-                    </label>
-                </div>
+            <div class="col-md-8">
+                <form class="d-flex" @submit.prevent="">
+                    <input class="form-control me-3" v-model="filter.search" type="search" placeholder="Search"
+                        aria-label="Search">
+
+                    <button @click="actionShow('show','add')" type="button" class="btn btn-outline-danger"
+                        data-bs-toggle="modal" data-bs-target="#modelId">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+
+                    <button style="margin-left:1px;" @click.prevent="getStudents" type="button"
+                        class="btn btn-outline-success">
+                        <i class="fa fa-rotate"></i>
+                    </button>
+                </form>
                 <!-- last_name -->
                 <div class="form-check">
                     <input :checked="filter.type==='last_name'" class="form-check-input" type="radio" name="filter"
@@ -40,13 +45,13 @@
 
             </div>
             <!-- add a button to add and pop-up the modal -->
-            <div class=" col-md-2">
+            <!-- <div class=" col-md-2">
                 <h4>
                     <a class="text-danger" href="#" @click.prevent="showModal('add')">
                         <i class="fas fa-plus-circle"></i>
                     </a>
                 </h4>
-            </div>
+            </div> -->
 
             <!-- end search -->
             <!-- list students -->
@@ -60,7 +65,16 @@
                                 <h4 class="card-title">Students</h4>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <!-- loading -->
+                                <div v-if="loading">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive" v-else>
+
                                     <table class="table">
                                         <thead class=" text-primary">
                                             <th>
@@ -69,8 +83,7 @@
                                                     Student Number
 
                                                 </a>
-                                                <span v-if="sort.field=='student_number'" class="arrow"
-                                                    :class="sort.class">
+                                                <span v-if="sort.type=='student_number'" :class="sort.class">
                                                 </span>
                                             </th>
                                             <th>
@@ -79,7 +92,7 @@
                                                     First Name
 
                                                 </a>
-                                                <span v-if="sort.field=='first_name'" class="arrow" :class="sort.class">
+                                                <span v-if="sort.type=='first_name'" :class="sort.class">
                                                 </span>
                                             </th>
                                             <th>
@@ -87,7 +100,7 @@
                                                 <a @click.prevent="sortBy('last_name')">
                                                     Last Name
                                                 </a>
-                                                <span v-if="sort.field=='last_name'" class="arrow" :class="sort.class">
+                                                <span v-if="sort.type=='last_name'" :class="sort.class">
                                                 </span>
                                             </th>
                                             <th>
@@ -96,7 +109,7 @@
                                                     Status
 
                                                 </a>
-                                                <span v-if="sort.field=='status'" class="arrow" :class="sort.class">
+                                                <span v-if="sort.type=='status'" :class="sort.class">
                                                 </span>
                                             </th>
                                             <th>
@@ -104,7 +117,7 @@
                                             </th>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="student in sortedStudents" :key="student.id">
+                                            <tr v-for="student of studentsPerPage" :key="student.id">
                                                 <td>
                                                     {{ student.student_number }}
                                                 </td>
@@ -124,8 +137,52 @@
                                                         @click="deleteStudent(student)">Delete</button>
                                                 </td>
                                             </tr>
+                                            <td colspan="6" style="text-align:center;">
+                                                <!-- pagination -->
+                                                <ul class="pagination justify-content-center ">
+                                                    <li class="page-item" v-if="pages.current_page > 1">
+                                                        <a class="page-link" @click="first">
+                                                            <i class="fas fa-angle-double-left text-senary"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a @click="prev" v-if="pages.current_page > 1"
+                                                            class="page-link " tabindex="-1" aria-disabled="true">
+                                                            <i class="fas fa-angle-left text-senary"></i>
+                                                        </a>
+                                                    </li>
+
+
+                                                    <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+
+                                                    <li class="page-item">
+                                                        <a @click="next" class="page-link "
+                                                            v-if="pages.current_page < totalPagesFiltered">
+                                                            <i class="fas fa-angle-right text-senary"></i>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="page-item"
+                                                        v-if="pages.current_page < totalPagesFiltered">
+                                                        <a class="page-link" @click="last">
+                                                            <i class="fas fa-angle-double-right text-senary"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </td>
                                         </tbody>
                                     </table>
+                                    <!-- display the no of students below the table -->
+                                    <div class="row" v-if="!this.loading==true">
+                                        <div class="col-12">
+                                            <p class="text-secondary">
+                                                Showing {{studentsPerPage.length}} of {{students.length}}
+                                                students
+                                                on page {{this.pages.current_page}} of {{this.totalPagesFiltered}}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +191,7 @@
             </div>
         </div>
     </div>
-    </div>
+
 
 </template>
 
@@ -159,24 +216,57 @@ export default {
             },
 
             sort: {
-                field: 'student_number',
+                type: 'student_number',
                 order: 'desc',
-                class: 'down',
+                class: 'arrow up'
             },
 
-            pagination: {
+            pages: {
+                total: this.totalPagesFiltered,
+                c_page: 1,
                 current_page: 1,
-                per_page: 10,
-                total: 0,
+                per_page: 5,
             },
+            loading: false,
         }
     },
     mounted() {
         this.getStudents();
     },
     methods:{
+        next() {
+            if (this.pages.current_page < this.totalPagesFiltered) {
+                this.pages.current_page++;
+            }
+
+        },
+        prev() {
+            if (this.pages.current_page > 1) {
+                this.pages.current_page--;
+            }
+
+        },
+
+        last() {
+            this.pages.current_page = this.totalPagesFiltered;
+        },
+
+
+        first() {
+            this.pages.current_page = 1;
+        },
+        goToPage() {
+            if (this.pages.c_page > 0 && this.pages.c_page <= this.totalPagesFiltered) {
+                this.pages.current_page = this.pages.c_page;
+            }
+            else {
+                alert('Page number is not valid')
+            }
+        },
+
         getStudents() {
             // send the authorization along the request
+            this.loading = true;
             axios.get('/students',{
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -187,34 +277,122 @@ export default {
                 this.pagination.total = data.data.total;
             }).catch(error => {
                 console.log(error);
+            })
+            .finally(() => {
+                this.loading = false;
             });
         },
         sortBy(field) {
-            this.sort.field = field;
-            if (this.sort.order === 'asc') {
-                this.sort.order = 'desc';
-                this.sort.class = 'down';
-            } else {
-                this.sort.order = 'asc';
-                this.sort.class = 'up';
+            // toggle sort order on click and according to field type
+            this.sort.type = field;
+            if (this.sort.order == 'asc') {
+                this.sort.order = 'desc'
+                this.sort.class = 'arrow down'
+            }
+            else {
+                this.sort.order = 'asc'
+                this.sort.class = 'arrow up'
             }
         },
-        showModal(type, student) {
-            this.student = {
-                id: '',
-                student_number: '',
-                first_name: '',
-                last_name: '',
-                status: '',
-            };
-            if (type == 'edit') {
-                this.student = student;
+        addStudent(student) {
+            console.log(student)
+            axios.post(`http://localhost:5000/students/add`, student)
+                .then(({ data }) => {
+                    // this.success = true
+                    this.$emit('show-message', {
+                        success: true,
+                        type: 'success',
+                        title: 'Success',
+                        message: data.message
+                    })
+                    this.sort.type = 'id';
+                    this.sort.order = 'desc'
+                })
+                .catch(error => {
+                    // this.error = true
+                    alert(error.response.data.message);
+                    // this.errors = error.response.data.errors
+                })
+            // hide modal
+            this.actionShow('hide')
+
+        },
+
+        // edit student
+        editStudent(student) {
+
+            axios.put(`http://localhost:5000/students/${student.id}/edit`, student)
+                .then(({ data }) => {
+                    // this.success = true
+                    this.$emit('show-message', {
+                        success: true,
+                        type: 'success',
+                        title: 'Success',
+                        message: data.message
+                    })
+                    this.filter.search = student.name
+                })
+
+                .catch(error => {
+                    this.errorMessage = error.response.data.message
+                    // this.errors = error.response.data.errors
+                })
+            // hide modal
+            this.actionShow('hide')
+
+        },
+
+        deleteStudent(student) {
+
+            axios.delete(`http://localhost:5000/students/${student.id}/delete`)
+                .then(({ data }) => {
+                    // this.success = true
+                    this.$emit('show-message', {
+                        success: true,
+                        type: 'success',
+                        title: 'Success',
+                        message: data.message
+                    })
+                    this.filter.search = student.name
+                })
+                .catch(error => {
+                    this.errorMessage = error.response.data.message
+                })
+
+        },
+
+        actionShow(showOrHide = 'hide', action = 'none', student = null) {
+            // this.getManufacturers()
+            if (showOrHide === 'show') {
+                this.action = showOrHide
+                this.student = student
+                if ((action == 'edit' || action == 'add') && student != null) {
+                    this.action = 'show'
+                    this.student = student
+                }
             }
-            $('#modal-' + type).modal('show');
+            this.action = showOrHide
         },
     },
 
     computed:{
+        totalPagesFiltered() {
+            let students = this.sortedStudents
+            return Math.ceil(students.length / this.pages.per_page)
+        },
+
+        addOrUpdateStudent() {
+            return this.student
+        },
+
+        studentsPerPage() {
+            let students = this.sortedStudents;
+            let from = (this.pages.current_page - 1) * this.pages.per_page;
+            let to = from + this.pages.per_page;
+            return students.slice(from, to);
+        },
+
+
         filteredStudents(){
             const students = this.students;
             const search = this.filter.search;
@@ -228,19 +406,42 @@ export default {
             return students;
         },
         sortedStudents(){
-            const students = this.filteredStudents;
-            const field = this.sort.field;
-            const order = this.sort.order;
+            let students = this.filteredStudents;
             // if string, use toLowerCase
+            let type = this.sort.type;
             return students.sort((a,b) => {
-                // if last_name, middle_name, first_name, do a string sorting
-                if(typeof a[field] == 'string'){
-                    return order == 'asc' ? a[field].toLowerCase() > b[field].toLowerCase() : a[field].toLowerCase() < b[field].toLowerCase();
+                // if sort type === 'student_number' and is string
+               if(this.sort.type==='student_number'){
+                  return this.sort.order === 'asc'? a.student_number.localeCompare(b.student_number) : b.student_number.localeCompare(a.student_number);
+               }
+            // if sort type === 'status' and is string
+                else if(this.sort.type==='status'){
+                    return this.sort.order === 'asc'? a.status.localeCompare(b.status) : b.status.localeCompare(a.status);
                 }
-                else{
-                    return order == 'asc' ? a[field] > b[field] : a[field] < b[field];
+                // if sort type === 'id' and is number
+                else if(this.sort.type==='id'){
+                    return this.sort.order === 'asc'? a.id > b.id : a.id < b.id;
                 }
+                // if sort type === 'first_name' and is string
+                else if(this.sort.type==='first_name'){
+                    return this.sort.order === 'asc'? a.first_name.localeCompare(b.first_name) : b.first_name.localeCompare(a.first_name);
+                }
+                // }
+                // if sort type === 'last_name' and is string
+                else if(this.sort.type==='last_name'){
+                    return this.sort.order === 'asc'? a.last_name.localeCompare(b.last_name) : b.last_name.localeCompare(a.last_name);
+                }
+               
             });
+        },
+    },
+
+    watch:{
+        'filter.search': function () {
+            this.pages.current_page = 1
+        },
+        'pages.current_page': function () {
+            this.pages.c_page = this.pages.current_page
         },
     }
 
@@ -249,20 +450,22 @@ export default {
 
 <style scoped>
     /* arrow class */
-    .arrow {
-        width: 0;
-        height: 0;
-        border-left: 4px solid transparent;
-        border-right: 4px solid transparent;
-        border-top: 4px solid #000;
-        margin: 4px 3px;
-        cursor:pointer;
-    }
-    .up{
-        transform: rotate(180deg);
-    }
-    .down{
-        transform: rotate(0deg);
-    }
+        .arrow {
+            border: 2px solid rgb(15, 5, 5);
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 3px;
+        }
+    
+    
+        .up {
+            transform: rotate(-135deg);
+            -webkit-transform: rotate(-135deg);
+        }
+    
+        .down {
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+        }
 
 </style>

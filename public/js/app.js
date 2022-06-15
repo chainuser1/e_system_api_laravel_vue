@@ -2171,6 +2171,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ManageStudents',
   data: function data() {
@@ -2188,25 +2245,51 @@ __webpack_require__.r(__webpack_exports__);
         type: 'student_number'
       },
       sort: {
-        field: 'student_number',
+        type: 'student_number',
         order: 'desc',
-        "class": 'down'
+        "class": 'arrow up'
       },
-      pagination: {
+      pages: {
+        total: this.totalPagesFiltered,
+        c_page: 1,
         current_page: 1,
-        per_page: 10,
-        total: 0
-      }
+        per_page: 5
+      },
+      loading: false
     };
   },
   mounted: function mounted() {
     this.getStudents();
   },
   methods: {
+    next: function next() {
+      if (this.pages.current_page < this.totalPagesFiltered) {
+        this.pages.current_page++;
+      }
+    },
+    prev: function prev() {
+      if (this.pages.current_page > 1) {
+        this.pages.current_page--;
+      }
+    },
+    last: function last() {
+      this.pages.current_page = this.totalPagesFiltered;
+    },
+    first: function first() {
+      this.pages.current_page = 1;
+    },
+    goToPage: function goToPage() {
+      if (this.pages.c_page > 0 && this.pages.c_page <= this.totalPagesFiltered) {
+        this.pages.current_page = this.pages.c_page;
+      } else {
+        alert('Page number is not valid');
+      }
+    },
     getStudents: function getStudents() {
       var _this = this;
 
       // send the authorization along the request
+      this.loading = true;
       axios.get('/students', {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -2218,36 +2301,120 @@ __webpack_require__.r(__webpack_exports__);
         _this.pagination.total = data.data.total;
       })["catch"](function (error) {
         console.log(error);
+      })["finally"](function () {
+        _this.loading = false;
       });
     },
     sortBy: function sortBy(field) {
-      this.sort.field = field;
+      // toggle sort order on click and according to field type
+      this.sort.type = field;
 
-      if (this.sort.order === 'asc') {
+      if (this.sort.order == 'asc') {
         this.sort.order = 'desc';
-        this.sort["class"] = 'down';
+        this.sort["class"] = 'arrow down';
       } else {
         this.sort.order = 'asc';
-        this.sort["class"] = 'up';
+        this.sort["class"] = 'arrow up';
       }
     },
-    showModal: function showModal(type, student) {
-      this.student = {
-        id: '',
-        student_number: '',
-        first_name: '',
-        last_name: '',
-        status: ''
-      };
+    addStudent: function addStudent(student) {
+      var _this2 = this;
 
-      if (type == 'edit') {
+      console.log(student);
+      axios.post("http://localhost:5000/students/add", student).then(function (_ref2) {
+        var data = _ref2.data;
+
+        // this.success = true
+        _this2.$emit('show-message', {
+          success: true,
+          type: 'success',
+          title: 'Success',
+          message: data.message
+        });
+
+        _this2.sort.type = 'id';
+        _this2.sort.order = 'desc';
+      })["catch"](function (error) {
+        // this.error = true
+        alert(error.response.data.message); // this.errors = error.response.data.errors
+      }); // hide modal
+
+      this.actionShow('hide');
+    },
+    // edit student
+    editStudent: function editStudent(student) {
+      var _this3 = this;
+
+      axios.put("http://localhost:5000/students/".concat(student.id, "/edit"), student).then(function (_ref3) {
+        var data = _ref3.data;
+
+        // this.success = true
+        _this3.$emit('show-message', {
+          success: true,
+          type: 'success',
+          title: 'Success',
+          message: data.message
+        });
+
+        _this3.filter.search = student.name;
+      })["catch"](function (error) {
+        _this3.errorMessage = error.response.data.message; // this.errors = error.response.data.errors
+      }); // hide modal
+
+      this.actionShow('hide');
+    },
+    deleteStudent: function deleteStudent(student) {
+      var _this4 = this;
+
+      axios["delete"]("http://localhost:5000/students/".concat(student.id, "/delete")).then(function (_ref4) {
+        var data = _ref4.data;
+
+        // this.success = true
+        _this4.$emit('show-message', {
+          success: true,
+          type: 'success',
+          title: 'Success',
+          message: data.message
+        });
+
+        _this4.filter.search = student.name;
+      })["catch"](function (error) {
+        _this4.errorMessage = error.response.data.message;
+      });
+    },
+    actionShow: function actionShow() {
+      var showOrHide = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'hide';
+      var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'none';
+      var student = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+      // this.getManufacturers()
+      if (showOrHide === 'show') {
+        this.action = showOrHide;
         this.student = student;
+
+        if ((action == 'edit' || action == 'add') && student != null) {
+          this.action = 'show';
+          this.student = student;
+        }
       }
 
-      $('#modal-' + type).modal('show');
+      this.action = showOrHide;
     }
   },
   computed: {
+    totalPagesFiltered: function totalPagesFiltered() {
+      var students = this.sortedStudents;
+      return Math.ceil(students.length / this.pages.per_page);
+    },
+    addOrUpdateStudent: function addOrUpdateStudent() {
+      return this.student;
+    },
+    studentsPerPage: function studentsPerPage() {
+      var students = this.sortedStudents;
+      var from = (this.pages.current_page - 1) * this.pages.per_page;
+      var to = from + this.pages.per_page;
+      return students.slice(from, to);
+    },
     filteredStudents: function filteredStudents() {
       var students = this.students;
       var search = this.filter.search;
@@ -2263,18 +2430,38 @@ __webpack_require__.r(__webpack_exports__);
       return students;
     },
     sortedStudents: function sortedStudents() {
-      var students = this.filteredStudents;
-      var field = this.sort.field;
-      var order = this.sort.order; // if string, use toLowerCase
+      var _this5 = this;
 
+      var students = this.filteredStudents; // if string, use toLowerCase
+
+      var type = this.sort.type;
       return students.sort(function (a, b) {
-        // if last_name, middle_name, first_name, do a string sorting
-        if (typeof a[field] == 'string') {
-          return order == 'asc' ? a[field].toLowerCase() > b[field].toLowerCase() : a[field].toLowerCase() < b[field].toLowerCase();
-        } else {
-          return order == 'asc' ? a[field] > b[field] : a[field] < b[field];
+        // if sort type === 'student_number' and is string
+        if (_this5.sort.type === 'student_number') {
+          return _this5.sort.order === 'asc' ? a.student_number.localeCompare(b.student_number) : b.student_number.localeCompare(a.student_number);
+        } // if sort type === 'status' and is string
+        else if (_this5.sort.type === 'status') {
+          return _this5.sort.order === 'asc' ? a.status.localeCompare(b.status) : b.status.localeCompare(a.status);
+        } // if sort type === 'id' and is number
+        else if (_this5.sort.type === 'id') {
+          return _this5.sort.order === 'asc' ? a.id > b.id : a.id < b.id;
+        } // if sort type === 'first_name' and is string
+        else if (_this5.sort.type === 'first_name') {
+          return _this5.sort.order === 'asc' ? a.first_name.localeCompare(b.first_name) : b.first_name.localeCompare(a.first_name);
+        } // }
+        // if sort type === 'last_name' and is string
+        else if (_this5.sort.type === 'last_name') {
+          return _this5.sort.order === 'asc' ? a.last_name.localeCompare(b.last_name) : b.last_name.localeCompare(a.last_name);
         }
       });
+    }
+  },
+  watch: {
+    'filter.search': function filterSearch() {
+      this.pages.current_page = 1;
+    },
+    'pages.current_page': function pagesCurrent_page() {
+      this.pages.c_page = this.pages.current_page;
     }
   }
 });
@@ -7302,7 +7489,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* arrow class */\n.arrow[data-v-139fa7a8] {\n    width: 0;\n    height: 0;\n    border-left: 4px solid transparent;\n    border-right: 4px solid transparent;\n    border-top: 4px solid #000;\n    margin: 4px 3px;\n    cursor:pointer;\n}\n.up[data-v-139fa7a8]{\n    transform: rotate(180deg);\n}\n.down[data-v-139fa7a8]{\n    transform: rotate(0deg);\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* arrow class */\n.arrow[data-v-139fa7a8] {\n        border: 2px solid rgb(15, 5, 5);\n        border-width: 0 3px 3px 0;\n        display: inline-block;\n        padding: 3px;\n}\n.up[data-v-139fa7a8] {\n        transform: rotate(-135deg);\n        -webkit-transform: rotate(-135deg);\n}\n.down[data-v-139fa7a8] {\n        transform: rotate(45deg);\n        -webkit-transform: rotate(45deg);\n}\n\n", ""]);
 
 // exports
 
@@ -39436,63 +39623,84 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "form-group row col-md-7 " }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.filter.search,
-              expression: "filter.search",
-            },
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", placeholder: "Search" },
-          domProps: { value: _vm.filter.search },
-          on: {
-            input: function ($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.filter, "search", $event.target.value)
+      _c("div", { staticClass: "col-md-8" }, [
+        _c(
+          "form",
+          {
+            staticClass: "d-flex",
+            on: {
+              submit: function ($event) {
+                $event.preventDefault()
+              },
             },
           },
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-check" }, [
-          _c("input", {
-            directives: [
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filter.search,
+                  expression: "filter.search",
+                },
+              ],
+              staticClass: "form-control me-3",
+              attrs: {
+                type: "search",
+                placeholder: "Search",
+                "aria-label": "Search",
+              },
+              domProps: { value: _vm.filter.search },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.filter, "search", $event.target.value)
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
               {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.filter.type,
-                expression: "filter.type",
+                staticClass: "btn btn-outline-danger",
+                attrs: {
+                  type: "button",
+                  "data-bs-toggle": "modal",
+                  "data-bs-target": "#modelId",
+                },
+                on: {
+                  click: function ($event) {
+                    return _vm.actionShow("show", "add")
+                  },
+                },
               },
-            ],
-            staticClass: "form-check-input",
-            attrs: {
-              type: "radio",
-              name: "filter",
-              id: "filter-all",
-              value: "student_number",
-            },
-            domProps: {
-              checked: _vm.filter.type === "student_number",
-              checked: _vm._q(_vm.filter.type, "student_number"),
-            },
-            on: {
-              change: function ($event) {
-                return _vm.$set(_vm.filter, "type", "student_number")
+              [
+                _c("i", {
+                  staticClass: "fa fa-plus",
+                  attrs: { "aria-hidden": "true" },
+                }),
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-success",
+                staticStyle: { "margin-left": "1px" },
+                attrs: { type: "button" },
+                on: {
+                  click: function ($event) {
+                    $event.preventDefault()
+                    return _vm.getStudents.apply(null, arguments)
+                  },
+                },
               },
-            },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            { staticClass: "form-check-label", attrs: { for: "filter-all" } },
-            [_vm._v("\n                    Student Number\n                ")]
-          ),
-        ]),
+              [_c("i", { staticClass: "fa fa-rotate" })]
+            ),
+          ]
+        ),
         _vm._v(" "),
         _c("div", { staticClass: "form-check" }, [
           _c("input", {
@@ -39608,25 +39816,6 @@ var render = function () {
           ),
         ]),
       ]),
-      _vm._v(" "),
-      _c("div", { staticClass: " col-md-2" }, [
-        _c("h4", [
-          _c(
-            "a",
-            {
-              staticClass: "text-danger",
-              attrs: { href: "#" },
-              on: {
-                click: function ($event) {
-                  $event.preventDefault()
-                  return _vm.showModal("add")
-                },
-              },
-            },
-            [_c("i", { staticClass: "fas fa-plus-circle" })]
-          ),
-        ]),
-      ]),
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
@@ -39637,189 +39826,297 @@ var render = function () {
               _vm._m(0),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
-                _c("div", { staticClass: "table-responsive" }, [
-                  _c("table", { staticClass: "table" }, [
-                    _c("thead", { staticClass: " text-primary" }, [
-                      _c("th", [
-                        _c(
-                          "a",
-                          {
-                            on: {
-                              click: function ($event) {
-                                $event.preventDefault()
-                                return _vm.sortBy("student_number")
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                                Student Number\n\n                                            "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm.sort.field == "student_number"
-                          ? _c("span", {
-                              staticClass: "arrow",
-                              class: _vm.sort.class,
-                            })
-                          : _vm._e(),
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [
-                        _c(
-                          "a",
-                          {
-                            on: {
-                              click: function ($event) {
-                                $event.preventDefault()
-                                return _vm.sortBy("first_name")
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                                First Name\n\n                                            "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm.sort.field == "first_name"
-                          ? _c("span", {
-                              staticClass: "arrow",
-                              class: _vm.sort.class,
-                            })
-                          : _vm._e(),
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [
-                        _c(
-                          "a",
-                          {
-                            on: {
-                              click: function ($event) {
-                                $event.preventDefault()
-                                return _vm.sortBy("last_name")
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                                Last Name\n                                            "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm.sort.field == "last_name"
-                          ? _c("span", {
-                              staticClass: "arrow",
-                              class: _vm.sort.class,
-                            })
-                          : _vm._e(),
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [
-                        _c(
-                          "a",
-                          {
-                            on: {
-                              click: function ($event) {
-                                $event.preventDefault()
-                                return _vm.sortBy("status")
-                              },
-                            },
-                          },
-                          [
-                            _vm._v(
-                              "\n                                                Status\n\n                                            "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm.sort.field == "status"
-                          ? _c("span", {
-                              staticClass: "arrow",
-                              class: _vm.sort.class,
-                            })
-                          : _vm._e(),
-                      ]),
-                      _vm._v(" "),
-                      _c("th", [
-                        _vm._v(
-                          "\n                                            Action\n                                        "
-                        ),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.sortedStudents, function (student) {
-                        return _c("tr", { key: student.id }, [
-                          _c("td", [
-                            _vm._v(
-                              "\n                                                " +
-                                _vm._s(student.student_number) +
-                                "\n                                            "
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n                                                " +
-                                _vm._s(student.first_name) +
-                                "\n                                            "
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n                                                " +
-                                _vm._s(student.last_name) +
-                                "\n                                            "
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n                                                " +
-                                _vm._s(student.status) +
-                                "\n                                            "
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
+                _vm.loading
+                  ? _c("div", [_vm._m(1)])
+                  : _c("div", { staticClass: "table-responsive" }, [
+                      _c("table", { staticClass: "table" }, [
+                        _c("thead", { staticClass: " text-primary" }, [
+                          _c("th", [
                             _c(
-                              "button",
+                              "a",
                               {
-                                staticClass: "btn btn-primary",
                                 on: {
                                   click: function ($event) {
-                                    return _vm.editStudent(student)
+                                    $event.preventDefault()
+                                    return _vm.sortBy("student_number")
                                   },
                                 },
                               },
-                              [_vm._v("Edit")]
+                              [
+                                _vm._v(
+                                  "\n                                                Student Number\n\n                                            "
+                                ),
+                              ]
                             ),
                             _vm._v(" "),
+                            _vm.sort.type == "student_number"
+                              ? _c("span", { class: _vm.sort.class })
+                              : _vm._e(),
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
                             _c(
-                              "button",
+                              "a",
                               {
-                                staticClass: "btn btn-danger",
                                 on: {
                                   click: function ($event) {
-                                    return _vm.deleteStudent(student)
+                                    $event.preventDefault()
+                                    return _vm.sortBy("first_name")
                                   },
                                 },
                               },
-                              [_vm._v("Delete")]
+                              [
+                                _vm._v(
+                                  "\n                                                First Name\n\n                                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm.sort.type == "first_name"
+                              ? _c("span", { class: _vm.sort.class })
+                              : _vm._e(),
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _c(
+                              "a",
+                              {
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                    return _vm.sortBy("last_name")
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                                Last Name\n                                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm.sort.type == "last_name"
+                              ? _c("span", { class: _vm.sort.class })
+                              : _vm._e(),
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _c(
+                              "a",
+                              {
+                                on: {
+                                  click: function ($event) {
+                                    $event.preventDefault()
+                                    return _vm.sortBy("status")
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                                Status\n\n                                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm.sort.type == "status"
+                              ? _c("span", { class: _vm.sort.class })
+                              : _vm._e(),
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _vm._v(
+                              "\n                                            Action\n                                        "
                             ),
                           ]),
-                        ])
-                      }),
-                      0
-                    ),
-                  ]),
-                ]),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          [
+                            _vm._l(_vm.studentsPerPage, function (student) {
+                              return _c("tr", { key: student.id }, [
+                                _c("td", [
+                                  _vm._v(
+                                    "\n                                                " +
+                                      _vm._s(student.student_number) +
+                                      "\n                                            "
+                                  ),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    "\n                                                " +
+                                      _vm._s(student.first_name) +
+                                      "\n                                            "
+                                  ),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    "\n                                                " +
+                                      _vm._s(student.last_name) +
+                                      "\n                                            "
+                                  ),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(
+                                    "\n                                                " +
+                                      _vm._s(student.status) +
+                                      "\n                                            "
+                                  ),
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-primary",
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.editStudent(student)
+                                        },
+                                      },
+                                    },
+                                    [_vm._v("Edit")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-danger",
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.deleteStudent(student)
+                                        },
+                                      },
+                                    },
+                                    [_vm._v("Delete")]
+                                  ),
+                                ]),
+                              ])
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticStyle: { "text-align": "center" },
+                                attrs: { colspan: "6" },
+                              },
+                              [
+                                _c(
+                                  "ul",
+                                  {
+                                    staticClass:
+                                      "pagination justify-content-center ",
+                                  },
+                                  [
+                                    _vm.pages.current_page > 1
+                                      ? _c("li", { staticClass: "page-item" }, [
+                                          _c(
+                                            "a",
+                                            {
+                                              staticClass: "page-link",
+                                              on: { click: _vm.first },
+                                            },
+                                            [
+                                              _c("i", {
+                                                staticClass:
+                                                  "fas fa-angle-double-left text-senary",
+                                              }),
+                                            ]
+                                          ),
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _c("li", { staticClass: "page-item" }, [
+                                      _vm.pages.current_page > 1
+                                        ? _c(
+                                            "a",
+                                            {
+                                              staticClass: "page-link ",
+                                              attrs: {
+                                                tabindex: "-1",
+                                                "aria-disabled": "true",
+                                              },
+                                              on: { click: _vm.prev },
+                                            },
+                                            [
+                                              _c("i", {
+                                                staticClass:
+                                                  "fas fa-angle-left text-senary",
+                                              }),
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("li", { staticClass: "page-item" }, [
+                                      _vm.pages.current_page <
+                                      _vm.totalPagesFiltered
+                                        ? _c(
+                                            "a",
+                                            {
+                                              staticClass: "page-link ",
+                                              on: { click: _vm.next },
+                                            },
+                                            [
+                                              _c("i", {
+                                                staticClass:
+                                                  "fas fa-angle-right text-senary",
+                                              }),
+                                            ]
+                                          )
+                                        : _vm._e(),
+                                    ]),
+                                    _vm._v(" "),
+                                    _vm.pages.current_page <
+                                    _vm.totalPagesFiltered
+                                      ? _c("li", { staticClass: "page-item" }, [
+                                          _c(
+                                            "a",
+                                            {
+                                              staticClass: "page-link",
+                                              on: { click: _vm.last },
+                                            },
+                                            [
+                                              _c("i", {
+                                                staticClass:
+                                                  "fas fa-angle-double-right text-senary",
+                                              }),
+                                            ]
+                                          ),
+                                        ])
+                                      : _vm._e(),
+                                  ]
+                                ),
+                              ]
+                            ),
+                          ],
+                          2
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      !this.loading == true
+                        ? _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-12" }, [
+                              _c("p", { staticClass: "text-secondary" }, [
+                                _vm._v(
+                                  "\n                                            Showing " +
+                                    _vm._s(_vm.studentsPerPage.length) +
+                                    " of " +
+                                    _vm._s(_vm.students.length) +
+                                    "\n                                            students\n                                            on page " +
+                                    _vm._s(this.pages.current_page) +
+                                    " of " +
+                                    _vm._s(this.totalPagesFiltered) +
+                                    "\n                                        "
+                                ),
+                              ]),
+                            ]),
+                          ])
+                        : _vm._e(),
+                    ]),
               ]),
             ]),
           ]),
@@ -39835,6 +40132,21 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h4", { staticClass: "card-title" }, [_vm._v("Students")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center" }, [
+      _c(
+        "div",
+        {
+          staticClass: "spinner-border text-primary",
+          attrs: { role: "status" },
+        },
+        [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
+      ),
     ])
   },
 ]
