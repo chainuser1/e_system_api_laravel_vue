@@ -18,20 +18,24 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $students = Student::all();
-        // check if students is empty 
-        if($students->isEmpty()){
-            return response()->json([
-                'message' => 'No students found'
-            ], Response::HTTP_NOT_FOUND);
-        }
-        else{
-            return response()->json(
-               new StudentCollection($students)
-            , Response::HTTP_OK);
+        // if user can view any student
+        if ($request->user()->can('viewAny', Student::class)) {
+            //return all students
+            $students = Student::all();
+            // check if students is empty 
+            if($students->isEmpty()){
+                return response()->json([
+                    'message' => 'No students found'
+                ], Response::HTTP_NOT_FOUND);
+            }
+            else{
+                return response()->json(
+                new StudentCollection($students)
+                , Response::HTTP_OK);
+            }
         }
     }
 

@@ -59,6 +59,7 @@ export default {
                          
         logout() {
            this.$emit('logging-out');
+           this.$router.push('/login')
         }
     },
 

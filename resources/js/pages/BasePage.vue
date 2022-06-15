@@ -2,7 +2,7 @@
     <div>
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" :href="root_url">
+                <a class="navbar-brand" href="#">
                     {{this.app_name}}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -49,14 +49,16 @@ export default {
                     'Authorization':'Bearer '+localStorage.getItem('token'),
                     'Accept':'application/json'
                 }
-            }).then(({data}) => {
+            }).finally(() => {
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
                 this.$store.commit('setUser', null);
                 this.$store.commit('setIsAuthenticated', false);
                 this.$toast.success(data.message, 'Success');
-                this.$router.push({ name: 'login' });
-        });
+                
+            });
+            // route to  
+            
         }
     }
     

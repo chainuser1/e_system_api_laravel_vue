@@ -32,6 +32,13 @@ import VueIziToast from 'vue-izitoast';
 
 
 import 'izitoast/dist/css/iziToast.min.css';
+
+// import './css/bootstrap-dashboard.min.css'
+
+// import './css/demo.css';
+
+
+
 import Vue from 'vue';
 
 Vue.use(VueIziToast,{

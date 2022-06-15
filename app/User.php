@@ -40,4 +40,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function findForPassport($username) {
        return self::where('username', $username)->first(); // change column name whatever you use in credentials
     }
+
+    public function hasRole($role) {
+        return $this->role == $role;
+    }
+    
 }

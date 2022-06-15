@@ -75,12 +75,10 @@ class LoginController extends Controller
     public function destroy(Request $request)
     {
         // remove passport token
-        
+        $request->user()->token()->remove();
         // remove laravel token
-
-        return response()->json([
-            'message' => 'Successfully logged out'
-        ], 200);
+        return response()->noContent();
+        
     }
 
     public function login(Request $request)

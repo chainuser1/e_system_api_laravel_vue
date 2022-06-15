@@ -9,9 +9,7 @@
                         <h4 class="card-title">Welcome, {{user.name}}</h4>
                     </div>
                     <div class="card-body">
-                        <p class="card-text">
-                            You Role is: {{user.role}}
-                        </p>
+                        <admin-page v-if="user.role === 'admin'"></admin-page>
                     </div>
                 </div>
             </div>
@@ -19,12 +17,20 @@
     </div>
 </template>
 <script>
+import AdminPage from '../components/admin/AdminPage.vue';
 export default {
     name: 'HomePage',
+    components: {
+        'admin-page':AdminPage
+    },
     data() {
         return {
            
         }
+    },
+    mounted(){
+        console.log('HomePage mounted');
+        console.log(this.$store.getters.user);
     },
     computed:{
         user(){
