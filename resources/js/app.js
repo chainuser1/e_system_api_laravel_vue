@@ -54,3 +54,5 @@ const app = new Vue({
     router,
     store,
 });
+
+// add something here

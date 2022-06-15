@@ -58535,7 +58535,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_5___default.a({
   el: '#app',
   router: _router__WEBPACK_IMPORTED_MODULE_0__["default"],
   store: _store__WEBPACK_IMPORTED_MODULE_2__["default"]
-});
+}); // add something here
 
 /***/ }),
 
