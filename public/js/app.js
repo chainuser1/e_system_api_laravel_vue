@@ -2197,8 +2197,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         try {
           for (_iterator.s(); !(_step = _iterator.n()).done;) {
             var _error = _step.value;
-
-            _this.$toast.error(_error, 'Error');
+            console.log(_error);
           }
         } catch (err) {
           _iterator.e(err);

@@ -177,7 +177,7 @@ export default {
                 this.formButton.class = 'btn-danger';
                 // use for loop to display all errors, with timeout of 2 seconds
                 for(let error of error.response.data.errors){
-                    this.$toast.error(error,'Error')
+                    console.log(error)
                 }
             });
         },
