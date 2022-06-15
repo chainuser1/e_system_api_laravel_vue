@@ -4,8 +4,9 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <h3>Register</h3>
-                        <!-- loading  -->
+                        <h5 style="display:inline; float:left; max-width:40%;">Register</h5>
+                        <!-- put this fontawesome user logo at the right side -->
+                        <h3 class="text-secondary" style="position:absolute; right:0; margin-right:0.9rem;"><i class="fas fa-user"></i></h3>
                     </div>
                     <div class="card-body" :style="formButton.styleCursor">
                         <!-- form for verifying Membership Number before Registration -->
@@ -14,15 +15,18 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label text-md-right" for="membership_number">Employee
                                     No./SRN</label>
-                                <div class="col-md-5">
+                                <div class="col-md-4">
 
                                     <input :disabled="verify.state" type="text" class="form-control"
                                         id="membership_number" v-model="user.membership_number"
                                         placeholder="Membership Number">
+                                    <a href="#" class="nav-link text-danger" @click.prevent="resetForm">Not you?</a>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <!--if verify.found =='true' then show the following -->
                                     <!-- font-awesomee check green -->
+                                    <i style="display:inline;" v-show="verify.loading"
+                                        class="fa-solid fa-spinner fa-spin"></i>
                                     <i style="display:inline;" v-if="verify.found==1"
                                         class="fa-solid fa-check text-success"></i>
                                     <!-- font-awesomee check red -->
@@ -30,9 +34,10 @@
                                         class="fa-solid fa-times text-danger"></i>
                                     <!-- else  -->
                                     <!-- while loading -->
-                                    <i style="display:inline;" v-if="verify.loading"
-                                        class="fa-solid fa-spinner fa-spin"></i>
+
                                 </div>
+
+
                             </div>
 
                         </form>
@@ -42,7 +47,8 @@
                                 <label class="col-md-4 col-form-label text-md-right" for="username">Username</label>
                                 <div class="col-md-6">
                                     <input :disabled="formButton.disabled" type="text" class="form-control"
-                                      :style="formButton.styleCursor"  id="username" v-model="user.username" placeholder="Username">
+                                        :style="formButton.styleCursor" id="username" v-model="user.username"
+                                        placeholder="Username">
                                 </div>
 
                             </div>
@@ -51,7 +57,7 @@
                                 <label class="col-md-4 col-form-label text-md-right" for="name">Name</label>
                                 <div class="col-md-6">
                                     <input :disabled="formButton.disabled" type="text" class="form-control" id="name"
-                                     :style="formButton.styleCursor"   v-model="user.name" placeholder="Name">
+                                        :style="formButton.styleCursor" v-model="user.name" placeholder="Name">
                                 </div>
                             </div>
                             <!-- email -->
@@ -59,7 +65,8 @@
                                 <label class="col-md-4 col-form-label text-md-right" for="email">E-Mail Address</label>
                                 <div class="col-md-6">
                                     <input :disabled="formButton.disabled" type="email" class="form-control" id="email"
-                                      :style="formButton.styleCursor"  v-model="user.email" placeholder="E-Mail Address">
+                                        :style="formButton.styleCursor" v-model="user.email"
+                                        placeholder="E-Mail Address">
                                 </div>
                             </div>
 
@@ -67,7 +74,8 @@
                                 <label class="col-md-4 col-form-label text-md-right" for="password">Password</label>
                                 <div class="col-md-6">
                                     <input :disabled="formButton.disabled" type="password" class="form-control"
-                                      :style="formButton.styleCursor"  id="password" v-model="user.password" placeholder="Password">
+                                        :style="formButton.styleCursor" id="password" v-model="user.password"
+                                        placeholder="Password">
                                 </div>
                             </div>
 
@@ -75,9 +83,9 @@
                                 <label class="col-md-4 col-form-label text-md-right" for="password_confirmation">Confirm
                                     Password</label>
                                 <div class="col-md-5">
-                                    <input :style="formButton.styleCursor" :disabled="formButton.disabled" type="password" class="form-control"
-                                        id="password_confirmation" v-model="user.confirm_password"
-                                        placeholder="Confirm Password">
+                                    <input :style="formButton.styleCursor" :disabled="formButton.disabled"
+                                        type="password" class="form-control" id="password_confirmation"
+                                        v-model="user.password_confirmation" placeholder="Confirm Password">
                                 </div>
                                 <div class="col-md-2">
                                     <!-- if password_match == false -->
@@ -90,8 +98,8 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button :style="formButton.styleCursor" :disabled="formButton.disabled" type="submit"
-                                        class="btn" :class="formButton.class">
+                                    <button :style="formButton.styleCursor" :disabled="formButton.disabled"
+                                        type="submit" class="btn" :class="formButton.class">
                                         {{formButton.text}}
                                     </button>
                                 </div>
@@ -176,9 +184,7 @@ export default {
                 this.formButton.text = 'Register';
                 this.formButton.class = 'btn-danger';
                 // use for loop to display all errors, with timeout of 2 seconds
-                for(let error of error.response.data.errors){
-                    console.log(error)
-                }
+                console.log(error.response.data.errors)
             });
         },
 
@@ -192,32 +198,61 @@ export default {
             }).then((res)=>{
 
                 let {data} = res.data;
+                // console.log(data)
                 // exclude middle name and suffix if empty to create name
                 this.user.name = data.first_name + ' ' + data.last_name
                 + (data.middle_name ? ' ' + data.middle_name : '')+ (data.suffix ? ' ' + data.suffix : '');
                 this.user.role = res.data.type
                 this.formButton.disabled = false;
-                this.verify.state = true;
-                this.formButton.class = 'btn-danger';
                 this.formButton.styleCursor.cursor = 'pointer';
-                this.verify.found = 1;
-                this.formButton.text = "Register as "+this.user.role
+                this.verify.state = true;
+                this.verify.found=1
+                this.$toast.success(
+                    'You can now register as ' + this.user.role,
+                    'Hello! ' + this.user.name,
+                    {
+                        // top middle
+                        position: 'topCenter',
+                        duration: 3000
+                    }
+                    
+                );
+                
+
             }).catch((error)=>{
                 this.verify.found = 0;
-                this.$toast.error(error.response.data.message);
+                this.$toast.error(error.response.data.message, 'Error!', {
+                    // top middle
+                    position: 'topCenter',
+                    duration: 3000
+                });
                 this.formButton.disabled = true;
                 //pointer or cursor disabled
                 this.formButton.styleCursor.cursor = 'not-allowed';
-                this.formButton.text = 'Register';
-                this.formButton.class = 'btn-secondary';
+                
                 this.verify.state = false;
                 
                 this.verify.found = 0;
             }).finally(()=>{
                 this.verify.loading = false;
-                
-                this.verify.found = -1;
             });
+        },
+
+        resetForm(){
+            this.user.membership_number = '';
+            this.user.username = '';
+            this.user.password = '';
+            this.user.password_confirmation = '';
+            this.user.name = '';
+            this.user.email = '';
+            this.user.role = '';
+            this.verify.state = false;
+            this.verify.found = -1;
+            this.password_match = false;
+            this.formButton.disabled = true;
+            this.formButton.styleCursor.cursor = 'pointer';
+            this.formButton.text = 'Register';
+            this.formButton.class = 'btn-danger';
         }
     },
 
@@ -229,8 +264,10 @@ export default {
                     this.password_match = this.user.password == this.user.password_confirmation;
             },
             deep: true
-        }
-    },
+        },
+        
+        
+    }
 
     
 

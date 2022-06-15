@@ -13,12 +13,13 @@ window.Vue = require('vue');
 
 import router from './router';
 import policies from './policies';
-
+import store from './store';
 Vue.prototype.authorize = (policy, model)=>{
-    if(!window.Auth.signedIn) return false;
+    if (!store.getters['auth'].isAutneticated) return false;
 
     if(typeof policy === 'string' && typeof model === 'object'){
-        const user = window.Auth.user;
+        // get user from store 
+        const user = store.getters.user
         return policies[policy](user, model);
         // authorize(user, model);
     }
@@ -37,8 +38,12 @@ Vue.use(VueIziToast,{
     position: 'topRight',
 });
 
+// load AuthNav.vue component
+Vue.component('base-page', require('./pages/BasePage.vue').default);
+// load example vue component
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    store,
 });

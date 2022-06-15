@@ -74,42 +74,34 @@ class LoginController extends Controller
 
     public function destroy(Request $request)
     {
-        $request->user()->token()->revoke();
-        return response()->noContent();
+        // remove passport token
+        
+        // remove laravel token
+
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ], 200);
     }
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all('username', 'password'), [
-        'username' => 'required|string|max:255',
-        'password' => 'required|string|min:7|max:25',
-        ]);
-  
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
+       
         if(Auth::guard('web')->attempt(['username' => request('username'), 'password' => request('password')])){
             $user = Auth::guard('web')->user();
             $success['token'] = $user->createToken(env('PASSPORT_CLIENT_SECRET'))-> accessToken;
-            // return back with errors using redirect() back()
-            return redirect()->route('home')->with('success', 'You are logged in');
+            // return response()->json($success, 200);
+            return response()->json(['success' => $success,'message'=>'You are now logged in'], 200);
         }
         else{
-            // 
-            return redirect()->back()
-                ->withErrors(['These credentials do not match our records.'])
-                ->withInput();
+            // return unable to login
+            return response()->json(['errors'=>['The credentials are incorrect'],'success'=>false], 400);
         }        
     }
    
-    public function logout(Request $request)
-    {
-        Auth::guard('web')->logout();
-        // redirect to login page
-        return redirect('/');
-    }
+    // public function logout(Request $request)
+    // {
+    //     Auth::guard('web')->logout();
+    //     // redirect to login page
+    //     return redirect('/');
+    // }
 }

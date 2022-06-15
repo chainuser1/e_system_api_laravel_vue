@@ -82,7 +82,8 @@ class RegisterController extends Controller
         ]);
 
         if($validator->fails()){
-            return response()->json($validator->errors(),400);
+            // return data with errors and status code 422
+            return response()->json($validator->errors(), 422);
         }
 
         $user = User::create([
