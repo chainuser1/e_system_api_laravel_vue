@@ -2105,6 +2105,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'RegisterPage',
   data: function data() {
@@ -6626,7 +6656,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* set float to left only for input.form-control with an <i> after it */\n/* ignore the other input */\n.divide[data-v-73aa05df]{\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n}\n.divide input[data-v-73aa05df]{\n      max-width:90% !important;\n}\n  \n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* set float to left only for input.form-control with an <i> after it */\n/* ignore the other input */\n.divide[data-v-73aa05df]{\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n}\n.divide input[data-v-73aa05df]{\n      max-width:90% !important;\n}\n  \n", ""]);
 
 // exports
 
@@ -38694,8 +38724,21 @@ var render = function () {
                   },
                 },
                 [
-                  _c("fieldset", [
-                    _c("div", { staticClass: "form-group divide" }, [
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-md-4 col-form-label text-md-right",
+                        attrs: { for: "membership_number" },
+                      },
+                      [
+                        _vm._v(
+                          "Employee\n                                No./SRN"
+                        ),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-5" }, [
                       _c("input", {
                         directives: [
                           {
@@ -38705,13 +38748,12 @@ var render = function () {
                             expression: "user.membership_number",
                           },
                         ],
-                        staticClass: "form-control ",
+                        staticClass: "form-control",
                         attrs: {
                           disabled: _vm.verify.state,
-                          placeholder: "Employee Number/Student Number",
-                          name: "membershipNumber",
                           type: "text",
-                          autofocus: "",
+                          id: "membership_number",
+                          placeholder: "Membership Number",
                         },
                         domProps: { value: _vm.user.membership_number },
                         on: {
@@ -38727,7 +38769,9 @@ var render = function () {
                           },
                         },
                       }),
-                      _vm._v(" "),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
                       _vm.verify.found == 1
                         ? _c("i", {
                             staticClass: "fa-solid fa-check text-success",
@@ -38763,8 +38807,17 @@ var render = function () {
                   },
                 },
                 [
-                  _c("fieldset", [
-                    _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-md-4 col-form-label text-md-right",
+                        attrs: { for: "username" },
+                      },
+                      [_vm._v("Username")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
                       _c("input", {
                         directives: [
                           {
@@ -38775,12 +38828,12 @@ var render = function () {
                           },
                         ],
                         staticClass: "form-control",
+                        style: _vm.formButton.styleCursor,
                         attrs: {
                           disabled: _vm.formButton.disabled,
-                          placeholder: "username",
-                          name: "username",
                           type: "text",
-                          autofocus: "",
+                          id: "username",
+                          placeholder: "Username",
                         },
                         domProps: { value: _vm.user.username },
                         on: {
@@ -38793,8 +38846,19 @@ var render = function () {
                         },
                       }),
                     ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-md-4 col-form-label text-md-right",
+                        attrs: { for: "name" },
+                      },
+                      [_vm._v("Name")]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
                       _c("input", {
                         directives: [
                           {
@@ -38805,11 +38869,12 @@ var render = function () {
                           },
                         ],
                         staticClass: "form-control",
+                        style: _vm.formButton.styleCursor,
                         attrs: {
-                          disabled: "",
-                          placeholder: "Name",
-                          name: "name",
+                          disabled: _vm.formButton.disabled,
                           type: "text",
+                          id: "name",
+                          placeholder: "Name",
                         },
                         domProps: { value: _vm.user.name },
                         on: {
@@ -38822,8 +38887,19 @@ var render = function () {
                         },
                       }),
                     ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-md-4 col-form-label text-md-right",
+                        attrs: { for: "email" },
+                      },
+                      [_vm._v("E-Mail Address")]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
                       _c("input", {
                         directives: [
                           {
@@ -38834,11 +38910,12 @@ var render = function () {
                           },
                         ],
                         staticClass: "form-control",
+                        style: _vm.formButton.styleCursor,
                         attrs: {
                           disabled: _vm.formButton.disabled,
-                          placeholder: "Email",
-                          name: "email",
                           type: "email",
+                          id: "email",
+                          placeholder: "E-Mail Address",
                         },
                         domProps: { value: _vm.user.email },
                         on: {
@@ -38851,8 +38928,19 @@ var render = function () {
                         },
                       }),
                     ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-md-4 col-form-label text-md-right",
+                        attrs: { for: "password" },
+                      },
+                      [_vm._v("Password")]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
                       _c("input", {
                         directives: [
                           {
@@ -38863,12 +38951,12 @@ var render = function () {
                           },
                         ],
                         staticClass: "form-control",
+                        style: _vm.formButton.styleCursor,
                         attrs: {
                           disabled: _vm.formButton.disabled,
-                          placeholder: "Password",
-                          name: "password",
                           type: "password",
-                          value: "",
+                          id: "password",
+                          placeholder: "Password",
                         },
                         domProps: { value: _vm.user.password },
                         on: {
@@ -38881,25 +38969,41 @@ var render = function () {
                         },
                       }),
                     ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass: "col-md-4 col-form-label text-md-right",
+                        attrs: { for: "password_confirmation" },
+                      },
+                      [
+                        _vm._v(
+                          "Confirm\n                                Password"
+                        ),
+                      ]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group divide" }, [
+                    _c("div", { staticClass: "col-md-5" }, [
                       _c("input", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.user.password_confirmation,
-                            expression: "user.password_confirmation",
+                            value: _vm.user.confirm_password,
+                            expression: "user.confirm_password",
                           },
                         ],
                         staticClass: "form-control",
+                        style: _vm.formButton.styleCursor,
                         attrs: {
                           disabled: _vm.formButton.disabled,
-                          placeholder: "Password Confirmation",
-                          name: "password_confirmation",
                           type: "password",
+                          id: "password_confirmation",
+                          placeholder: "Confirm Password",
                         },
-                        domProps: { value: _vm.user.password_confirmation },
+                        domProps: { value: _vm.user.confirm_password },
                         on: {
                           input: function ($event) {
                             if ($event.target.composing) {
@@ -38907,13 +39011,15 @@ var render = function () {
                             }
                             _vm.$set(
                               _vm.user,
-                              "password_confirmation",
+                              "confirm_password",
                               $event.target.value
                             )
                           },
                         },
                       }),
-                      _vm._v(" "),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-2" }, [
                       _vm.password_match == false
                         ? _c("i", {
                             staticClass: "fa-solid fa-times text-danger",
@@ -38926,19 +39032,29 @@ var render = function () {
                     ]),
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-lg  btn-block",
-                      class: _vm.formButton.class,
-                      style: _vm.formButton.styleCursor,
-                      attrs: {
-                        disabled: _vm.formButton.disabled,
-                        type: "submit",
-                      },
-                    },
-                    [_vm._v(_vm._s(_vm.formButton.text))]
-                  ),
+                  _c("div", { staticClass: "form-group row mb-0" }, [
+                    _c("div", { staticClass: "col-md-6 offset-md-4" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn",
+                          class: _vm.formButton.class,
+                          style: _vm.formButton.styleCursor,
+                          attrs: {
+                            disabled: _vm.formButton.disabled,
+                            type: "submit",
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    " +
+                              _vm._s(_vm.formButton.text) +
+                              "\n                                "
+                          ),
+                        ]
+                      ),
+                    ]),
+                  ]),
                 ]
               ),
             ]
@@ -38954,14 +39070,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c(
-        "h1",
-        {
-          staticClass: "panel-title text-danger",
-          staticStyle: { "text-align": "center" },
-        },
-        [_vm._v("\n                        Register\n                    ")]
-      ),
+      _c("h3", [_vm._v("Register")]),
     ])
   },
 ]

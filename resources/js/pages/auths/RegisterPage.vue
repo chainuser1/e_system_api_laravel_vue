@@ -1,23 +1,27 @@
 <template>
     <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
                     <div class="card-header">
-                        <h1 class="panel-title text-danger" style="text-align: center;">
-                            Register
-                        </h1>
+                        <h3>Register</h3>
                         <!-- loading  -->
                     </div>
                     <div class="card-body" :style="formButton.styleCursor">
                         <!-- form for verifying Membership Number before Registration -->
                         <form role="form" @submit.prevent="verifyNumberInput">
-                            <fieldset>
-                                <div class="form-group divide">
-                                    <input :disabled="verify.state" class="form-control "
-                                        v-model="user.membership_number" placeholder="Employee Number/Student Number"
-                                        name="membershipNumber" type="text" autofocus>
-                                    <!--                                     if verify.found =='true' then show the following -->
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right" for="membership_number">Employee
+                                    No./SRN</label>
+                                <div class="col-md-5">
+
+                                    <input :disabled="verify.state" type="text" class="form-control"
+                                        id="membership_number" v-model="user.membership_number"
+                                        placeholder="Membership Number">
+                                </div>
+                                <div class="col-md-2">
+                                    <!--if verify.found =='true' then show the following -->
                                     <!-- font-awesomee check green -->
                                     <i style="display:inline;" v-if="verify.found==1"
                                         class="fa-solid fa-check text-success"></i>
@@ -29,44 +33,70 @@
                                     <i style="display:inline;" v-if="verify.loading"
                                         class="fa-solid fa-spinner fa-spin"></i>
                                 </div>
-                            </fieldset>
+                            </div>
+
                         </form>
                         <form role="form" @submit.prevent="register">
-                            <fieldset>
-                                <div class="form-group">
-                                    <input :disabled="formButton.disabled" class="form-control" v-model="user.username"
-                                        placeholder="username" name="username" type="text" autofocus>
 
-                                </div>
-                                <!-- name -->
-                                <div class="form-group">
-                                    <input class="form-control" disabled placeholder="Name" name="name" type="text"
-                                        v-model="user.name">
-                                </div>
-                                <!-- email -->
-                                <div class="form-group">
-                                    <input :disabled="formButton.disabled" class="form-control" v-model="user.email"
-                                        placeholder="Email" name="email" type="email">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right" for="username">Username</label>
+                                <div class="col-md-6">
+                                    <input :disabled="formButton.disabled" type="text" class="form-control"
+                                      :style="formButton.styleCursor"  id="username" v-model="user.username" placeholder="Username">
                                 </div>
 
-                                <div class="form-group">
-                                    <input :disabled="formButton.disabled" class="form-control" v-model="user.password"
-                                        placeholder="Password" name="password" type="password" value="">
+                            </div>
+                            <!-- name -->
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right" for="name">Name</label>
+                                <div class="col-md-6">
+                                    <input :disabled="formButton.disabled" type="text" class="form-control" id="name"
+                                     :style="formButton.styleCursor"   v-model="user.name" placeholder="Name">
                                 </div>
+                            </div>
+                            <!-- email -->
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right" for="email">E-Mail Address</label>
+                                <div class="col-md-6">
+                                    <input :disabled="formButton.disabled" type="email" class="form-control" id="email"
+                                      :style="formButton.styleCursor"  v-model="user.email" placeholder="E-Mail Address">
+                                </div>
+                            </div>
 
-                                <div class="form-group divide">
-                                    <input :disabled="formButton.disabled" class="form-control"
-                                        v-model="user.password_confirmation" placeholder="Password Confirmation"
-                                        name="password_confirmation" type="password">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right" for="password">Password</label>
+                                <div class="col-md-6">
+                                    <input :disabled="formButton.disabled" type="password" class="form-control"
+                                      :style="formButton.styleCursor"  id="password" v-model="user.password" placeholder="Password">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label text-md-right" for="password_confirmation">Confirm
+                                    Password</label>
+                                <div class="col-md-5">
+                                    <input :style="formButton.styleCursor" :disabled="formButton.disabled" type="password" class="form-control"
+                                        id="password_confirmation" v-model="user.confirm_password"
+                                        placeholder="Confirm Password">
+                                </div>
+                                <div class="col-md-2">
                                     <!-- if password_match == false -->
                                     <i style="display:inline;" v-if="password_match==false"
                                         class="fa-solid fa-times text-danger"></i>
                                     <!-- else  -->
                                     <i style="display:inline;" v-else class="fa-solid fa-check text-success"></i>
                                 </div>
-                            </fieldset>
-                            <button :style="formButton.styleCursor" :disabled="formButton.disabled" type="submit"
-                                :class="formButton.class" class="btn btn-lg  btn-block">{{formButton.text}}</button>
+                            </div>
+
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button :style="formButton.styleCursor" :disabled="formButton.disabled" type="submit"
+                                        class="btn" :class="formButton.class">
+                                        {{formButton.text}}
+                                    </button>
+                                </div>
+
+                            </div>
                         </form>
                     </div>
                 </div>
