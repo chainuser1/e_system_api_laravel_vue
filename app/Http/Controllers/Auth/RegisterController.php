@@ -100,7 +100,7 @@ class RegisterController extends Controller
                 "success"=>true,
                 "message"=> $req->name.' '.'has been successfully registered.'
             ],201);
-            // return redirect()->route('login')->with('success','You have successfully registered. Please login to continue.');
+            
     }
 
     protected function verifySrn(Request $request)

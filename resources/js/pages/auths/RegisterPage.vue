@@ -175,7 +175,10 @@ export default {
             }).then(()=>{
                 // if registration is successful
                 // redirect to login page with success message
-               window.location.href='/e_system_api/public/login'
+                this.$router.push({
+                    name: 'login',
+    
+                })
 
             })
             .catch(error => {
