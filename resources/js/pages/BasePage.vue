@@ -14,7 +14,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 main-page" >
             <router-view></router-view>
         </main>
     </div>
@@ -64,3 +64,10 @@ export default {
     
 }
 </script>
+<style scoped>
+.main-page{
+    /* load image from the public directory of laravel  */
+    background-image: url('/assets/images/background.jpg');
+    background-size: cover;
+}
+</style>
