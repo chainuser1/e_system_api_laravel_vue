@@ -209,6 +209,7 @@ export default {
                 last_name: '',
                 status: '',
             },
+            action:'hide',
             
             filter: {
                 search: '',
