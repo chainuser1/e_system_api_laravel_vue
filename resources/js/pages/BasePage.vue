@@ -65,9 +65,5 @@ export default {
 }
 </script>
 <style scoped>
-.main-page{
-    /* load image from the public directory of laravel  */
-    background-image: url('/assets/images/background.jpg');
-    background-size: cover;
-}
+
 </style>

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 // any web route goes here
 // where any not equal to api or login or register goes to spa.blade.php
 // Route::view('/{path?}', 'spa')->where('path', '^(?!api).*$');
-Route::view('/{path?}', 'spa')->where('path', '^(?!api|register|login|home).*$');
+Route::view('/{path?}', 'spa')->where('path', '^(?!api|register|login|home|assets/background).*$');
 
 // Route::get('/', function () {
 //     return view('spa');
@@ -31,3 +31,6 @@ Route::view('/{path?}', 'spa')->where('path', '^(?!api|register|login|home).*$')
 // Route::get('/home', 'HomeController@index')->name('home');
 
 // routes to load pictures
+Route::get('/assets/background', function () {
+    return response()->file(public_path('assets/images/background_image.jpg'));
+});
