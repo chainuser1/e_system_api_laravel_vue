@@ -2228,6 +2228,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ManageStudents',
   data: function data() {
@@ -2301,7 +2314,10 @@ __webpack_require__.r(__webpack_exports__);
         _this.students = data.data;
         _this.pagination.total = data.data.total;
       })["catch"](function (error) {
-        console.log(error);
+        _this.$toast.error(error.response.data.message, 'Error', {
+          position: topCenter,
+          duration: 5000
+        });
       })["finally"](function () {
         _this.loading = false;
       });
@@ -2367,7 +2383,16 @@ __webpack_require__.r(__webpack_exports__);
     deleteStudent: function deleteStudent(student) {
       var _this4 = this;
 
-      axios["delete"]("http://localhost:5000/students/".concat(student.id, "/delete")).then(function (_ref4) {
+      axios["delete"]('/students', {
+        //add headers
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        //add params
+        student: student
+      }).then(function (_ref4) {
         var data = _ref4.data;
 
         // this.success = true
@@ -7492,7 +7517,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* arrow class */\n.arrow[data-v-139fa7a8] {\n        border: 2px solid rgb(15, 5, 5);\n        border-width: 0 3px 3px 0;\n        display: inline-block;\n        padding: 3px;\n}\n.up[data-v-139fa7a8] {\n        transform: rotate(-135deg);\n        -webkit-transform: rotate(-135deg);\n}\n.down[data-v-139fa7a8] {\n        transform: rotate(45deg);\n        -webkit-transform: rotate(45deg);\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* arrow class */\n.arrow[data-v-139fa7a8] {\n        border: 2px solid rgb(15, 5, 5);\n        border-width: 0 3px 3px 0;\n        display: inline-block;\n        padding: 3px;\n}\n.up[data-v-139fa7a8] {\n        transform: rotate(-135deg);\n        -webkit-transform: rotate(-135deg);\n}\n.down[data-v-139fa7a8] {\n        transform: rotate(45deg);\n        -webkit-transform: rotate(45deg);\n}\n\n", ""]);
 
 // exports
 
@@ -39624,202 +39649,8 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticStyle: { opacity: "1" } }, [
-    _c("div", { staticClass: "form-group row col-md-7 " }, [
-      _c("div", { staticClass: "col-md-8 alert alert-danger" }, [
-        _c(
-          "form",
-          {
-            staticClass: "d-flex",
-            on: {
-              submit: function ($event) {
-                $event.preventDefault()
-              },
-            },
-          },
-          [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.filter.search,
-                  expression: "filter.search",
-                },
-              ],
-              staticClass: "form-control me-3",
-              attrs: {
-                type: "search",
-                placeholder: "Search",
-                "aria-label": "Search",
-              },
-              domProps: { value: _vm.filter.search },
-              on: {
-                input: function ($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.filter, "search", $event.target.value)
-                },
-              },
-            }),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-outline-danger",
-                attrs: {
-                  type: "button",
-                  "data-bs-toggle": "modal",
-                  "data-bs-target": "#modelId",
-                },
-                on: {
-                  click: function ($event) {
-                    return _vm.actionShow("show", "add")
-                  },
-                },
-              },
-              [
-                _c("i", {
-                  staticClass: "fa fa-plus",
-                  attrs: { "aria-hidden": "true" },
-                }),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-outline-success",
-                staticStyle: { "margin-left": "1px" },
-                attrs: { type: "button" },
-                on: {
-                  click: function ($event) {
-                    $event.preventDefault()
-                    return _vm.getStudents.apply(null, arguments)
-                  },
-                },
-              },
-              [_c("i", { staticClass: "fa fa-rotate" })]
-            ),
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-check" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.filter.type,
-                expression: "filter.type",
-              },
-            ],
-            staticClass: "form-check-input",
-            attrs: {
-              type: "radio",
-              name: "filter",
-              id: "filter-last_name",
-              value: "last_name",
-            },
-            domProps: {
-              checked: _vm.filter.type === "last_name",
-              checked: _vm._q(_vm.filter.type, "last_name"),
-            },
-            on: {
-              change: function ($event) {
-                return _vm.$set(_vm.filter, "type", "last_name")
-              },
-            },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "form-check-label",
-              attrs: { for: "filter-last_name" },
-            },
-            [_vm._v("\n                    Last Name\n                ")]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-check" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.filter.type,
-                expression: "filter.type",
-              },
-            ],
-            staticClass: "form-check-input",
-            attrs: {
-              type: "radio",
-              name: "filter",
-              id: "filter-first_name",
-              value: "first_name",
-            },
-            domProps: {
-              checked: _vm.filter.type === "first_name",
-              checked: _vm._q(_vm.filter.type, "first_name"),
-            },
-            on: {
-              change: function ($event) {
-                return _vm.$set(_vm.filter, "type", "first_name")
-              },
-            },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "form-check-label",
-              attrs: { for: "filter-first_name" },
-            },
-            [_vm._v("\n                    First Name\n                ")]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-check" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.filter.type,
-                expression: "filter.type",
-              },
-            ],
-            staticClass: "form-check-input",
-            attrs: {
-              type: "radio",
-              name: "filter",
-              id: "filter-middle_name",
-              value: "middle_name",
-            },
-            domProps: {
-              checked: _vm.filter.type === "middle_name",
-              checked: _vm._q(_vm.filter.type, "middle_name"),
-            },
-            on: {
-              change: function ($event) {
-                return _vm.$set(_vm.filter, "type", "middle_name")
-              },
-            },
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "form-check-label",
-              attrs: { for: "filter-middle_name" },
-            },
-            [_vm._v("\n                    Middle Name\n                ")]
-          ),
-        ]),
-      ]),
-    ]),
+  return _c("div", [
+    _c("div", { staticClass: "form-group row col-md-12 " }),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col" }, [
@@ -39832,6 +39663,235 @@ var render = function () {
                 _vm.loading
                   ? _c("div", [_vm._m(1)])
                   : _c("div", { staticClass: "table-responsive" }, [
+                      _c("div", { staticClass: "alert alert-danger row " }, [
+                        _c("div", { staticClass: "col" }, [
+                          _c(
+                            "form",
+                            {
+                              staticClass: "d-flex",
+                              on: {
+                                submit: function ($event) {
+                                  $event.preventDefault()
+                                },
+                              },
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.filter.search,
+                                    expression: "filter.search",
+                                  },
+                                ],
+                                staticClass: "form-control me-3",
+                                attrs: {
+                                  type: "search",
+                                  placeholder: "Search",
+                                  "aria-label": "Search",
+                                },
+                                domProps: { value: _vm.filter.search },
+                                on: {
+                                  input: function ($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.filter,
+                                      "search",
+                                      $event.target.value
+                                    )
+                                  },
+                                },
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-outline-danger",
+                                  attrs: {
+                                    type: "button",
+                                    "data-bs-toggle": "modal",
+                                    "data-bs-target": "#modelId",
+                                  },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.actionShow("show", "add")
+                                    },
+                                  },
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-plus",
+                                    attrs: { "aria-hidden": "true" },
+                                  }),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-outline-success",
+                                  staticStyle: { "margin-left": "1px" },
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function ($event) {
+                                      $event.preventDefault()
+                                      return _vm.getStudents.apply(
+                                        null,
+                                        arguments
+                                      )
+                                    },
+                                  },
+                                },
+                                [_c("i", { staticClass: "fa fa-rotate" })]
+                              ),
+                            ]
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c("div", { staticClass: "form-check" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.filter.type,
+                                  expression: "filter.type",
+                                },
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                name: "filter",
+                                id: "filter-last_name",
+                                value: "last_name",
+                              },
+                              domProps: {
+                                checked: _vm.filter.type === "last_name",
+                                checked: _vm._q(_vm.filter.type, "last_name"),
+                              },
+                              on: {
+                                change: function ($event) {
+                                  return _vm.$set(
+                                    _vm.filter,
+                                    "type",
+                                    "last_name"
+                                  )
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "filter-last_name" },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                                Last Name\n                                            "
+                                ),
+                              ]
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-check" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.filter.type,
+                                  expression: "filter.type",
+                                },
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                name: "filter",
+                                id: "filter-first_name",
+                                value: "first_name",
+                              },
+                              domProps: {
+                                checked: _vm.filter.type === "first_name",
+                                checked: _vm._q(_vm.filter.type, "first_name"),
+                              },
+                              on: {
+                                change: function ($event) {
+                                  return _vm.$set(
+                                    _vm.filter,
+                                    "type",
+                                    "first_name"
+                                  )
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "filter-first_name" },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                                First Name\n                                            "
+                                ),
+                              ]
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-check" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.filter.type,
+                                  expression: "filter.type",
+                                },
+                              ],
+                              staticClass: "form-check-input",
+                              attrs: {
+                                type: "radio",
+                                name: "filter",
+                                id: "filter-middle_name",
+                                value: "middle_name",
+                              },
+                              domProps: {
+                                checked: _vm.filter.type === "middle_name",
+                                checked: _vm._q(_vm.filter.type, "middle_name"),
+                              },
+                              on: {
+                                change: function ($event) {
+                                  return _vm.$set(
+                                    _vm.filter,
+                                    "type",
+                                    "middle_name"
+                                  )
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "label",
+                              {
+                                staticClass: "form-check-label",
+                                attrs: { for: "filter-middle_name" },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                                Middle Name\n                                            "
+                                ),
+                              ]
+                            ),
+                          ]),
+                        ]),
+                      ]),
+                      _vm._v(" "),
                       _c("table", { staticClass: "table" }, [
                         _c("thead", { staticClass: " text-primary" }, [
                           _c("th", [
@@ -39972,29 +40032,54 @@ var render = function () {
                                 _vm._v(" "),
                                 _c("td", [
                                   _c(
-                                    "button",
+                                    "a",
                                     {
-                                      staticClass: "btn btn-primary",
+                                      staticClass:
+                                        "btn btn-outline-success senary",
+                                      attrs: {
+                                        type: "button",
+                                        href: "#?" + student.id + "/edit",
+                                      },
                                       on: {
                                         click: function ($event) {
-                                          return _vm.editStudent(student)
+                                          $event.preventDefault()
+                                          return _vm.actionShow(
+                                            "show",
+                                            "edit",
+                                            student
+                                          )
                                         },
                                       },
                                     },
-                                    [_vm._v("Edit")]
+                                    [
+                                      _c("i", {
+                                        staticClass:
+                                          "fas fa-edit color-text-senary",
+                                      }),
+                                    ]
                                   ),
                                   _vm._v(" "),
+                                  _vm._v(
+                                    " \n                                                "
+                                  ),
                                   _c(
                                     "button",
                                     {
-                                      staticClass: "btn btn-danger",
+                                      staticClass: "btn btn-outline-danger",
                                       on: {
                                         click: function ($event) {
+                                          $event.preventDefault()
                                           return _vm.deleteStudent(student)
                                         },
                                       },
                                     },
-                                    [_vm._v("Delete")]
+                                    [
+                                      _c("i", {
+                                        staticClass:
+                                          "fa fa-eraser color-text-tertiary",
+                                        attrs: { "aria-hidden": "true" },
+                                      }),
+                                    ]
                                   ),
                                 ]),
                               ])
@@ -59258,20 +59343,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_HomePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/HomePage */ "./resources/js/pages/HomePage.vue");
 /* harmony import */ var _components_admin_AdminPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/admin/AdminPage */ "./resources/js/components/admin/AdminPage.vue");
 /* harmony import */ var _components_admin_widgets_ManageStudents__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/admin/widgets/ManageStudents */ "./resources/js/components/admin/widgets/ManageStudents.vue");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
 // import pages
 
 
 
 
+ // 
+
 
 var routes = [{
   path: '/login',
   component: _pages_auths_LoginPage__WEBPACK_IMPORTED_MODULE_0__["default"],
-  name: 'login'
+  name: 'login',
+  // redirect if authenticated
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (_store__WEBPACK_IMPORTED_MODULE_5__["default"].getters.isAutneticated) {
+      next('/');
+    } else {
+      next();
+    }
+  }
 }, {
   path: '/register',
   component: _pages_auths_RegisterPage__WEBPACK_IMPORTED_MODULE_1__["default"],
-  name: 'register'
+  name: 'register',
+  // redirect if authenticated
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (_store__WEBPACK_IMPORTED_MODULE_5__["default"].getters.isAutneticated) {
+      next('/');
+    } else {
+      next();
+    }
+  }
 }, {
   path: '/',
   component: _pages_HomePage__WEBPACK_IMPORTED_MODULE_2__["default"],

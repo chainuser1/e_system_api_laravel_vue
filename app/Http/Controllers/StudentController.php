@@ -37,6 +37,12 @@ class StudentController extends Controller
                 , Response::HTTP_OK);
             }
         }
+        else{
+            // return a not authorized response
+            return response()->json([
+                'message' => 'You are not authorized to view this resource'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
     }
 
     /**

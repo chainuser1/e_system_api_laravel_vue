@@ -1,49 +1,8 @@
 <template>
-    <div style="opacity:1;">
-        <div class="form-group row col-md-7 ">
+    <div>
+        <div class="form-group row col-md-12 ">
             <!-- search -->
-            <div class="col-md-8 alert alert-danger">
-                <form class="d-flex" @submit.prevent="">
-                    <input class="form-control me-3" v-model="filter.search" type="search" placeholder="Search"
-                        aria-label="Search">
 
-                    <button @click="actionShow('show','add')" type="button" class="btn btn-outline-danger"
-                        data-bs-toggle="modal" data-bs-target="#modelId">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                    </button>
-
-                    <button style="margin-left:1px;" @click.prevent="getStudents" type="button"
-                        class="btn btn-outline-success">
-                        <i class="fa fa-rotate"></i>
-                    </button>
-                </form>
-                <!-- last_name -->
-                <div class="form-check">
-                    <input :checked="filter.type==='last_name'" class="form-check-input" type="radio" name="filter"
-                        id="filter-last_name" value="last_name" v-model="filter.type">
-                    <label class="form-check-label" for="filter-last_name">
-                        Last Name
-                    </label>
-                </div>
-                <!--  first_name -->
-                <div class="form-check">
-                    <input :checked="filter.type==='first_name'" class="form-check-input" type="radio" name="filter"
-                        id="filter-first_name" value="first_name" v-model="filter.type">
-                    <label class="form-check-label" for="filter-first_name">
-                        First Name
-                    </label>
-                </div>
-                <!--  middle_name -->
-                <div class="form-check">
-                    <input :checked="filter.type==='middle_name'" class="form-check-input" type="radio" name="filter"
-                        id="filter-middle_name" value="middle_name" v-model="filter.type">
-                    <label class="form-check-label" for="filter-middle_name">
-                        Middle Name
-                    </label>
-
-                </div>
-
-            </div>
             <!-- add a button to add and pop-up the modal -->
             <!-- <div class=" col-md-2">
                 <h4>
@@ -74,10 +33,59 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive" v-else>
+                                    <div class="alert alert-danger row ">
+                                        <div class="col">
+                                            <form class="d-flex" @submit.prevent="">
+                                                <input class="form-control me-3" v-model="filter.search" type="search"
+                                                    placeholder="Search" aria-label="Search">
 
+                                                <button @click="actionShow('show','add')" type="button"
+                                                    class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#modelId">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                </button>
+
+                                                <button style="margin-left:1px;" @click.prevent="getStudents"
+                                                    type="button" class="btn btn-outline-success">
+                                                    <i class="fa fa-rotate"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="col">
+                                            <!-- last_name -->
+                                            <div class="form-check">
+                                                <input :checked="filter.type==='last_name'" class="form-check-input"
+                                                    type="radio" name="filter" id="filter-last_name" value="last_name"
+                                                    v-model="filter.type">
+                                                <label class="form-check-label" for="filter-last_name">
+                                                    Last Name
+                                                </label>
+                                            </div>
+                                            <!--  first_name -->
+                                            <div class="form-check">
+                                                <input :checked="filter.type==='first_name'" class="form-check-input"
+                                                    type="radio" name="filter" id="filter-first_name" value="first_name"
+                                                    v-model="filter.type">
+                                                <label class="form-check-label" for="filter-first_name">
+                                                    First Name
+                                                </label>
+                                            </div>
+                                            <!--  middle_name -->
+                                            <div class="form-check">
+                                                <input :checked="filter.type==='middle_name'" class="form-check-input"
+                                                    type="radio" name="filter" id="filter-middle_name"
+                                                    value="middle_name" v-model="filter.type">
+                                                <label class="form-check-label" for="filter-middle_name">
+                                                    Middle Name
+                                                </label>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
                                     <table class="table">
                                         <thead class=" text-primary">
-                                            <th>
+                                         <th>
                                                 <!-- clickable link to toggle Sort and span for arrow -->
                                                 <a @click.prevent="sortBy('student_number')">
                                                     Student Number
@@ -131,10 +139,15 @@
                                                     {{ student.status }}
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-primary"
-                                                        @click="editStudent(student)">Edit</button>
-                                                    <button class="btn btn-danger"
-                                                        @click="deleteStudent(student)">Delete</button>
+                                                    <a type="button" :href="`#?${student.id}/edit`"
+                                                        @click.prevent="actionShow('show','edit',student)"
+                                                        class="btn btn-outline-success senary"><i
+                                                            class="fas fa-edit color-text-senary"></i></a>
+                                                    <!-- delete student -->&nbsp;
+                                                    <button class="btn btn-outline-danger"
+                                                        @click.prevent="deleteStudent(student)"><i
+                                                            class="fa fa-eraser color-text-tertiary"
+                                                            aria-hidden="true"></i></button>
                                                 </td>
                                             </tr>
                                             <td colspan="6" style="text-align:center;">
@@ -277,7 +290,10 @@ export default {
                 this.students = data.data
                 this.pagination.total = data.data.total;
             }).catch(error => {
-                console.log(error);
+                this.$toast.error(error.response.data.message, 'Error', {
+                    position: topCenter,
+                    duration: 5000
+                });
             })
             .finally(() => {
                 this.loading = false;
@@ -345,8 +361,19 @@ export default {
 
         deleteStudent(student) {
 
-            axios.delete(`http://localhost:5000/students/${student.id}/delete`)
-                .then(({ data }) => {
+            axios.delete('/students',{
+                //add headers
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                //add params
+                student
+                
+            })
+            
+            .then(({ data }) => {
                     // this.success = true
                     this.$emit('show-message', {
                         success: true,
