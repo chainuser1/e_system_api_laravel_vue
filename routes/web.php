@@ -29,3 +29,5 @@ Route::view('/{path?}', 'spa')->where('path', '^(?!api|register|login|home).*$')
 // Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
+
+// routes to load pictures
