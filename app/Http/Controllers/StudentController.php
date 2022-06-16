@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\StudentCollection;
+use Faker\Generator as Faker;
+use Illuminate\Support\Facades\Validator;
 class StudentController extends Controller
 {
 
@@ -53,9 +55,51 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $student = Student::create($request->all());
+        // check if user is authorized to create a student
+        if ($request->user()->can('create', Student::class)) {
+            // create a random student number with 
+        $randomStudentNumber = $this->generateStudentNumber();
+        // check if student number already exists
+        
+
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'middle_name' => 'required|string|max:255',
+            'suffix' => 'nullable|string|max:255',
+            'status' => 'required|string|max:255',
+        ]);
+
+        // if errors are found return in an array of errors
+        if($validator->fails()){
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // create a new student
+        $student = Student::create([
+            'student_number' => $randomStudentNumber,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'middle_name' => $request->middle_name,
+            'suffix' => $request->suffix,
+            'status' => 'active',
+            
+        ]);
+
+        // return a new student resource
         return response()->json(
-            new StudentResource($student),Response::HTTP_CREATED);
+            new StudentResource($student), Response::HTTP_CREATED);
+        }
+        else{
+            // return a not authorized response
+            return response()->json([
+                'message' => 'You are not authorized to create this resource'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -100,5 +144,16 @@ class StudentController extends Controller
             'message' => 'Student deleted'
         ], Response::HTTP_OK);
         
+    }
+
+    protected function generateStudentNumber(){
+        $faker = Faker::create();
+        $studentNumber = '';
+        // unique student number
+        do{
+            $studentNumber = $faker->toUpper($faker->unique()->randomLetter). $faker->unique()->randomNumber(4) 
+                        . $faker->unique()->randomNumber(4);
+        }while(Student::where('student_number', $studentNumber)->exists());
+        return $studentNumber;
     }
 }

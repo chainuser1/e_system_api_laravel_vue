@@ -206,29 +206,32 @@
             </div>
         </div>
 
-        <student-form v-if="action=='show'" v-bind:student="addOrUpdateStudent" v-on:add-student="addStudent"
-            v-on:update-student="editStudent" v-on:action-show="actionShow"></student-form>
+        <StudentFormPage v-if="action=='show'" v-bind:student="addOrUpdateStudent" v-on:add-student="addStudent"
+            v-on:update-student="editStudent" v-on:action-show="actionShow"></StudentFormPage>
     </div>
 
 
 </template>
 
 <script>
-import StudentForm from './StudentForm.vue';
+import StudentFormPage from './StudentFormPage.vue';
 export default {
     name: 'ManageStudents',
+    components: {
+        StudentFormPage
+    },
     data() {
         return {
             students: [],
-            components:{
-                'student-form' : StudentForm
-            },
+            
             student: {
                 id: '',
                 student_number: '',
                 first_name: '',
                 last_name: '',
+                middle_name:'',
                 status: '',
+                suffix:'',
             },
             action:'hide',
             
@@ -321,21 +324,29 @@ export default {
         },
         addStudent(student) {
             console.log(student)
-            axios.post(`http://localhost:5000/students/add`, student)
+            axios.post('/students', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                data: student
+            })
                 .then(({ data }) => {
                     // this.success = true
-                    this.$emit('show-message', {
-                        success: true,
-                        type: 'success',
-                        title: 'Success',
-                        message: data.message
-                    })
+                    this.$toast.success(data.message, 'Success', {
+                        position: topCenter,
+                        duration: 5000
+                    });
                     this.sort.type = 'id';
                     this.sort.order = 'desc'
                 })
                 .catch(error => {
                     // this.error = true
-                    alert(error.response.data.message);
+                    this.$toast.error(error.response.data.message, 'Error', {
+                        position: topCenter,
+                        duration: 2000
+                    });
                     // this.errors = error.response.data.errors
                 })
             // hide modal
@@ -346,7 +357,14 @@ export default {
         // edit student
         editStudent(student) {
 
-            axios.put(`http://localhost:5000/students/${student.id}/edit`, student)
+            axios.patch('/students', {
+                headers:{
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                data: student
+            })
                 .then(({ data }) => {
                     // this.success = true
                     this.$emit('show-message', {
@@ -377,7 +395,7 @@ export default {
                     'Content-Type': 'application/json'
                 },
                 //add params
-                student
+                data:student
                 
             })
             
@@ -399,6 +417,7 @@ export default {
 
         actionShow(showOrHide = 'hide', action = 'none', student = null) {
             // this.getManufacturers()
+            console.log(showOrHide)
             if (showOrHide === 'show') {
                 this.action = showOrHide
                 this.student = student
@@ -479,6 +498,7 @@ export default {
         'pages.current_page': function () {
             this.pages.c_page = this.pages.current_page
         },
+
     }
 
 }

@@ -2031,7 +2031,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _StudentForm_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StudentForm.vue */ "./resources/js/components/admin/widgets/StudentForm.vue");
+/* harmony import */ var _StudentFormPage_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StudentFormPage.vue */ "./resources/js/components/admin/widgets/StudentFormPage.vue");
 //
 //
 //
@@ -2250,18 +2250,20 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ManageStudents',
+  components: {
+    StudentFormPage: _StudentFormPage_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
       students: [],
-      components: {
-        'student-form': _StudentForm_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
-      },
       student: {
         id: '',
         student_number: '',
         first_name: '',
         last_name: '',
-        status: ''
+        middle_name: '',
+        status: '',
+        suffix: ''
       },
       action: 'hide',
       filter: {
@@ -2348,22 +2350,31 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       console.log(student);
-      axios.post("http://localhost:5000/students/add", student).then(function (_ref2) {
+      axios.post('/students', {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        data: student
+      }).then(function (_ref2) {
         var data = _ref2.data;
 
         // this.success = true
-        _this2.$emit('show-message', {
-          success: true,
-          type: 'success',
-          title: 'Success',
-          message: data.message
+        _this2.$toast.success(data.message, 'Success', {
+          position: topCenter,
+          duration: 5000
         });
 
         _this2.sort.type = 'id';
         _this2.sort.order = 'desc';
       })["catch"](function (error) {
         // this.error = true
-        alert(error.response.data.message); // this.errors = error.response.data.errors
+        _this2.$toast.error(error.response.data.message, 'Error', {
+          position: topCenter,
+          duration: 2000
+        }); // this.errors = error.response.data.errors
+
       }); // hide modal
 
       this.actionShow('hide');
@@ -2372,7 +2383,14 @@ __webpack_require__.r(__webpack_exports__);
     editStudent: function editStudent(student) {
       var _this3 = this;
 
-      axios.put("http://localhost:5000/students/".concat(student.id, "/edit"), student).then(function (_ref3) {
+      axios.patch('/students', {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        data: student
+      }).then(function (_ref3) {
         var data = _ref3.data;
 
         // this.success = true
@@ -2401,7 +2419,7 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'application/json'
         },
         //add params
-        student: student
+        data: student
       }).then(function (_ref4) {
         var data = _ref4.data;
 
@@ -2422,8 +2440,9 @@ __webpack_require__.r(__webpack_exports__);
       var showOrHide = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'hide';
       var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'none';
       var student = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
       // this.getManufacturers()
+      console.log(showOrHide);
+
       if (showOrHide === 'show') {
         this.action = showOrHide;
         this.student = student;
@@ -2504,17 +2523,34 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2566,17 +2602,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'StudentForm',
+  name: 'StudentFormPage',
   props: ['student'],
-  components: {},
   data: function data() {
-    var _new_student;
-
     return {
-      new_student: (_new_student = {
-        id: this.student !== null ? this.student.id : '0',
-        name: this.student !== null ? this.student.first_name : ''
-      }, _defineProperty(_new_student, "name", this.student !== null ? this.student.middle_name : ''), _defineProperty(_new_student, "name", this.student !== null ? this.student.last_name : ''), _defineProperty(_new_student, "student_number", !this.student ? this.student.student_number : ''), _defineProperty(_new_student, "status", !this.student ? this.studemt.status : 'active'), _new_student)
+      new_student: {
+        suffix: !this.student ? '' : this.student.suffix,
+        first_name: !this.student ? '' : this.student.first_name,
+        middle_name: !this.student ? '' : this.student.middle_name,
+        last_name: !this.student ? '' : this.student.last_name,
+        status: !this.student ? 'active' : this.student.status,
+        student_number: !this.student ? '' : this.student.student_number,
+        id: !this.student ? 0 : this.student.id
+      }
     };
   },
   methods: {
@@ -2588,6 +2626,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     actionShow: function actionShow() {
       this.$emit('action-show');
+    }
+  },
+  computed: {
+    listenForOther: function listenForOther() {
+      if (this.new_student.suffix !== 'Jr.' && this.new_student.suffix !== 'Sr.' && this.new_student.suffix !== 'II' && this.new_student.suffix !== '') {
+        return true;
+      }
     }
   }
 });
@@ -7617,17 +7662,17 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* arrow class */\n.arrow[data-v-139fa7a8] {\n        border: 2px solid rgb(15, 5, 5);\n        border-width: 0 3px 3px 0;\n        display: inline-block;\n        padding: 3px;\n}\n.up[data-v-139fa7a8] {\n        transform: rotate(-135deg);\n        -webkit-transform: rotate(-135deg);\n}\n.down[data-v-139fa7a8] {\n        transform: rotate(45deg);\n        -webkit-transform: rotate(45deg);\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* arrow class */\n.arrow[data-v-139fa7a8] {\n        border: 2px solid rgb(15, 5, 5);\n        border-width: 0 3px 3px 0;\n        display: inline-block;\n        padding: 3px;\n}\n.up[data-v-139fa7a8] {\n        transform: rotate(-135deg);\n        -webkit-transform: rotate(-135deg);\n}\n.down[data-v-139fa7a8] {\n        transform: rotate(45deg);\n        -webkit-transform: rotate(45deg);\n}\n\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css&":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7636,7 +7681,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* create a modal dialog */\n.modal-cs[data-v-61dfa7b8] {\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.8);\n    position: fixed;\n    top: 0;\n    left: 0;\n    z-index: 100;\n}\n.modal-dialog-cs[data-v-61dfa7b8] {\n    width: 500px;\n    height: auto;\n    margin: auto;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* create a modal dialog */\n.modal-cs[data-v-db65255a] {\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.8);\n    position: fixed;\n    top: 0;\n    left: 0;\n    z-index: 100;\n}\n.modal-dialog-cs .modal-body[data-v-db65255a]{\n    width: 500px;\n    height: auto;\n    margin: auto;\n    height: -webkit-fit-content;\n    height: -moz-fit-content;\n    height: fit-content;\n}\n", ""]);
 
 // exports
 
@@ -38938,15 +38983,15 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css&":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css& ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css&");
+var content = __webpack_require__(/*! !../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -40486,7 +40531,7 @@ var render = function () {
       ]),
       _vm._v(" "),
       _vm.action == "show"
-        ? _c("student-form", {
+        ? _c("StudentFormPage", {
             attrs: { student: _vm.addOrUpdateStudent },
             on: {
               "add-student": _vm.addStudent,
@@ -40530,10 +40575,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=template&id=61dfa7b8&scoped=true&":
-/*!****************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=template&id=61dfa7b8&scoped=true& ***!
-  \****************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=template&id=db65255a&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=template&id=db65255a&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -40575,22 +40620,22 @@ var render = function () {
             ),
           ]),
           _vm._v(" "),
-          _c(
-            "form",
-            {
-              on: {
-                submit: function ($event) {
-                  $event.preventDefault()
-                  _vm.student !== null
-                    ? _vm.updateStudent(_vm.new_student)
-                    : _vm.addStudent(_vm.new_student)
+          _c("div", { staticClass: "modal-body" }, [
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function ($event) {
+                    $event.preventDefault()
+                    _vm.student !== null
+                      ? _vm.updateStudent(_vm.new_student)
+                      : _vm.addStudent(_vm.new_student)
+                  },
                 },
               },
-            },
-            [
-              _c("div", { staticClass: "modal-body" }, [
-                _c("div", { staticClass: "container-fluid" }, [
-                  _c("div", { staticClass: "form-group" }, [
+              [
+                _c("div", { staticClass: "container" }, [
+                  _c("div", { staticClass: "form-group row" }, [
                     _c("label", { attrs: { for: "name" } }, [
                       _vm._v("First Name"),
                     ]),
@@ -40626,7 +40671,7 @@ var render = function () {
                     }),
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "form-group row" }, [
                     _c("label", { attrs: { for: "name" } }, [
                       _vm._v("Middle Name"),
                     ]),
@@ -40662,7 +40707,7 @@ var render = function () {
                     }),
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "form-group row" }, [
                     _c("label", { attrs: { for: "name" } }, [
                       _vm._v("Last Name"),
                     ]),
@@ -40698,7 +40743,7 @@ var render = function () {
                     }),
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "form-group row" }, [
                     _c("label", { attrs: { for: "status" } }, [
                       _vm._v("Status"),
                     ]),
@@ -40759,17 +40804,140 @@ var render = function () {
                               selected: _vm.new_student.status == "inactive",
                             },
                           },
-                          [_vm._v("Inactive")]
+                          [_vm._v("Inactive\n                                ")]
                         ),
                       ]
                     ),
                   ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group row" }, [
+                    _c("label", { attrs: { for: "suffix" } }, [
+                      _vm._v("Suffix"),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.new_student.suffix,
+                            expression: "new_student.suffix",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        on: {
+                          change: function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.new_student,
+                              "suffix",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          },
+                        },
+                      },
+                      [
+                        _c("option", { attrs: { selected: "", value: "" } }, [
+                          _vm._v("--Select--"),
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          {
+                            attrs: { value: "Jr." },
+                            domProps: {
+                              selected: _vm.new_student.suffix == "Jr.",
+                            },
+                          },
+                          [_vm._v("Jr.")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          {
+                            attrs: { value: "Sr." },
+                            domProps: {
+                              selected: _vm.new_student.suffix == "Sr.",
+                            },
+                          },
+                          [_vm._v("Sr.")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          {
+                            attrs: { value: "II" },
+                            domProps: {
+                              selected: _vm.new_student.suffix == "II",
+                            },
+                          },
+                          [_vm._v("II")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          {
+                            attrs: { value: "Please Specify" },
+                            domProps: {
+                              selected:
+                                _vm.new_student.suffix !== "Jr." &&
+                                _vm.new_student.suffix !== "Sr." &&
+                                _vm.new_student.suffix !== "II",
+                            },
+                          },
+                          [_vm._v("Other\n                                ")]
+                        ),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.listenForOther
+                      ? _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.new_student.suffix,
+                              expression: "new_student.suffix",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            placeholder: "Please Specify",
+                          },
+                          domProps: { value: _vm.new_student.suffix },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.new_student,
+                                "suffix",
+                                $event.target.value
+                              )
+                            },
+                          },
+                        })
+                      : _vm._e(),
+                  ]),
                 ]),
-              ]),
-              _vm._v(" "),
-              _vm._m(0),
-            ]
-          ),
+                _vm._v(" "),
+                _vm._m(0),
+              ]
+            ),
+          ]),
         ]),
       ]
     ),
@@ -59458,18 +59626,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/widgets/StudentForm.vue":
-/*!***************************************************************!*\
-  !*** ./resources/js/components/admin/widgets/StudentForm.vue ***!
-  \***************************************************************/
+/***/ "./resources/js/components/admin/widgets/StudentFormPage.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/admin/widgets/StudentFormPage.vue ***!
+  \*******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _StudentForm_vue_vue_type_template_id_61dfa7b8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StudentForm.vue?vue&type=template&id=61dfa7b8&scoped=true& */ "./resources/js/components/admin/widgets/StudentForm.vue?vue&type=template&id=61dfa7b8&scoped=true&");
-/* harmony import */ var _StudentForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StudentForm.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/widgets/StudentForm.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _StudentForm_vue_vue_type_style_index_0_id_61dfa7b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css& */ "./resources/js/components/admin/widgets/StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css&");
+/* harmony import */ var _StudentFormPage_vue_vue_type_template_id_db65255a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StudentFormPage.vue?vue&type=template&id=db65255a&scoped=true& */ "./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=template&id=db65255a&scoped=true&");
+/* harmony import */ var _StudentFormPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StudentFormPage.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _StudentFormPage_vue_vue_type_style_index_0_id_db65255a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css& */ "./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -59480,66 +59648,66 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _StudentForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _StudentForm_vue_vue_type_template_id_61dfa7b8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _StudentForm_vue_vue_type_template_id_61dfa7b8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _StudentFormPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StudentFormPage_vue_vue_type_template_id_db65255a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StudentFormPage_vue_vue_type_template_id_db65255a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "61dfa7b8",
+  "db65255a",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/admin/widgets/StudentForm.vue"
+component.options.__file = "resources/js/components/admin/widgets/StudentFormPage.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/widgets/StudentForm.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************!*\
-  !*** ./resources/js/components/admin/widgets/StudentForm.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************/
+/***/ "./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StudentForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentFormPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StudentFormPage.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentFormPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/widgets/StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css&":
-/*!************************************************************************************************************************!*\
-  !*** ./resources/js/components/admin/widgets/StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css& ***!
-  \************************************************************************************************************************/
+/***/ "./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css&":
+/*!****************************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css& ***!
+  \****************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentForm_vue_vue_type_style_index_0_id_61dfa7b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader!../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=style&index=0&id=61dfa7b8&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentForm_vue_vue_type_style_index_0_id_61dfa7b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentForm_vue_vue_type_style_index_0_id_61dfa7b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentForm_vue_vue_type_style_index_0_id_61dfa7b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentForm_vue_vue_type_style_index_0_id_61dfa7b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentFormPage_vue_vue_type_style_index_0_id_db65255a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader!../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=style&index=0&id=db65255a&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentFormPage_vue_vue_type_style_index_0_id_db65255a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentFormPage_vue_vue_type_style_index_0_id_db65255a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentFormPage_vue_vue_type_style_index_0_id_db65255a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentFormPage_vue_vue_type_style_index_0_id_db65255a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/widgets/StudentForm.vue?vue&type=template&id=61dfa7b8&scoped=true&":
-/*!**********************************************************************************************************!*\
-  !*** ./resources/js/components/admin/widgets/StudentForm.vue?vue&type=template&id=61dfa7b8&scoped=true& ***!
-  \**********************************************************************************************************/
+/***/ "./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=template&id=db65255a&scoped=true&":
+/*!**************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=template&id=db65255a&scoped=true& ***!
+  \**************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentForm_vue_vue_type_template_id_61dfa7b8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StudentForm.vue?vue&type=template&id=61dfa7b8&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentForm.vue?vue&type=template&id=61dfa7b8&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentForm_vue_vue_type_template_id_61dfa7b8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentFormPage_vue_vue_type_template_id_db65255a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StudentFormPage.vue?vue&type=template&id=db65255a&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentFormPage.vue?vue&type=template&id=db65255a&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentFormPage_vue_vue_type_template_id_db65255a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentForm_vue_vue_type_template_id_61dfa7b8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentFormPage_vue_vue_type_template_id_db65255a_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
