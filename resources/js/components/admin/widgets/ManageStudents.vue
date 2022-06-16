@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div style="opacity:1;">
         <div class="form-group row col-md-7 ">
             <!-- search -->
-            <div class="col-md-8">
+            <div class="col-md-8 alert alert-danger">
                 <form class="d-flex" @submit.prevent="">
                     <input class="form-control me-3" v-model="filter.search" type="search" placeholder="Search"
                         aria-label="Search">

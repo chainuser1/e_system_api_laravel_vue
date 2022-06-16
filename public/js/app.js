@@ -39622,9 +39622,9 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticStyle: { opacity: "1" } }, [
     _c("div", { staticClass: "form-group row col-md-7 " }, [
-      _c("div", { staticClass: "col-md-8" }, [
+      _c("div", { staticClass: "col-md-8 alert alert-danger" }, [
         _c(
           "form",
           {

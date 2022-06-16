@@ -34,6 +34,8 @@
         }
         .main-page{
             background-image: url("{{url('assets/background')}}") !important;
+            max-height: 100vh;
+            height:27em;
             background-size: cover;
         }
     </style>
