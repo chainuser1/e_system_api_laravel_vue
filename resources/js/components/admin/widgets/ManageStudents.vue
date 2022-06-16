@@ -1,29 +1,14 @@
 <template>
     <div>
-        <div class="form-group row col-md-12 ">
-            <!-- search -->
-
-            <!-- add a button to add and pop-up the modal -->
-            <!-- <div class=" col-md-2">
-                <h4>
-                    <a class="text-danger" href="#" @click.prevent="showModal('add')">
-                        <i class="fas fa-plus-circle"></i>
-                    </a>
-                </h4>
-            </div> -->
-
-            <!-- end search -->
-            <!-- list students -->
-        </div>
         <div class="row">
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <div class="card">
+                        <div class="card" style="overflow: hidden;">
                             <div class="card-header">
                                 <h4 class="card-title">Students</h4>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body container">
                                 <!-- loading -->
                                 <div v-if="loading">
                                     <div class="text-center">
@@ -32,13 +17,59 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive" v-else>
-                                    <div class="alert alert-danger row ">
+                                <div class="" v-else>
+                                    <div class="alert alert-danger row " style="overflow-x:hidden;">
+                                        <!-- remove scrollbar upon overflow -->
                                         <div class="col">
                                             <form class="d-flex" @submit.prevent="">
-                                                <input class="form-control me-3" v-model="filter.search" type="search"
-                                                    placeholder="Search" aria-label="Search">
+                                                <div class="row">
+                                                    <input class="col-md-5 form-control me-4" v-model="filter.search"
+                                                        type="search" placeholder="Search" aria-label="Search">
+                                                    <fieldset class="col-md-7 d-flex">
+                                                        <figcaption>Filter Search</figcaption>
+                                                        <!-- Student Number -->
+                                                        <div class="form-check">
+                                                            <input :checked="filter.type==='student_number'"
+                                                                class="form-check-input" type="radio" name="filter"
+                                                                id="filter-student_number" value="student_number"
+                                                                v-model="filter.type">
+                                                            <label class="form-check-label" for="filter-student_number">
+                                                                Student Number
+                                                            </label>
+                                                        </div>
+                                                        <!-- last_name -->
+                                                        <div class="form-check">
+                                                            <input :checked="filter.type==='last_name'"
+                                                                class="form-check-input" type="radio" name="filter"
+                                                                id="filter-last_name" value="last_name"
+                                                                v-model="filter.type">
+                                                            <label class="form-check-label" for="filter-last_name">
+                                                                Last Name
+                                                            </label>
+                                                        </div>
+                                                        <!--  first_name -->
+                                                        <div class="form-check">
+                                                            <input :checked="filter.type==='first_name'"
+                                                                class="form-check-input" type="radio" name="filter"
+                                                                id="filter-first_name" value="first_name"
+                                                                v-model="filter.type">
+                                                            <label class="form-check-label" for="filter-first_name">
+                                                                First Name
+                                                            </label>
+                                                        </div>
+                                                        <!--  middle_name -->
+                                                        <div class="form-check">
+                                                            <input :checked="filter.type==='middle_name'"
+                                                                class="form-check-input" type="radio" name="filter"
+                                                                id="filter-middle_name" value="middle_name"
+                                                                v-model="filter.type">
+                                                            <label class="form-check-label" for="filter-middle_name">
+                                                                Middle Name
+                                                            </label>
 
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
                                                 <button @click="actionShow('show','add')" type="button"
                                                     class="btn btn-outline-danger" data-bs-toggle="modal"
                                                     data-bs-target="#modelId">
@@ -51,41 +82,12 @@
                                                 </button>
                                             </form>
                                         </div>
-                                        <div class="col">
-                                            <!-- last_name -->
-                                            <div class="form-check">
-                                                <input :checked="filter.type==='last_name'" class="form-check-input"
-                                                    type="radio" name="filter" id="filter-last_name" value="last_name"
-                                                    v-model="filter.type">
-                                                <label class="form-check-label" for="filter-last_name">
-                                                    Last Name
-                                                </label>
-                                            </div>
-                                            <!--  first_name -->
-                                            <div class="form-check">
-                                                <input :checked="filter.type==='first_name'" class="form-check-input"
-                                                    type="radio" name="filter" id="filter-first_name" value="first_name"
-                                                    v-model="filter.type">
-                                                <label class="form-check-label" for="filter-first_name">
-                                                    First Name
-                                                </label>
-                                            </div>
-                                            <!--  middle_name -->
-                                            <div class="form-check">
-                                                <input :checked="filter.type==='middle_name'" class="form-check-input"
-                                                    type="radio" name="filter" id="filter-middle_name"
-                                                    value="middle_name" v-model="filter.type">
-                                                <label class="form-check-label" for="filter-middle_name">
-                                                    Middle Name
-                                                </label>
 
-                                            </div>
-                                        </div>
 
                                     </div>
                                     <table class="table">
                                         <thead class=" text-primary">
-                                         <th>
+                                            <th>
                                                 <!-- clickable link to toggle Sort and span for arrow -->
                                                 <a @click.prevent="sortBy('student_number')">
                                                     Student Number
@@ -203,18 +205,24 @@
                 </div>
             </div>
         </div>
+
+        <student-form v-if="action=='show'" v-bind:student="addOrUpdateStudent" v-on:add-student="addStudent"
+            v-on:update-student="editStudent" v-on:action-show="actionShow"></student-form>
     </div>
 
 
 </template>
 
 <script>
-
+import StudentForm from './StudentForm.vue';
 export default {
     name: 'ManageStudents',
     data() {
         return {
             students: [],
+            components:{
+                'student-form' : StudentForm
+            },
             student: {
                 id: '',
                 student_number: '',

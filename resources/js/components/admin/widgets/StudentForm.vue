@@ -9,31 +9,33 @@
                         <i class="fas fa-window-close    "></i>
                     </button>
                 </div>
-                <form
-                    @submit.prevent="this.student !== null ? updateStudent(this.new_student) : addStudent(this.new_student)">
+                <form @submit.prevent="student !== null ? updateStudent(new_student) : addStudent(new_student)">
                     <!-- <input type="hidden" :value ="updateStudent"/> -->
                     <div class="modal-body">
                         <div class="container-fluid">
                             <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" v-model="this.new_student.name" id="name"
-                                    placeholder="Enter name">
+                                <label for="name">First Name</label>
+                                <input type="text" class="form-control" v-model="new_student.first_name" id="first_name"
+                                    placeholder="First Name">
                             </div>
                             <div class="form-group">
-                                <label for="price">Price</label>
-                                <input type="text" class="form-control" v-model="this.new_student.price" id="price"
-                                    placeholder="Enter price">
+                                <label for="name">Middle Name</label>
+                                <input type="text" class="form-control" v-model="new_student.middle_name"
+                                    id="middle_name" placeholder="Middle Name">
                             </div>
                             <div class="form-group">
-                                <label for="stock">Stock</label>
-                                <input type="text" class="form-control" v-model="this.new_student.stock" id="stock"
-                                    placeholder="Enter stock">
+                                <label for="name">Last Name</label>
+                                <input type="text" class="form-control" v-model="new_student.last_name" id="last_name"
+                                    placeholder=" Last Name">
                             </div>
-                           
+                            <!-- selection  -->
                             <div class="form-group">
-                                <label for="description">Description</label>
-                                <textarea class="form-control" v-model="this.new_student.description" id="description"
-                                    placeholder="Enter description"></textarea>
+                                <label for="status">Status</label>
+                                <select v-model="new_student.status" class="form-control">
+                                    <option disabled>--Select--</option>
+                                    <option value="active" :selected="new_student.status=='active'">Active</option>
+                                    <option value="inactive" :selected="new_student.status=='inactive'">Inactive</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -43,15 +45,13 @@
                 </form>
             </div>
         </div>
-        <student-form v-if="this.action=='show'" v-bind:student="addOrUpdateStudent" v-on:add-student="addStudent"
-             v-on:update-student="editStudent"
-            v-on:action-show="actionShow"></student-form>
+        
     </div>
 </template>
 <script>
 export default {
     name: 'StudentForm',
-    props: ['student', ''],
+    props: ['student'],
     components:{
 
     },
@@ -59,11 +59,12 @@ export default {
         return {
             new_student: {
                 id: this.student !== null ? this.student.id : '0',
-                name: this.student !== null ? this.student.name : '',
-                price: this.student !== null ? this.student.price : '',
-                stock: this.student !== null ? this.student.stock : '',
-                Id: this.student !== null ? this.student.Id : '',
-                description: this.student !== null ? this.student.description : '',
+                name: this.student !== null ? this.student.first_name : '',
+                name: this.student !== null ? this.student.middle_name : '',
+                name: this.student !== null ? this.student.last_name : '',
+                // 
+                student_number: !this.student?this.student.student_number:'',
+                status: !this.student?this.studemt.status:'active'
             }
         }
     },
