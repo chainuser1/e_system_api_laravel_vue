@@ -4,7 +4,7 @@ import RegisterPage from '../pages/auths/RegisterPage';
 import HomePage from '../pages/HomePage';
 import AdminPage from '../components/admin/AdminPage';
 import ManageStudents from '../components/admin/widgets/ManageStudents';
-// 
+import StudentViewPage from '../components/admin/widgets/StudentViewPage';
 import store from '../store';
 const routes = [
     {
@@ -48,9 +48,16 @@ const routes = [
             {
                 path: '/admin/manage-students',
                 components:{
-                    admin: ManageStudents
+                    admin: ManageStudents,
                 },
                 name:'manage-students',
+            },
+            {
+                path: '/admin/manage-students/:id',
+                components:{
+                    admin: StudentViewPage,
+                },
+                name:'student-view',
             }
         ],
         meta: {requireAuth:true}

@@ -18,10 +18,7 @@ class PersonnelPolicy
      */
     public function viewAny(User $user)
     {
-        if ($user->hasRole('admin')) {
-           return true;
-        }
-
+        
     }
 
     /**
@@ -34,7 +31,7 @@ class PersonnelPolicy
     public function view(User $user, Personnel $personnel)
     {
         //if the user membership number is the same as the personnel membership number
-        if ($user->membership_number == $personnel->employee_number) {
+        if ($user->membership_number == $personnel->employee_number || $user->hasRole('admin') || $user->hasRole('instructor')) {
             return true;
         }
     }

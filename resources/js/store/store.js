@@ -11,6 +11,7 @@ export default {
                 user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
                 isAuthenticated: localStorage.getItem('token') ? true : false,
                 isLoading: false,
+                student: {},
             },
             mutations: {
                 setUser(state, user) {
@@ -22,6 +23,9 @@ export default {
                 setIsLoading(state, isLoading) {
                     state.isLoading = isLoading;
                 },
+                setStudent(state, student) {
+                    state.student = student;
+                }
             },
             getters: {
                 user(state) {
@@ -32,6 +36,9 @@ export default {
                 },
                 isLoading(state) {
                     return state.isLoading;
+                },
+                student(state) {
+                    return state.student;
                 }
 
             },

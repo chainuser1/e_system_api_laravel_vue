@@ -47,4 +47,10 @@ class Personnel extends Model
         else
             return null;
     }
+
+
+    // belonsg to one user who has a role of admin, staff, instructor
+    public function user() {
+        return $this->hasOne('App\User','membership_number','employee_number');
+    }
 }

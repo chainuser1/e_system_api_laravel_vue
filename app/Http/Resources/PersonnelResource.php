@@ -24,6 +24,7 @@ class PersonnelResource extends JsonResource
             'employee_number' => $this->employee_number,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+             'user'=> new UserResource($this->user),
         ];
     }
 }

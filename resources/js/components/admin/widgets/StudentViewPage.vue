@@ -3,6 +3,15 @@
     <!-- create a profile page of student using bootstrap -->
     <div class="container">
       <div class="row">
+        <!-- for arrow back to list -->
+        <div class="col-md-12">
+          <!-- router link -->
+          <router-link to="/admin/manage-students" class="btn btn-primary">
+            <i class="fa fa-arrow-left"></i>
+            Back to List
+          </router-link>
+      </div>
+      <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
@@ -29,13 +38,28 @@
                   <div class="row">
                     <div class="col-md-3">
                       <label class="label-control">Email</label>
-                      
-
+                      <p>{{student.user.email}}</p>
+                    </div>  
+                  </div>
+                </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'StudentViewPage',
+  computed:{
+    student(){
+      return this.$store.getters.student;
+    }
+  }
 
 }
 </script>

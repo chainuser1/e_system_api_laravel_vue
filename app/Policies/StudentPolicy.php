@@ -37,6 +37,9 @@ class StudentPolicy
         if ($user->membership_number == $student->student_number) {
             return true;
         }
+        else if ($user->hasRole('admin') || $user->hasRole('instructor')) {
+            return true;
+        }
     }
 
     /**

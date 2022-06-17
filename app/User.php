@@ -45,6 +45,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role == $role;
     }
 
-    
-    
+    // one-to-one relationship with student if the user role is student
+    public function student() {
+        if($this->hasRole('student')) {
+            // return through matching user->membership_number and student_student_number
+            return $this->belongsTo('App\Student', 'student_number', 'membership_number');
+        }
+    }
+
+    // one-to-one relationship with instructor if the user role is instructor, staff, admin
+    public function instructor() {
+        if($this->hasRole('instructor') || $this->hasRole('staff') || $this->hasRole('admin')) {
+            // return if hasOne through matching user->membership_number and personnel->employee_number
+            return $this->belongsTo('App\Personnel','employee_number','membership_number');
+        }
+    }
 }

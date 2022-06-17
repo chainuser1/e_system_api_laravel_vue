@@ -53,4 +53,11 @@ class Student extends Model
         else
             return null;
     }
+
+
+    // belonsg to one user who has a role of student
+    public function user() {
+        // return when matching this->student_number with user->membership_number
+        return $this->hasOne('App\User','membership_number','student_number');
+    }
 }

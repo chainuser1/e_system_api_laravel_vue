@@ -129,7 +129,10 @@
                                         <tbody>
                                             <tr v-for="student of studentsPerPage" :key="student.id">
                                                 <td>
-                                                    {{ student.student_number }}
+                                                    <!-- create a clickable link to view more about the student -->
+                                                    <a href="#" @click.prevent="viewAbout(student)">
+                                                        {{student.student_number}}
+                                                    </a>
                                                 </td>
                                                 <td>
                                                     {{ student.first_name }}
@@ -322,6 +325,17 @@ export default {
                 this.sort.class = 'arrow up'
             }
         },
+
+        viewAbout(student) {
+            this.$store.commit('setStudent', student);
+            this.$router.push({
+                name: 'student-view',
+                params: {
+                    id: student.id
+                }
+            });
+        },
+
         addStudent(student) {
             console.log(student)
             axios.post('/students', {

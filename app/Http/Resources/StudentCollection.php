@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class StudentCollection extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
+     * Transform the resource coPllection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array

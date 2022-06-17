@@ -2247,6 +2247,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ManageStudents',
@@ -2345,6 +2348,15 @@ __webpack_require__.r(__webpack_exports__);
         this.sort.order = 'asc';
         this.sort["class"] = 'arrow up';
       }
+    },
+    viewAbout: function viewAbout(student) {
+      this.$store.commit('setStudent', student);
+      this.$router.push({
+        name: 'student-view',
+        params: {
+          id: student.id
+        }
+      });
     },
     addStudent: function addStudent(student) {
       var _this2 = this;
@@ -2633,6 +2645,80 @@ __webpack_require__.r(__webpack_exports__);
       if (this.new_student.suffix !== 'Jr.' && this.new_student.suffix !== 'Sr.' && this.new_student.suffix !== 'II' && this.new_student.suffix !== '') {
         return true;
       }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'StudentViewPage',
+  computed: {
+    student: function student() {
+      return this.$store.getters.student;
     }
   }
 });
@@ -7662,7 +7748,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* arrow class */\n.arrow[data-v-139fa7a8] {\n        border: 2px solid rgb(15, 5, 5);\n        border-width: 0 3px 3px 0;\n        display: inline-block;\n        padding: 3px;\n}\n.up[data-v-139fa7a8] {\n        transform: rotate(-135deg);\n        -webkit-transform: rotate(-135deg);\n}\n.down[data-v-139fa7a8] {\n        transform: rotate(45deg);\n        -webkit-transform: rotate(45deg);\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* arrow class */\n.arrow[data-v-139fa7a8] {\n        border: 2px solid rgb(15, 5, 5);\n        border-width: 0 3px 3px 0;\n        display: inline-block;\n        padding: 3px;\n}\n.up[data-v-139fa7a8] {\n        transform: rotate(-135deg);\n        -webkit-transform: rotate(-135deg);\n}\n.down[data-v-139fa7a8] {\n        transform: rotate(45deg);\n        -webkit-transform: rotate(45deg);\n}\n\n", ""]);
 
 // exports
 
@@ -40308,10 +40394,24 @@ var render = function () {
                                 _vm._l(_vm.studentsPerPage, function (student) {
                                   return _c("tr", { key: student.id }, [
                                     _c("td", [
-                                      _vm._v(
-                                        "\n                                                " +
-                                          _vm._s(student.student_number) +
-                                          "\n                                            "
+                                      _c(
+                                        "a",
+                                        {
+                                          attrs: { href: "#" },
+                                          on: {
+                                            click: function ($event) {
+                                              $event.preventDefault()
+                                              return _vm.viewAbout(student)
+                                            },
+                                          },
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                                    " +
+                                              _vm._s(student.student_number) +
+                                              "\n                                                "
+                                          ),
+                                        ]
                                       ),
                                     ]),
                                     _vm._v(" "),
@@ -40957,6 +41057,132 @@ var staticRenderFns = [
         },
         [_vm._v("Save")]
       ),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=template&id=1a05ab98&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=template&id=1a05ab98& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", {}, [
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-12" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { to: "/admin/manage-students" },
+              },
+              [
+                _c("i", { staticClass: "fa fa-arrow-left" }),
+                _vm._v("\n          Back to List\n        "),
+              ]
+            ),
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "card" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-9 personal-info" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-3" }, [
+                        _c("h3", [
+                          _vm._v(
+                            _vm._s(_vm.student.last_name) +
+                              ", " +
+                              _vm._s(_vm.student.first_name) +
+                              " " +
+                              _vm._s(_vm.student.middle_name) +
+                              " " +
+                              _vm._s(_vm.student.suffix)
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-9" }, [
+                        _c("span", { staticClass: "badge badge-danger" }, [
+                          _vm._v(_vm._s(_vm.student.class)),
+                        ]),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "badge badge-danger" }, [
+                          _vm._v(_vm._s(_vm.student.section)),
+                        ]),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "badge badge-warning" }, [
+                          _vm._v(_vm._s(_vm.student.course)),
+                        ]),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-3" }, [
+                        _c("label", { staticClass: "label-control" }, [
+                          _vm._v("Email"),
+                        ]),
+                        _vm._v(" "),
+                        _c("p", [_vm._v(_vm._s(_vm.student.user.email))]),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]),
+    ]),
+  ])
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", [_vm._v("Student Profile")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-3" }, [
+      _c("img", {
+        staticClass: "img-responsive",
+        attrs: {
+          src: "https://www.w3schools.com/howto/img_avatar.png",
+          alt: "Avatar",
+        },
+      }),
     ])
   },
 ]
@@ -59713,6 +59939,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/widgets/StudentViewPage.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/admin/widgets/StudentViewPage.vue ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StudentViewPage_vue_vue_type_template_id_1a05ab98___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StudentViewPage.vue?vue&type=template&id=1a05ab98& */ "./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=template&id=1a05ab98&");
+/* harmony import */ var _StudentViewPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StudentViewPage.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StudentViewPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StudentViewPage_vue_vue_type_template_id_1a05ab98___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StudentViewPage_vue_vue_type_template_id_1a05ab98___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/widgets/StudentViewPage.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentViewPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StudentViewPage.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentViewPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=template&id=1a05ab98&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=template&id=1a05ab98& ***!
+  \**************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentViewPage_vue_vue_type_template_id_1a05ab98___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./StudentViewPage.vue?vue&type=template&id=1a05ab98& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/widgets/StudentViewPage.vue?vue&type=template&id=1a05ab98&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentViewPage_vue_vue_type_template_id_1a05ab98___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StudentViewPage_vue_vue_type_template_id_1a05ab98___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/pages/BasePage.vue":
 /*!*****************************************!*\
   !*** ./resources/js/pages/BasePage.vue ***!
@@ -60152,13 +60447,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_HomePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/HomePage */ "./resources/js/pages/HomePage.vue");
 /* harmony import */ var _components_admin_AdminPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/admin/AdminPage */ "./resources/js/components/admin/AdminPage.vue");
 /* harmony import */ var _components_admin_widgets_ManageStudents__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/admin/widgets/ManageStudents */ "./resources/js/components/admin/widgets/ManageStudents.vue");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
+/* harmony import */ var _components_admin_widgets_StudentViewPage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/admin/widgets/StudentViewPage */ "./resources/js/components/admin/widgets/StudentViewPage.vue");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
 // import pages
 
 
 
 
- // 
+
 
 
 var routes = [{
@@ -60167,7 +60463,7 @@ var routes = [{
   name: 'login',
   // redirect if authenticated
   beforeEnter: function beforeEnter(to, from, next) {
-    if (_store__WEBPACK_IMPORTED_MODULE_5__["default"].getters.isAutneticated) {
+    if (_store__WEBPACK_IMPORTED_MODULE_6__["default"].getters.isAutneticated) {
       next('/');
     } else {
       next();
@@ -60179,7 +60475,7 @@ var routes = [{
   name: 'register',
   // redirect if authenticated
   beforeEnter: function beforeEnter(to, from, next) {
-    if (_store__WEBPACK_IMPORTED_MODULE_5__["default"].getters.isAutneticated) {
+    if (_store__WEBPACK_IMPORTED_MODULE_6__["default"].getters.isAutneticated) {
       next('/');
     } else {
       next();
@@ -60202,6 +60498,12 @@ var routes = [{
       admin: _components_admin_widgets_ManageStudents__WEBPACK_IMPORTED_MODULE_4__["default"]
     },
     name: 'manage-students'
+  }, {
+    path: '/admin/manage-students/:id',
+    components: {
+      admin: _components_admin_widgets_StudentViewPage__WEBPACK_IMPORTED_MODULE_7__["default"]
+    },
+    name: 'student-view'
   }],
   meta: {
     requireAuth: true
@@ -60253,7 +60555,8 @@ __webpack_require__.r(__webpack_exports__);
   state: {
     user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
     isAuthenticated: localStorage.getItem('token') ? true : false,
-    isLoading: false
+    isLoading: false,
+    student: {}
   },
   mutations: {
     setUser: function setUser(state, user) {
@@ -60264,6 +60567,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     setIsLoading: function setIsLoading(state, isLoading) {
       state.isLoading = isLoading;
+    },
+    setStudent: function setStudent(state, student) {
+      state.student = student;
     }
   },
   getters: {
@@ -60275,6 +60581,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     isLoading: function isLoading(state) {
       return state.isLoading;
+    },
+    student: function student(state) {
+      return state.student;
     }
   },
   actions: {}
