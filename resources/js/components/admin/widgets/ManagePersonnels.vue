@@ -267,8 +267,8 @@ export default {
                     'Authorization': 'Bearer ' + localStorage.getItem('token'),
                 },
             }).then(({data}) => {
-                console.log(data);
-                this.personnels = data.data
+                // console.log(data);
+                this.personnels = data
             }).catch(error => {
                 this.$toast.error(error.response.data.message, 'Error');
             })

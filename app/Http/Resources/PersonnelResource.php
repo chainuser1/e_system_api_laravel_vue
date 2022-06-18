@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\User;
 class PersonnelResource extends JsonResource
 {
     /**
@@ -24,7 +24,7 @@ class PersonnelResource extends JsonResource
             'employee_number' => $this->employee_number,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'user'=> new UserResource::collection(User::where('membership_number','employee_number')->first())
+            'user'=> new UserResource(User::where('membership_number',$this->employee_number)->first())
         ];
     }
 }

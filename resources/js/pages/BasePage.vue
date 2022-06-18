@@ -2,9 +2,14 @@
     <div>
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" :href="root_url">
+                <a class="navbar-brand " :href="root_url">
                     {{this.app_name}}
                 </a>
+
+                  <a class="nav-link " href="#" target="__blank">About Us</a>
+
+                  <a class="nav-link" href="#"  target="__blank">Notifications</a>
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -55,13 +60,13 @@ export default {
                 this.$store.commit('setUser', null);
                 this.$store.commit('setIsAuthenticated', false);
                 this.$toast.success(data.message, 'Success');
-                
+
             });
-            // route to  
-            
+            // route to
+
         }
     }
-    
+
 }
 </script>
 <style scoped>

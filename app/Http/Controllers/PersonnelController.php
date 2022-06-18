@@ -36,7 +36,7 @@ class PersonnelController extends Controller
             }
             else{
                 return response()->json(
-                new PersonnelCollection($personnels)
+                 PersonnelResource::collection($personnels)
                 , Response::HTTP_OK);
             }
         }

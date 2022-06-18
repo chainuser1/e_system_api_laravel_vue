@@ -36,7 +36,7 @@ class StudentController extends Controller
             }
             else{
                 return response()->json(
-                new StudentCollection($students)
+                StudentResource::collection($students)
                 , Response::HTTP_OK);
             }
         }

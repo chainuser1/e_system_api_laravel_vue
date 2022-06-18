@@ -7,6 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Welcome, {{user.name}}</h4>
+
                     </div>
                     <div class="card-body">
                         <admin-page v-if="user.role === 'admin'"></admin-page>
@@ -25,7 +26,7 @@ export default {
     },
     data() {
         return {
-           
+
         }
     },
     mounted(){
@@ -37,6 +38,6 @@ export default {
             return this.$store.getters.user;
         }
     },
-    
+
 }
 </script>

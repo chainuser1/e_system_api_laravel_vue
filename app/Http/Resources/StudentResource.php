@@ -25,7 +25,7 @@ class StudentResource extends JsonResource
             // 'deleted_at' => $this->deleted_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'user'=> new UserResource::collection(User::where('membership_number','student_number')->first())
+            'user'=> new UserResource(User::where('membership_number',$this->student_number)->first())
         ];
     }
 }

@@ -6,7 +6,7 @@
         <ul class="navbar-nav mr-auto">
             <!-- home page vue-router-link-->
             <li class="nav-item">
-                <router-link to="/" class="nav-link">Home</router-link>
+                <router-link class="nav-link active ms-0" to="/">Home</router-link>
             </li>
 
         </ul>
@@ -56,7 +56,7 @@ export default {
     }
    },
     methods:{
-                         
+
         logout() {
            this.$emit('logging-out');
            this.$router.push('/login')
@@ -74,4 +74,3 @@ export default {
     }
 }
 </script>
-

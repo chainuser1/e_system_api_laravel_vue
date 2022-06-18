@@ -2298,8 +2298,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }).then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
-        _this.personnels = data.data;
+        // console.log(data);
+        _this.personnels = data;
       })["catch"](function (error) {
         _this.$toast.error(error.response.data.message, 'Error');
       })["finally"](function () {
@@ -2775,8 +2775,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }).then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
-        _this.students = data.data;
+        // console.log(data);
+        _this.students = data;
       })["catch"](function (error) {
         _this.$toast.error(error.response.data.message, 'Error');
       })["finally"](function () {
@@ -3240,6 +3240,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'BasePage',
@@ -3277,7 +3282,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.$store.commit('setIsAuthenticated', false);
 
         _this.$toast.success(data.message, 'Success');
-      }); // route to  
+      }); // route to
     }
   }
 });
@@ -3294,6 +3299,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_admin_AdminPage_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/admin/AdminPage.vue */ "./resources/js/components/admin/AdminPage.vue");
+//
 //
 //
 //
@@ -40363,7 +40369,10 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "nav",
-    { staticClass: "col-md-2 d-none d-md-block bg-light sidebar" },
+    {
+      staticClass:
+        "col-md-2 d-none d-md-block bg-light sidebar nav nav-borders",
+    },
     [
       _c("div", { staticClass: "sidebar-sticky" }, [
         _c("ul", { staticClass: "nav flex-column" }, [
@@ -42617,7 +42626,7 @@ var render = function () {
           [
             _c(
               "a",
-              { staticClass: "navbar-brand", attrs: { href: _vm.root_url } },
+              { staticClass: "navbar-brand ", attrs: { href: _vm.root_url } },
               [
                 _vm._v(
                   "\n                " +
@@ -42625,6 +42634,24 @@ var render = function () {
                     "\n            "
                 ),
               ]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "nav-link ",
+                attrs: { href: "#", target: "__blank" },
+              },
+              [_vm._v("About Us")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "nav-link",
+                attrs: { href: "#", target: "__blank" },
+              },
+              [_vm._v("Notifications")]
             ),
             _vm._v(" "),
             _vm._m(0),
@@ -43349,9 +43376,11 @@ var render = function () {
           "li",
           { staticClass: "nav-item" },
           [
-            _c("router-link", { staticClass: "nav-link", attrs: { to: "/" } }, [
-              _vm._v("Home"),
-            ]),
+            _c(
+              "router-link",
+              { staticClass: "nav-link active ms-0", attrs: { to: "/" } },
+              [_vm._v("Home")]
+            ),
           ],
           1
         ),
