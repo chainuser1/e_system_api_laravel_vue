@@ -17,10 +17,14 @@ class Personnel extends Model
         return ucwords($value);
     }
 
+    public function getTypeAttribute($value){
+      return ucwords($value);
+    }
+
     public function getLastNameAttribute($value){
         return ucwords($value);
     }
-    
+
     public function getMiddleNameAttribute($v){
         return ucwords($v);
     }

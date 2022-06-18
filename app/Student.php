@@ -26,9 +26,13 @@ class Student extends Model
     public function getLastNameAttribute($value){
         return ucwords($value);
     }
-    
+
     public function getMiddleNameAttribute($v){
         return ucwords($v);
+    }
+
+    public function getStatusAttribute($value){
+      return ucwords($value);
     }
 
     public function getCreatedAtAttribute($date){

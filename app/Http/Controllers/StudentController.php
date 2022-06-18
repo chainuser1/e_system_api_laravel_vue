@@ -9,6 +9,7 @@ use App\Http\Resources\StudentResource;
 use App\Http\Resources\StudentCollection;
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Validator;
+use App\User;
 class StudentController extends Controller
 {
 
@@ -65,9 +66,9 @@ class StudentController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'middle_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
             'suffix' => 'nullable|string|max:255',
-            'status' => 'required|string|max:255',
+            'status' => 'nullable|string|max:255',
         ]);
 
         // if errors are found return in an array of errors
@@ -85,7 +86,7 @@ class StudentController extends Controller
             'last_name' => $request->last_name,
             'middle_name' => $request->middle_name,
             'suffix' => $request->suffix,
-            'status' => 'active',
+            'status' => $request->status,
 
         ]);
 
@@ -135,7 +136,7 @@ class StudentController extends Controller
                 'last_name' => 'required|string|max:255',
                 'middle_name' => 'required|string|max:255',
                 'suffix' => 'nullable|string|max:255',
-                'status' => 'required|string|max:255',
+                'status' => 'nullable|string|max:255',
             ]);
 
             // if errors are found return in an array of errors
@@ -185,7 +186,8 @@ class StudentController extends Controller
            $student->delete();
            $user = User::where('membership_number',$stu->student_number)->first();
               if($user)
-                $user->delete();
+                // force delete user
+                $user->forceDelete();
             return response()->json([
                 'message' => 'Student deleted successfully'
             ], Response::HTTP_OK);
@@ -202,7 +204,7 @@ class StudentController extends Controller
        //use string random to generate a random string
         $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $numbers = '0123456789';
-        $randomStudentNumber = substr(str_shuffle($letters), 0, 4).substr(str_shuffle($numbers), 0, 8);
+        $randomStudentNumber = substr(str_shuffle($letters), 0, 4).'-'.substr(str_shuffle($numbers), 0, 8);
 
 
         // check if student number already exists

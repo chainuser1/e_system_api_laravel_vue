@@ -9,6 +9,7 @@ use App\Http\Resources\PersonnelResource;
 use App\Http\Resources\PersonnelCollection;
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Validator;
+use App\User;
 class PersonnelController extends Controller
 {
 
@@ -65,7 +66,7 @@ class PersonnelController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'middle_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
             'suffix' => 'nullable|string|max:255',
             'status' => 'required|string|max:255',
         ]);
@@ -80,13 +81,12 @@ class PersonnelController extends Controller
 
         // create a new personnel
         $personnel = Personnel::create([
-            'personnel_number' => $randomPersonnelNumber,
+            'employee_number' => $randomPersonnelNumber,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'middle_name' => $request->middle_name,
             'suffix' => $request->suffix,
-            'status' => 'active',
-
+            'type' => $request->type,
         ]);
 
         // return a new personnel resource
@@ -133,9 +133,9 @@ class PersonnelController extends Controller
             $validator = Validator::make($request->all(), [
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
-                'middle_name' => 'required|string|max:255',
+                'middle_name' => 'nullable|string|max:255',
                 'suffix' => 'nullable|string|max:255',
-                'status' => 'required|string|max:255',
+                'type' => 'required|string|max:255',
             ]);
 
             // if errors are found return in an array of errors
@@ -150,7 +150,7 @@ class PersonnelController extends Controller
             // check if update is already done
             if($personnel->update($request->all())){
 
-              $user = User::where('membership_number','student_number')->first();
+              $user = User::where('membership_number','employee_number')->first();
 
               if($user)
                   $user->update([
@@ -185,7 +185,7 @@ class PersonnelController extends Controller
            $personnel->delete();
            $user = User::where('membership_number',$emp->empoyee_number)->first();
               if($user)
-                $user->delete();
+                  $user->forceDelete();
             return response()->json([
                 'message' => 'Student deleted successfully'
             ], Response::HTTP_OK);
@@ -202,7 +202,7 @@ class PersonnelController extends Controller
        //use string random to generate a random string
         $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $numbers = '0123456789';
-        $randomPersonnelNumber = substr(str_shuffle($letters), 0, 4).substr(str_shuffle($numbers), 0, 8);
+        $randomPersonnelNumber = substr(str_shuffle($letters), 0, 4).'-'.substr(str_shuffle($numbers), 0, 12);
 
 
         // check if personnel number already exists

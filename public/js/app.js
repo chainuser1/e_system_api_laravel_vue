@@ -61949,7 +61949,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_HomePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/HomePage */ "./resources/js/pages/HomePage.vue");
 /* harmony import */ var _components_admin_AdminPage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/admin/AdminPage */ "./resources/js/components/admin/AdminPage.vue");
 /* harmony import */ var _components_admin_widgets_ManageStudents__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/admin/widgets/ManageStudents */ "./resources/js/components/admin/widgets/ManageStudents.vue");
-/* harmony import */ var _components_admin_widgets_ManagePersonnels__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/admin/widgets/ManagePersonnels */ "./resources/js/components/admin/widgets/ManagePersonnels.vue");
+/* harmony import */ var _components_admin_widgets_ManagePersonnels__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/admin/widgets/ManagePersonnels */ "./resources/js/components/admin/widgets/ManagePersonnels.vue");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
 // import pages
 
@@ -62003,7 +62003,7 @@ var routes = [{
   }, {
     path: '/admin/manage-personnels',
     components: {
-      admin: _components_admin_widgets_ManagePersonnels__WEBPACK_IMPORTED_MODULE_7__["default"]
+      admin: _components_admin_widgets_ManagePersonnels__WEBPACK_IMPORTED_MODULE_5__["default"]
     },
     name: 'manage-personnels'
   }],

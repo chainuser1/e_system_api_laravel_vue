@@ -57,5 +57,13 @@ class User extends Authenticatable implements MustVerifyEmail
             return false;
         }
     }
-    
+
+    public function getNameAttribute($value){
+      return ucwords($value);
+    }
+
+    // public function getRoleAttribute($value){
+    //   return ucwords($value);
+    // }
+
 }
