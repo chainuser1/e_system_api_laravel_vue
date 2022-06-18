@@ -1,0 +1,112 @@
+
+/* colors scheme https://coolors.co/714241-dfcd0a-b11807-0d7811-6276d5 */
+
+:root{
+  --primary: #714241;
+  --secondary: #111414;
+  --success: #6276D5;
+  --info: #0d7811;
+  --warning: #dfcd0a;
+  --danger: #b11807;
+  --light: #f8f9fa;
+  --dark: #343a40;
+}
+
+.text-primary{
+  color: var(--primary) !important;
+
+}
+
+.text-secondary{
+  color: var(--secondary) !important;
+
+}
+
+.text-info{
+  color: var(--info) !important;
+
+}
+
+.text-warning{
+  color: var(--warning) !important;background-
+
+}
+
+.text-danger{
+  color: var(--danger) !important;
+
+}
+
+/* buttons */
+.btn-primary{
+  background-color: var(--primary) !important;
+
+}
+
+.btn-secondary{
+  background-color: var(--secondary) !important;
+
+}
+
+.btn-info{
+  background-color: var(--info) !important;
+
+}
+
+.btn-warning{
+  background-color: var(--warning) !important;
+
+}
+
+.btn-danger{
+  background-color: var(--danger) !important;
+
+}
+
+
+
+.btn-outline-primary{
+  border-color: var(--primary) !important;
+
+}
+
+.btn-outline-secondary{
+  border-color: var(--secondary) !important;
+
+}
+
+.btn-outline-info{
+  border-color: var(--info) !important;
+
+}
+
+.btn-outline-warning{
+  border-color: var(--warning) !important;
+
+}
+
+.btn-outline-danger{
+  border-color: var(--danger) !important;
+
+}
+
+/* background */
+.bg-primary{
+  background-color: var(--primary) !important;
+}
+
+.bg-secondary{
+  background-color: var(--secondary) !important;
+}
+
+.bg-info{
+  background-color: var(--info) !important;
+}
+
+.bg-warning{
+  background-color: var(--warning) !important;
+}
+
+.bg-danger{
+  background-color: var(--danger) !important;
+}
