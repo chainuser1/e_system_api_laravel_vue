@@ -14,9 +14,9 @@
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <!-- <router-link class="nav-link" :to="{name:personnels}">
+                    <router-link class="nav-link" :to="{name:'manage-personnels'}">
                        Manage Personnels
-                    </router-link> -->
+                    </router-link>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">

@@ -18,68 +18,36 @@
                                     </div>
                                 </div>
                                 <div class="" v-else>
-                                    <div class="alert alert-danger row " style="overflow-x:hidden;">
+                                    <div class="alert row bg-" style="overflow-x:hidden;">
                                         <!-- remove scrollbar upon overflow -->
                                         <div class="col">
                                             <form class="d-flex" @submit.prevent="">
                                                 <div class="row">
-                                                    <input class="col-md-5 form-control me-4" v-model="filter.search"
-                                                        type="search" placeholder="Search" aria-label="Search">
-                                                    <fieldset class="col-md-7 d-flex">
-                                                        <figcaption>Filter Search</figcaption>
-                                                        <!-- Student Number -->
-                                                        <div class="form-check">
-                                                            <input :checked="filter.type==='student_number'"
-                                                                class="form-check-input" type="radio" name="filter"
-                                                                id="filter-student_number" value="student_number"
-                                                                v-model="filter.type">
-                                                            <label class="form-check-label" for="filter-student_number">
-                                                                Student Number
-                                                            </label>
-                                                        </div>
-                                                        <!-- last_name -->
-                                                        <div class="form-check">
-                                                            <input :checked="filter.type==='last_name'"
-                                                                class="form-check-input" type="radio" name="filter"
-                                                                id="filter-last_name" value="last_name"
-                                                                v-model="filter.type">
-                                                            <label class="form-check-label" for="filter-last_name">
-                                                                Last Name
-                                                            </label>
-                                                        </div>
-                                                        <!--  first_name -->
-                                                        <div class="form-check">
-                                                            <input :checked="filter.type==='first_name'"
-                                                                class="form-check-input" type="radio" name="filter"
-                                                                id="filter-first_name" value="first_name"
-                                                                v-model="filter.type">
-                                                            <label class="form-check-label" for="filter-first_name">
-                                                                First Name
-                                                            </label>
-                                                        </div>
-                                                        <!--  middle_name -->
-                                                        <div class="form-check">
-                                                            <input :checked="filter.type==='middle_name'"
-                                                                class="form-check-input" type="radio" name="filter"
-                                                                id="filter-middle_name" value="middle_name"
-                                                                v-model="filter.type">
-                                                            <label class="form-check-label" for="filter-middle_name">
-                                                                Middle Name
-                                                            </label>
+                                                    <input class="col-md-6 form-control me-4" v-model="filter.search"
+                                                        type="search" :placeholder="`Search by ${filter.type}` " aria-label="Search">
+                                                    <fieldset class="col-md-3 d-flex">
 
-                                                        </div>
+                                                        <select  v-model="filter.type">
+                                                            <option selected >--Filter Seearch--</option>
+                                                            <option :selected="filter.type=='student_number'" value="student_number">Student Number</option>
+                                                            <option :selected="filter.type=='first_name'" value="first_name">First Name</option>
+                                                            <option :selected="filter.type=='last_name'" value="last_name">Last Name</option>
+                                                            <option :selected="filter.type=='middle_name'" value="middle_number">Middle Name</option>
+                                                        </select>
                                                     </fieldset>
                                                 </div>
-                                                <button @click="actionShow('show','add')" type="button"
-                                                    class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#modelId">
-                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </button>
+                                                 <div class="d-flex justify-content-around col-md-4">
+                                                   <button @click="actionShow('show','add')" type="button"
+                                                       class="btn btn-outline-primary" data-bs-toggle="modal"
+                                                       data-bs-target="#modelId">
+                                                       <i class="fa fa-plus" aria-hidden="true"></i>
+                                                   </button>
 
-                                                <button style="margin-left:1px;" @click.prevent="getStudents"
-                                                    type="button" class="btn btn-outline-success">
-                                                    <i class="fa fa-rotate"></i>
-                                                </button>
+                                                   <button style="margin-left:1px;" @click.prevent="getStudents"
+                                                       type="button" class="btn btn-outline-secondary">
+                                                       <i class="fa fa-rotate"></i>
+                                                   </button>
+                                                 </div>
                                             </form>
                                         </div>
 
@@ -174,7 +142,7 @@
                                                     <li class="page-item">
                                                         <a @click="next" class="page-link "
                                                             v-if="pages.current_page < totalPagesFiltered">
-                                                            <i class="fas fa-angle-right text-senary"></i>
+                                                            <i class="fas fa-angle-right text-primary"></i>
                                                         </a>
                                                     </li>
 
@@ -223,7 +191,7 @@ export default {
     data() {
         return {
             students: [],
-            
+
             student: {
                 id: '',
                 student_number: '',
@@ -234,7 +202,7 @@ export default {
                 suffix:'',
             },
             action:'hide',
-            
+
             filter: {
                 search: '',
                 type: 'student_number',
@@ -253,6 +221,7 @@ export default {
                 per_page: 5,
             },
             loading: false,
+            that:null
         }
     },
     mounted() {
@@ -291,6 +260,7 @@ export default {
 
         getStudents() {
             // send the authorization along the request
+            this.students = []
             this.loading = true;
             axios.get('/students',{
                 headers: {
@@ -299,8 +269,6 @@ export default {
             }).then(({data}) => {
                 console.log(data);
                 this.students = data.data
-                this.pagination.total = data.data.total;
-
             }).catch(error => {
                 this.$toast.error(error.response.data.message, 'Error');
             })
@@ -334,7 +302,7 @@ export default {
                     this.sort.type = 'id';
                     this.sort.order = 'desc'
                     this.sort.class = 'arrow down'
-                    this.$methods.getStudents();
+                    this.getStudents();
                 })
                 .catch(error => {
                     // this.error = true
@@ -342,42 +310,40 @@ export default {
                     // this.errors = error.response.data.errors
                 })
             // hide modal
-            
-            
+            this.actionShow('hide')
+
         },
 
         // edit student
         editStudent(student) {
-            let that = this
             axios.patch('/students/'+student.id,{...student}, {
                 headers:{
                     'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-               
+
                })
                 .then(({ data }) => {
-                    // this.success = true
+                    this.actionShow('hide')
+                    this.getStudents();
+                    this.filter.search = student.student_number
                     this.$toast.success(data.message, 'Success');
-                    this.filter.search = student.name
-                    that.getStudents();
-                    that.actionShow('hide')
+                    this.filter.type = 'student_number'
                 })
 
                 .catch(error => {
                     this.$toast.error(error.response.data.message, 'Error');
                 })
             // hide modal
-            
+
 
         },
 
         deleteStudent(student) {
-            let message = '', success = false;
-            
+            const that = this
             this.$toast.question(`Are you sure you want to delete ${student.first_name} ${student.last_name}`,'Delete Student',
-                
+
                     {
                     theme: "light",
                     icon: "icon-person",
@@ -393,17 +359,15 @@ export default {
                                     'Accept': 'application/json',
                                     'Content-Type': 'application/json'
                                 },
-                                })
+                              })
                                 .then(({ data }) => {
-                                    message = data.message
-                                    success = true
-                                    
+                                    instance.success('Student has been deleted','Success')
                                 })
                                 .catch(error => {
-                                    message = error.response.data.message
-                                    success = false
+                                    instance.error(error.response.data.message,'Error')
                                 })
                                 instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+                                that.getStudents()
                             },
                             true
                         ],
@@ -432,15 +396,6 @@ export default {
                 }
 
             )
-
-            // if (success) {
-            //     this.$toast.success(message, 'Success');
-            //     this.getStudents();
-            // }else
-            // {
-            //     this.$toast.error(message, 'Error');
-            // }
-            
 
         },
 
@@ -515,7 +470,7 @@ export default {
                 else if(this.sort.type==='last_name'){
                     return this.sort.order === 'asc'? a.last_name.localeCompare(b.last_name) : b.last_name.localeCompare(a.last_name);
                 }
-               
+
             });
         },
     },
@@ -541,13 +496,13 @@ export default {
             display: inline-block;
             padding: 3px;
         }
-    
-    
+
+
         .up {
             transform: rotate(-135deg);
             -webkit-transform: rotate(-135deg);
         }
-    
+
         .down {
             transform: rotate(45deg);
             -webkit-transform: rotate(45deg);

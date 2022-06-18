@@ -4,11 +4,11 @@ import RegisterPage from '../pages/auths/RegisterPage';
 import HomePage from '../pages/HomePage';
 import AdminPage from '../components/admin/AdminPage';
 import ManageStudents from '../components/admin/widgets/ManageStudents';
-// 
+import ManagePersonnels from '../components/admin/widgets/ManagePersonnels';
 import store from '../store';
 const routes = [
     {
-        path: '/login', 
+        path: '/login',
         component: LoginPage,
         name: 'login',
         // redirect if authenticated
@@ -51,11 +51,18 @@ const routes = [
                     admin: ManageStudents
                 },
                 name:'manage-students',
-            }
+            },
+            {
+                path: '/admin/manage-personnels',
+                components:{
+                    admin: ManagePersonnels
+                },
+                name:'manage-personnels',
+            },
         ],
         meta: {requireAuth:true}
     },
-    
+
 ];
 
 export default routes;

@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Validator;
 class StudentController extends Controller
 {
 
-    
+
     /**
-     * 
+     *
      *
      * Display a listing of the resource.
      *
@@ -27,7 +27,7 @@ class StudentController extends Controller
         if ($request->user()->can('viewAny', Student::class)) {
             //return all students
             $students = Student::all();
-            // check if students is empty 
+            // check if students is empty
             if($students->isEmpty()){
                 return response()->json([
                     'message' => 'No students found'
@@ -57,10 +57,10 @@ class StudentController extends Controller
     {
         // check if user is authorized to create a student
         if ($request->user()->can('create', Student::class)) {
-            // create a random student number with 
+            // create a random student number with
         $randomStudentNumber = $this->generateStudentNumber();
         // check if student number already exists
-        
+
 
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
@@ -86,7 +86,7 @@ class StudentController extends Controller
             'middle_name' => $request->middle_name,
             'suffix' => $request->suffix,
             'status' => 'active',
-            
+
         ]);
 
         // return a new student resource
@@ -149,6 +149,14 @@ class StudentController extends Controller
             // update the student
             // check if update is already done
             if($student->update($request->all())){
+
+               $user = User::where('membership_number','student_number')->first();
+
+               if($user)
+                   $user->update([
+                     'name'=> $request->first_name.' '.$request->middle_name.' '.$request->last_name.' '+$request->suffix,
+                   ]);
+
                 return response()->json([
                     'message' => 'Student updated successfully'
                 ], Response::HTTP_OK);
@@ -158,7 +166,7 @@ class StudentController extends Controller
                     'message' => 'Student update failed'
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
-        
+
         }
     }
 
@@ -173,10 +181,14 @@ class StudentController extends Controller
         // delete only if the user is authorized to delete a student
         if ($request->user()->can('delete', $student)) {
             // check if student number already exists
+           $stu=$student;
            $student->delete();
-              return response()->json([
+           $user = User::where('membership_number',$stu->student_number)->first();
+              if($user)
+                $user->delete();
+            return response()->json([
                 'message' => 'Student deleted successfully'
-              ], Response::HTTP_OK);
+            ], Response::HTTP_OK);
         }
         else{
             return response()->json([
@@ -192,7 +204,7 @@ class StudentController extends Controller
         $numbers = '0123456789';
         $randomStudentNumber = substr(str_shuffle($letters), 0, 4).substr(str_shuffle($numbers), 0, 8);
 
-        
+
         // check if student number already exists
         $student = Student::where('student_number', $randomStudentNumber)->first();
         if($student){

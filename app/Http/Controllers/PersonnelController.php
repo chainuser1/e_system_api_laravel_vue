@@ -7,39 +7,44 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Resources\PersonnelResource;
 use App\Http\Resources\PersonnelCollection;
+use Faker\Generator as Faker;
+use Illuminate\Support\Facades\Validator;
 class PersonnelController extends Controller
 {
+
+
     /**
+     *
+     *
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $personnels = Personnel::all();
-        if($personnels->isEmpty()){
-            return response()->json([
-                'message' => 'No personnel found'
-            ], Response::HTTP_NO_CONTENT);
+        //
+        // if user can view any personnel
+        if ($request->user()->can('viewAny', Personnel::class)) {
+            //return all personnels
+            $personnels = Personnel::all();
+            // check if personnels is empty
+            if($personnels->isEmpty()){
+                return response()->json([
+                    'message' => 'No personnels found'
+                ], Response::HTTP_NOT_FOUND);
+            }
+            else{
+                return response()->json(
+                new PersonnelCollection($personnels)
+                , Response::HTTP_OK);
+            }
         }
         else{
-            return response()->json(
-                new PersonnelCollection($personnels)
-            , Response::HTTP_OK);
+            // return a not authorized response
+            return response()->json([
+                'message' => 'You are not authorized to view this resource'
+            ], Response::HTTP_UNAUTHORIZED);
         }
-    }
-
-
-    protected function validateRequest()
-    {
-        return request()->validate([
-           'employee_number' => 'required|unique:personnels',
-           'first_name' => 'required|alpha_dash|max:30',
-           'last_name' => 'required|alpha_dash|max:30',
-           'middle_name' => 'alpha_dash|max:30',
-           'suffix' => 'alpha_num|max:30',
-           'type' => 'alpha_dash|max:30',
-        ]);
     }
 
     /**
@@ -50,10 +55,54 @@ class PersonnelController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $personnel = Personnel::create($this->validateRequest());
+        // check if user is authorized to create a personnel
+        if ($request->user()->can('create', Personnel::class)) {
+            // create a random personnel number with
+        $randomPersonnelNumber = $this->generatePersonnelNumber();
+        // check if personnel number already exists
+
+
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'middle_name' => 'required|string|max:255',
+            'suffix' => 'nullable|string|max:255',
+            'status' => 'required|string|max:255',
+        ]);
+
+        // if errors are found return in an array of errors
+        if($validator->fails()){
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // create a new personnel
+        $personnel = Personnel::create([
+            'personnel_number' => $randomPersonnelNumber,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'middle_name' => $request->middle_name,
+            'suffix' => $request->suffix,
+            'status' => 'active',
+
+        ]);
+
+        // return a new personnel resource
         return response()->json(
-            new PersonnelResource($personnel),Response::HTTP_CREATED);
+            [
+                'message' => 'Personnel created successfully',
+                'personnel' => new PersonnelResource($personnel)
+            ], Response::HTTP_CREATED);
+        }
+        else{
+            // return a not authorized response
+            return response()->json([
+                'message' => 'You are not authorized to create this resource'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
     }
 
     /**
@@ -64,16 +113,9 @@ class PersonnelController extends Controller
      */
     public function show(Personnel $personnel)
     {
-        // if found return personnel else return not found
-        if($personnel){
-            return response()->json(
-                new PersonnelResource($personnel),Response::HTTP_OK);
-        }
-        else{
-            return response()->json([
-                'message' => 'Personnel not found'
-            ], Response::HTTP_NOT_FOUND);
-        }
+        //
+        return response()->json(
+            new PersonnelResource($personnel),Response::HTTP_OK);
     }
 
     /**
@@ -85,10 +127,48 @@ class PersonnelController extends Controller
      */
     public function update(Request $request, Personnel $personnel)
     {
-        //
-        $personnel->update($this->validateRequest());
-        return response()->json(
-            new PersonnelResource($personnel),Response::HTTP_OK);
+        //update only if the user is authorized to update a personnel
+        if ($request->user()->can('update', $personnel)) {
+            // check if personnel number already exists
+            $validator = Validator::make($request->all(), [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'middle_name' => 'required|string|max:255',
+                'suffix' => 'nullable|string|max:255',
+                'status' => 'required|string|max:255',
+            ]);
+
+            // if errors are found return in an array of errors
+            if($validator->fails()){
+                return response()->json([
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            // update the personnel
+            // check if update is already done
+            if($personnel->update($request->all())){
+
+              $user = User::where('membership_number','student_number')->first();
+
+              if($user)
+                  $user->update([
+                    'name'=> $request->first_name.' '.$request->middle_name.' '.$request->last_name.' '+$request->suffix,
+                  ]);
+
+
+                return response()->json([
+                    'message' => 'Personnel updated successfully'
+                ], Response::HTTP_OK);
+            }
+            else{
+                return response()->json([
+                    'message' => 'Personnel update failed'
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+        }
     }
 
     /**
@@ -97,9 +177,41 @@ class PersonnelController extends Controller
      * @param  \App\Personnel  $personnel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Personnel $personnel)
+    public function destroy(Request $request,Personnel $personnel)
     {
-        //
-        $personnel->delete();
+        // delete only if the user is authorized to delete a personnel
+        if ($request->user()->can('delete', $personnel)) {
+           $emp=$personnel;
+           $personnel->delete();
+           $user = User::where('membership_number',$emp->empoyee_number)->first();
+              if($user)
+                $user->delete();
+            return response()->json([
+                'message' => 'Student deleted successfully'
+            ], Response::HTTP_OK);
+        }
+        else{
+            return response()->json([
+                'message' => 'You are not authorized to delete this resource'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+    }
+
+    protected function generatePersonnelNumber(){
+        // create a random personnel number with 4 random letters prefix and 8 random digits that is unique
+       //use string random to generate a random string
+        $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $numbers = '0123456789';
+        $randomPersonnelNumber = substr(str_shuffle($letters), 0, 4).substr(str_shuffle($numbers), 0, 8);
+
+
+        // check if personnel number already exists
+        $personnel = Personnel::where('personnel_number', $randomPersonnelNumber)->first();
+        if($personnel){
+            $this->generatePersonnelNumber();
+        }
+        else{
+            return $randomPersonnelNumber;
+        }
     }
 }
