@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\User;
 class StudentResource extends JsonResource
 {
     /**
@@ -22,7 +22,10 @@ class StudentResource extends JsonResource
             'middle_name' => $this->middle_name,
             'suffix' => $this->suffix,
             'status' => $this->status,
-            'deleted_at' => $this->deleted_at,
+            // 'deleted_at' => $this->deleted_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'user'=> new UserResource::collection(User::where('membership_number','student_number')->first())
         ];
     }
 }

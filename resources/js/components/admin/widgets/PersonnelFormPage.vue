@@ -49,7 +49,7 @@
                                     <option value="Sr." :selected="new_personnel.suffix=='Sr.'">Sr.</option>
                                     <option value="II" :selected="new_personnel.suffix=='II'">II</option>
                                     <!-- other (allow input if not found above) -->
-                                    <option value="Please Specify" :selected="new_personnel.suffix!=='Jr.' && 
+                                    <option value="Please Specify" :selected="new_personnel.suffix!=='Jr.' &&
                                     new_personnel.suffix  !== 'Sr.' && new_personnel.suffix !== 'II'">Other
                                     </option>
                                 </select>

@@ -62,6 +62,11 @@ class User extends Authenticatable implements MustVerifyEmail
       return ucwords($value);
     }
 
+    public function setRoleAttribute($value){
+      // convert $value to lower case and assign to $this->role
+      $this->attributes['role'] = strtolower($value);
+    }
+
     // public function getRoleAttribute($value){
     //   return ucwords($value);
     // }

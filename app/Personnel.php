@@ -10,7 +10,6 @@ class Personnel extends Model
 {
     //
     use SoftDeletes;
-    protected $table = 'personnels';
     protected $fillable = ['employee_number','first_name','last_name','middle_name','suffix','type'];
     protected $dates = ['created_at','updated_at','deleted_at'];
     public function getFirstNameAttribute($value){
@@ -50,5 +49,13 @@ class Personnel extends Model
             return Carbon::createFromDate($date)->diffForHumans();
         else
             return null;
+    }
+
+    public function setTypeAttribute($value){
+      $this->attributes['type'] = strtolower($value);
+    }
+
+    public function user(){
+        return $this->hasOne('App/User','membership_number','employee_number');
     }
 }

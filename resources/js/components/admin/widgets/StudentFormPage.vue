@@ -48,7 +48,7 @@
                                     <option value="Sr." :selected="new_student.suffix=='Sr.'">Sr.</option>
                                     <option value="II" :selected="new_student.suffix=='II'">II</option>
                                     <!-- other (allow input if not found above) -->
-                                    <option value="Please Specify" :selected="new_student.suffix!=='Jr.' && 
+                                    <option value="Please Specify" :selected="new_student.suffix!=='Jr.' &&
                                     new_student.suffix  !== 'Sr.' && new_student.suffix !== 'II'" >Other
                                     </option>
                                 </select>
@@ -81,7 +81,6 @@ export default {
                 status: !this.student ? 'active' : this.student.status,
                 student_number: !this.student ? '' : this.student.student_number,
                 id: !this.student ? 0 : this.student.id,
-
             }
         }
     },
@@ -95,12 +94,12 @@ export default {
         actionShow() {
             this.$emit('action-show');
         },
-        
+
     },
 
     computed:{
         listenForOther(){
-            if(this.new_student.suffix!=='Jr.' && 
+            if(this.new_student.suffix!=='Jr.' &&
             this.new_student.suffix  !== 'Sr.' && this.new_student.suffix !== 'II' && this.new_student.suffix !== ''){
                 return true;
             }

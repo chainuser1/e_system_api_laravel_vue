@@ -56,7 +56,7 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label text-md-right" for="name">Name</label>
                                 <div class="col-md-6">
-                                    <input :disabled="formButton.disabled" type="text" class="form-control" id="name"
+                                    <input disabled type="text" class="form-control" id="name"
                                         :style="formButton.styleCursor" v-model="user.name" placeholder="Name">
                                 </div>
                             </div>
@@ -129,7 +129,7 @@ export default {
                 name: '',
                 email: '',
                 role: '',
-                
+
             },
             password_match: false,
 
@@ -138,7 +138,7 @@ export default {
                 found: -1,
                 loading:false
             },
-            
+
             formButton: {
                 text: 'Register',
                 class: 'btn-danger',
@@ -148,8 +148,8 @@ export default {
                 }
             },
             _token: window.Laravel.csrfToken,
-            
-            
+
+
         }
     },
     methods: {
@@ -177,7 +177,7 @@ export default {
                 // redirect to login page with success message
                 this.$router.push({
                     name: 'login',
-    
+
                 })
 
             })
@@ -218,9 +218,9 @@ export default {
                         position: 'topCenter',
                         duration: 3000
                     }
-                    
+
                 );
-                
+
 
             }).catch((error)=>{
                 this.verify.found = 0;
@@ -232,9 +232,9 @@ export default {
                 this.formButton.disabled = true;
                 //pointer or cursor disabled
                 this.formButton.styleCursor.cursor = 'not-allowed';
-                
+
                 this.verify.state = false;
-                
+
                 this.verify.found = 0;
             }).finally(()=>{
                 this.verify.loading = false;
@@ -265,16 +265,17 @@ export default {
             handler() {
                 if(this.user.password.length>7)
                     this.password_match = this.user.password == this.user.password_confirmation;
+
             },
             deep: true
         },
-        
-        
+
+
     }
 
-    
 
-   
+
+
 }
 
 </script>
@@ -289,5 +290,5 @@ export default {
     .divide input{
         max-width:90% !important;
     }
-    
+
 </style>

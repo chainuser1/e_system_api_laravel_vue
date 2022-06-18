@@ -68,7 +68,7 @@ class PersonnelController extends Controller
             'last_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'suffix' => 'nullable|string|max:255',
-            'status' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
         ]);
 
         // if errors are found return in an array of errors
@@ -206,7 +206,7 @@ class PersonnelController extends Controller
 
 
         // check if personnel number already exists
-        $personnel = Personnel::where('personnel_number', $randomPersonnelNumber)->first();
+        $personnel = Personnel::where('employee_number', $randomPersonnelNumber)->first();
         if($personnel){
             $this->generatePersonnelNumber();
         }

@@ -57,4 +57,13 @@ class Student extends Model
         else
             return null;
     }
+
+    public function setStatusAttribute($value){
+      $this->attributes['status'] = strtolower($value);
+    }
+
+    // student has one user based on membership_number
+    public function user(){
+        return $this->hasOne('App/User','membership_number','student_number');
+    }
 }

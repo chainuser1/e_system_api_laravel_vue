@@ -59,7 +59,7 @@ class RegisterController extends Controller
     //         'username' => ['string', 'max:255', 'unique:users'],
     //         // role enum is: student, instructor, staff, admin
     //         'role' => ['required', 'string', 'max:255','in:student,instructor,staff,admin'],
-    //         'membership_number' => ['required', 'string', 'max:255', 'unique:users'],   
+    //         'membership_number' => ['required', 'string', 'max:255', 'unique:users'],
     //     ]);
     // }
 
@@ -77,15 +77,26 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'username' => ['string', 'max:255', 'unique:users'],
-            'role' => ['required', 'string', 'max:255','in:student,instructor,staff,admin'],
-            'membership_number' => ['required', 'string', 'max:255', 'unique:users'], 
+            'role' => ['required', 'string', 'max:255','in:Admin,Instructor,Staff,Student,admin,instructor,staff,student'],
+            'membership_number' => ['required', 'string', 'max:255', 'unique:users'],
         ]);
 
         if($validator->fails()){
             // return data with errors and status code 422
-            return response()->json($validator->errors(), 422);
+            return response()->json([
+                'message' => 'Entry has failed on validation, check your input',
+                'errors' => $validator->errors()
+            ], 422);
         }
 
+        $user =  User::where('membership_number',$req->membership_number)->first();
+
+        if($user)
+            return response()->json([
+                'message' => 'The membership number has been verified for a user and cannot be used to register',
+            ],422);
+
+            
         $user = User::create([
             "membership_number"=>$req->membership_number,
             "name"=>$req->name,
@@ -100,7 +111,7 @@ class RegisterController extends Controller
                 "success"=>true,
                 "message"=> $req->name.' '.'has been successfully registered.'
             ],201);
-            
+
     }
 
     protected function verifySrn(Request $request)
@@ -120,7 +131,7 @@ class RegisterController extends Controller
         }
 
         // check if the employee number exists
-        
+
         $personnel =  Personnel::where('employee_number', $request->membership_number)->first();
         $student = Student::where('student_number', $request->membership_number)->first();
 
