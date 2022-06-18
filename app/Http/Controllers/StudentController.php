@@ -91,7 +91,10 @@ class StudentController extends Controller
 
         // return a new student resource
         return response()->json(
-            new StudentResource($student), Response::HTTP_CREATED);
+            [
+                'message' => 'Student created successfully',
+                'student' => new StudentResource($student)
+            ], Response::HTTP_CREATED);
         }
         else{
             // return a not authorized response
@@ -124,10 +127,39 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
-        $student->update($request->all());
-        return response()->json(
-            new StudentResource($student),Response::HTTP_OK);
+        //update only if the user is authorized to update a student
+        if ($request->user()->can('update', $student)) {
+            // check if student number already exists
+            $validator = Validator::make($request->all(), [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'middle_name' => 'required|string|max:255',
+                'suffix' => 'nullable|string|max:255',
+                'status' => 'required|string|max:255',
+            ]);
+
+            // if errors are found return in an array of errors
+            if($validator->fails()){
+                return response()->json([
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            // update the student
+            // check if update is already done
+            if($student->update($request->all())){
+                return response()->json([
+                    'message' => 'Student updated successfully'
+                ], Response::HTTP_OK);
+            }
+            else{
+                return response()->json([
+                    'message' => 'Student update failed'
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        
+        }
     }
 
     /**
@@ -136,24 +168,38 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy(Request $request,Student $student)
     {
-        // using soft delete
-        $student->delete();
-        return response()->json([
-            'message' => 'Student deleted'
-        ], Response::HTTP_OK);
-        
+        // delete only if the user is authorized to delete a student
+        if ($request->user()->can('delete', $student)) {
+            // check if student number already exists
+           $student->delete();
+              return response()->json([
+                'message' => 'Student deleted successfully'
+              ], Response::HTTP_OK);
+        }
+        else{
+            return response()->json([
+                'message' => 'You are not authorized to delete this resource'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
     }
 
     protected function generateStudentNumber(){
-        $faker = Faker::create();
-        $studentNumber = '';
-        // unique student number
-        do{
-            $studentNumber = $faker->toUpper($faker->unique()->randomLetter). $faker->unique()->randomNumber(4) 
-                        . $faker->unique()->randomNumber(4);
-        }while(Student::where('student_number', $studentNumber)->exists());
-        return $studentNumber;
+        // create a random student number with 4 random letters prefix and 8 random digits that is unique
+       //use string random to generate a random string
+        $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $numbers = '0123456789';
+        $randomStudentNumber = substr(str_shuffle($letters), 0, 4).substr(str_shuffle($numbers), 0, 8);
+
+        
+        // check if student number already exists
+        $student = Student::where('student_number', $randomStudentNumber)->first();
+        if($student){
+            $this->generateStudentNumber();
+        }
+        else{
+            return $randomStudentNumber;
+        }
     }
 }

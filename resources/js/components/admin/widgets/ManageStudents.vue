@@ -300,11 +300,9 @@ export default {
                 console.log(data);
                 this.students = data.data
                 this.pagination.total = data.data.total;
+
             }).catch(error => {
-                this.$toast.error(error.response.data.message, 'Error', {
-                    position: topCenter,
-                    duration: 5000
-                });
+                this.$toast.error(error.response.data.message, 'Error');
             })
             .finally(() => {
                 this.loading = false;
@@ -323,95 +321,126 @@ export default {
             }
         },
         addStudent(student) {
-            console.log(student)
-            axios.post('/students', {
+            axios.post('/students',student, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                data: student
             })
                 .then(({ data }) => {
                     // this.success = true
-                    this.$toast.success(data.message, 'Success', {
-                        position: topCenter,
-                        duration: 5000
-                    });
+                    this.$toast.success(data.message, 'Success');
                     this.sort.type = 'id';
                     this.sort.order = 'desc'
+                    this.sort.class = 'arrow down'
+                    this.$methods.getStudents();
                 })
                 .catch(error => {
                     // this.error = true
-                    this.$toast.error(error.response.data.message, 'Error', {
-                        position: topCenter,
-                        duration: 2000
-                    });
+                    this.$toast.error(error.response.data.message, 'Error');
                     // this.errors = error.response.data.errors
                 })
             // hide modal
-            this.actionShow('hide')
-
+            
+            
         },
 
         // edit student
         editStudent(student) {
-
-            axios.patch('/students', {
+            let that = this
+            axios.patch('/students/'+student.id,{...student}, {
                 headers:{
                     'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                data: student
-            })
+               
+               })
                 .then(({ data }) => {
                     // this.success = true
-                    this.$emit('show-message', {
-                        success: true,
-                        type: 'success',
-                        title: 'Success',
-                        message: data.message
-                    })
+                    this.$toast.success(data.message, 'Success');
                     this.filter.search = student.name
+                    that.getStudents();
+                    that.actionShow('hide')
                 })
 
                 .catch(error => {
-                    this.errorMessage = error.response.data.message
-                    // this.errors = error.response.data.errors
+                    this.$toast.error(error.response.data.message, 'Error');
                 })
             // hide modal
-            this.actionShow('hide')
+            
 
         },
 
         deleteStudent(student) {
-
-            axios.delete('/students',{
-                //add headers
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                //add params
-                data:student
-                
-            })
+            let message = '', success = false;
             
-            .then(({ data }) => {
-                    // this.success = true
-                    this.$emit('show-message', {
-                        success: true,
-                        type: 'success',
-                        title: 'Success',
-                        message: data.message
-                    })
-                    this.filter.search = student.name
-                })
-                .catch(error => {
-                    this.errorMessage = error.response.data.message
-                })
+            this.$toast.question(`Are you sure you want to delete ${student.first_name} ${student.last_name}`,'Delete Student',
+                
+                    {
+                    theme: "light",
+                    icon: "icon-person",
+                    position: "topCenter",
+                    progressBarColor: "rgb(0, 255, 184)",
+                    buttons: [
+                        [
+                            "<button>Ok</button>",
+                            function (instance, toast) {
+                                axios.delete('/students/' + student.id, {
+                                headers: {
+                                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                })
+                                .then(({ data }) => {
+                                    message = data.message
+                                    success = true
+                                    
+                                })
+                                .catch(error => {
+                                    message = error.response.data.message
+                                    success = false
+                                })
+                                instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+                            },
+                            true
+                        ],
+                        [
+                            "<button>Close</button>",
+                            function (instance, toast) {
+                                instance.hide(
+                                    {
+                                        transitionOut: "fadeOutUp",
+                                        onClosing: function (instance, toast, closedBy) {
+                                            console.info("closedBy: " + closedBy);
+                                        }
+                                    },
+                                    toast,
+                                    "buttonName"
+                                );
+                            }
+                        ]
+                    ],
+                    onOpening: function (instance, toast) {
+                        console.info("callback abriu!");
+                    },
+                    onClosing: function (instance, toast, closedBy) {
+                        console.info("closedBy: " + closedBy);
+                    }
+                }
+
+            )
+
+            // if (success) {
+            //     this.$toast.success(message, 'Success');
+            //     this.getStudents();
+            // }else
+            // {
+            //     this.$toast.error(message, 'Error');
+            // }
+            
 
         },
 

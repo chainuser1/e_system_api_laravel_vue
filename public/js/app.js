@@ -2032,6 +2032,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _StudentFormPage_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StudentFormPage.vue */ "./resources/js/components/admin/widgets/StudentFormPage.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2326,10 +2332,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.students = data.data;
         _this.pagination.total = data.data.total;
       })["catch"](function (error) {
-        _this.$toast.error(error.response.data.message, 'Error', {
-          position: topCenter,
-          duration: 5000
-        });
+        _this.$toast.error(error.response.data.message, 'Error');
       })["finally"](function () {
         _this.loading = false;
       });
@@ -2349,92 +2352,100 @@ __webpack_require__.r(__webpack_exports__);
     addStudent: function addStudent(student) {
       var _this2 = this;
 
-      console.log(student);
-      axios.post('/students', {
+      axios.post('/students', student, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token'),
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        },
-        data: student
+        }
       }).then(function (_ref2) {
         var data = _ref2.data;
 
         // this.success = true
-        _this2.$toast.success(data.message, 'Success', {
-          position: topCenter,
-          duration: 5000
-        });
+        _this2.$toast.success(data.message, 'Success');
 
         _this2.sort.type = 'id';
         _this2.sort.order = 'desc';
+        _this2.sort["class"] = 'arrow down';
+
+        _this2.$methods.getStudents();
       })["catch"](function (error) {
         // this.error = true
-        _this2.$toast.error(error.response.data.message, 'Error', {
-          position: topCenter,
-          duration: 2000
-        }); // this.errors = error.response.data.errors
+        _this2.$toast.error(error.response.data.message, 'Error'); // this.errors = error.response.data.errors
 
       }); // hide modal
-
-      this.actionShow('hide');
     },
     // edit student
     editStudent: function editStudent(student) {
       var _this3 = this;
 
-      axios.patch('/students', {
+      var that = this;
+      axios.patch('/students/' + student.id, _objectSpread({}, student), {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token'),
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        },
-        data: student
+        }
       }).then(function (_ref3) {
         var data = _ref3.data;
 
         // this.success = true
-        _this3.$emit('show-message', {
-          success: true,
-          type: 'success',
-          title: 'Success',
-          message: data.message
-        });
+        _this3.$toast.success(data.message, 'Success');
 
         _this3.filter.search = student.name;
+        that.getStudents();
+        that.actionShow('hide');
       })["catch"](function (error) {
-        _this3.errorMessage = error.response.data.message; // this.errors = error.response.data.errors
+        _this3.$toast.error(error.response.data.message, 'Error');
       }); // hide modal
-
-      this.actionShow('hide');
     },
     deleteStudent: function deleteStudent(student) {
-      var _this4 = this;
-
-      axios["delete"]('/students', {
-        //add headers
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+      var message = '',
+          success = false;
+      this.$toast.question("Are you sure you want to delete ".concat(student.first_name, " ").concat(student.last_name), 'Delete Student', {
+        theme: "light",
+        icon: "icon-person",
+        position: "topCenter",
+        progressBarColor: "rgb(0, 255, 184)",
+        buttons: [["<button>Ok</button>", function (instance, toast) {
+          axios["delete"]('/students/' + student.id, {
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('token'),
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          }).then(function (_ref4) {
+            var data = _ref4.data;
+            message = data.message;
+            success = true;
+          })["catch"](function (error) {
+            message = error.response.data.message;
+            success = false;
+          });
+          instance.hide({
+            transitionOut: "fadeOut"
+          }, toast, "button");
+        }, true], ["<button>Close</button>", function (instance, toast) {
+          instance.hide({
+            transitionOut: "fadeOutUp",
+            onClosing: function onClosing(instance, toast, closedBy) {
+              console.info("closedBy: " + closedBy);
+            }
+          }, toast, "buttonName");
+        }]],
+        onOpening: function onOpening(instance, toast) {
+          console.info("callback abriu!");
         },
-        //add params
-        data: student
-      }).then(function (_ref4) {
-        var data = _ref4.data;
-
-        // this.success = true
-        _this4.$emit('show-message', {
-          success: true,
-          type: 'success',
-          title: 'Success',
-          message: data.message
-        });
-
-        _this4.filter.search = student.name;
-      })["catch"](function (error) {
-        _this4.errorMessage = error.response.data.message;
-      });
+        onClosing: function onClosing(instance, toast, closedBy) {
+          console.info("closedBy: " + closedBy);
+        }
+      }); // if (success) {
+      //     this.$toast.success(message, 'Success');
+      //     this.getStudents();
+      // }else
+      // {
+      //     this.$toast.error(message, 'Error');
+      // }
     },
     actionShow: function actionShow() {
       var showOrHide = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'hide';
@@ -2485,28 +2496,28 @@ __webpack_require__.r(__webpack_exports__);
       return students;
     },
     sortedStudents: function sortedStudents() {
-      var _this5 = this;
+      var _this4 = this;
 
       var students = this.filteredStudents; // if string, use toLowerCase
 
       var type = this.sort.type;
       return students.sort(function (a, b) {
         // if sort type === 'student_number' and is string
-        if (_this5.sort.type === 'student_number') {
-          return _this5.sort.order === 'asc' ? a.student_number.localeCompare(b.student_number) : b.student_number.localeCompare(a.student_number);
+        if (_this4.sort.type === 'student_number') {
+          return _this4.sort.order === 'asc' ? a.student_number.localeCompare(b.student_number) : b.student_number.localeCompare(a.student_number);
         } // if sort type === 'status' and is string
-        else if (_this5.sort.type === 'status') {
-          return _this5.sort.order === 'asc' ? a.status.localeCompare(b.status) : b.status.localeCompare(a.status);
+        else if (_this4.sort.type === 'status') {
+          return _this4.sort.order === 'asc' ? a.status.localeCompare(b.status) : b.status.localeCompare(a.status);
         } // if sort type === 'id' and is number
-        else if (_this5.sort.type === 'id') {
-          return _this5.sort.order === 'asc' ? a.id > b.id : a.id < b.id;
+        else if (_this4.sort.type === 'id') {
+          return _this4.sort.order === 'asc' ? a.id > b.id : a.id < b.id;
         } // if sort type === 'first_name' and is string
-        else if (_this5.sort.type === 'first_name') {
-          return _this5.sort.order === 'asc' ? a.first_name.localeCompare(b.first_name) : b.first_name.localeCompare(a.first_name);
+        else if (_this4.sort.type === 'first_name') {
+          return _this4.sort.order === 'asc' ? a.first_name.localeCompare(b.first_name) : b.first_name.localeCompare(a.first_name);
         } // }
         // if sort type === 'last_name' and is string
-        else if (_this5.sort.type === 'last_name') {
-          return _this5.sort.order === 'asc' ? a.last_name.localeCompare(b.last_name) : b.last_name.localeCompare(a.last_name);
+        else if (_this4.sort.type === 'last_name') {
+          return _this4.sort.order === 'asc' ? a.last_name.localeCompare(b.last_name) : b.last_name.localeCompare(a.last_name);
         }
       });
     }
@@ -7662,7 +7673,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* arrow class */\n.arrow[data-v-139fa7a8] {\n        border: 2px solid rgb(15, 5, 5);\n        border-width: 0 3px 3px 0;\n        display: inline-block;\n        padding: 3px;\n}\n.up[data-v-139fa7a8] {\n        transform: rotate(-135deg);\n        -webkit-transform: rotate(-135deg);\n}\n.down[data-v-139fa7a8] {\n        transform: rotate(45deg);\n        -webkit-transform: rotate(45deg);\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* arrow class */\n.arrow[data-v-139fa7a8] {\n        border: 2px solid rgb(15, 5, 5);\n        border-width: 0 3px 3px 0;\n        display: inline-block;\n        padding: 3px;\n}\n.up[data-v-139fa7a8] {\n        transform: rotate(-135deg);\n        -webkit-transform: rotate(-135deg);\n}\n.down[data-v-139fa7a8] {\n        transform: rotate(45deg);\n        -webkit-transform: rotate(45deg);\n}\n\n", ""]);
 
 // exports
 
