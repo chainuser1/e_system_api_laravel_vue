@@ -24,30 +24,35 @@
                                             <form class="d-flex" @submit.prevent="">
                                                 <div class="row">
                                                     <input class="col-md-6 form-control me-4" v-model="filter.search"
-                                                        type="search" :placeholder="`Search by ${filter.type}` " aria-label="Search">
+                                                        type="search" :placeholder="`Search by ${filter.type}` "
+                                                        aria-label="Search">
                                                     <fieldset class="col-md-3 d-flex">
 
-                                                        <select  v-model="filter.type">
-                                                            <option selected >--Filter Seearch--</option>
-                                                            <option :selected="filter.type=='employee_number'" value="employee_number">Employee Number</option>
-                                                            <option :selected="filter.type=='first_name'" value="first_name">First Name</option>
-                                                            <option :selected="filter.type=='last_name'" value="last_name">Last Name</option>
-                                                            <option :selected="filter.type=='middle_name'" value="middle_number">Middle Name</option>
+                                                        <select v-model="filter.type">
+                                                            <option selected>--Filter Seearch--</option>
+                                                            <option :selected="filter.type=='employee_number'"
+                                                                value="employee_number">Employee Number</option>
+                                                            <option :selected="filter.type=='first_name'"
+                                                                value="first_name">First Name</option>
+                                                            <option :selected="filter.type=='last_name'"
+                                                                value="last_name">Last Name</option>
+                                                            <option :selected="filter.type=='middle_name'"
+                                                                value="middle_number">Middle Name</option>
                                                         </select>
                                                     </fieldset>
                                                 </div>
-                                                 <div class="d-flex justify-content-around col-md-4">
-                                                   <button @click="actionShow('show','add')" type="button"
-                                                       class="btn btn-outline-primary" data-bs-toggle="modal"
-                                                       data-bs-target="#modelId">
-                                                       <i class="fa fa-plus" aria-hidden="true"></i>
-                                                   </button>
+                                                <div class="d-flex justify-content-around col-md-4">
+                                                    <button @click="actionShow('show','add')" type="button"
+                                                        class="btn btn-outline-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#modelId">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </button>
 
-                                                   <button style="margin-left:1px;" @click.prevent="getPersonnels"
-                                                       type="button" class="btn btn-outline-secondary">
-                                                       <i class="fa fa-rotate"></i>
-                                                   </button>
-                                                 </div>
+                                                    <button style="margin-left:1px;" @click.prevent="getPersonnels"
+                                                        type="button" class="btn btn-outline-success">
+                                                        <i class="fa fa-rotate"></i>
+                                                    </button>
+                                                </div>
                                             </form>
                                         </div>
 
@@ -97,7 +102,9 @@
                                         <tbody>
                                             <tr v-for="personnel of personnelsPerPage" :key="personnel.id">
                                                 <td>
-                                                    {{ personnel.employee_number }}
+                                                    <a href="#" @click.prevent="view_details('personnel',personnel)">{{
+                                                        personnel.employee_number
+                                                        }}</a>
                                                 </td>
                                                 <td>
                                                     {{ personnel.first_name }}
@@ -111,7 +118,7 @@
                                                 <td>
                                                     <a type="button" :href="`#?${personnel.id}/edit`"
                                                         @click.prevent="actionShow('show','edit',personnel)"
-                                                        class="btn btn-outline-success senary"><i
+                                                        class="btn btn-outline-secondary senary"><i
                                                             class="fas fa-edit color-text-senary"></i></a>
                                                     <!-- delete personnel -->&nbsp;
                                                     <button class="btn btn-outline-danger"
@@ -174,8 +181,9 @@
             </div>
         </div>
 
-        <PersonnelFormPage v-if="action=='show'" v-bind:personnel="addOrUpdatePersonnel" v-on:add-personnel="addPersonnel"
-            v-on:update-personnel="editPersonnel" v-on:action-show="actionShow"></PersonnelFormPage>
+        <PersonnelFormPage v-if="action=='show'" v-bind:personnel="addOrUpdatePersonnel"
+            v-on:add-personnel="addPersonnel" v-on:update-personnel="editPersonnel" v-on:action-show="actionShow">
+        </PersonnelFormPage>
     </div>
 
 
@@ -228,6 +236,16 @@ export default {
         this.getPersonnels();
     },
     methods:{
+        view_details(type, student) {
+            this.$store.commit('setPerson', student);
+            this.$router.push({
+                name: 'person_details',
+                params: {
+                    type: type,
+                    id: student.id
+                }
+            })
+        },
         next() {
             if (this.pages.current_page < this.totalPagesFiltered) {
                 this.pages.current_page++;

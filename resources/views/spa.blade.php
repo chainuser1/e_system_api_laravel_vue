@@ -19,11 +19,13 @@
     <!-- Styles -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!-- <link href="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/css/light-bootstrap-dashboard.css?v=2.0.1" rel="stylesheet" /> -->
+    
+    <!-- <link href="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/css/light-bootstrap-dashboard.css?v=2.0.1" rel="stylesheet" /> 
 
-    <!-- <link href="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/css/demo.css" rel="stylesheet" /> -->
+    <link href="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/css/demo.css" rel="stylesheet" />  -->
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- <link href="{{ asset('css/font-awesome4.7.min.css') }}" rel="stylesheet"> -->
     <style>
         .fa {
             font-size: 1.5em;
@@ -34,7 +36,7 @@
             border-color: #ff0000;
         }
         .main-page{
-            background-image: url("{{url('assets/background')}}") !important;
+            /* background-image: url("{{url('assets/background')}}") !important; */
             max-height: 200vh;
             height:35em;
             background-size: cover;

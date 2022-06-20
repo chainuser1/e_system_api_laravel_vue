@@ -5,6 +5,7 @@ import HomePage from '../pages/HomePage';
 import AdminPage from '../components/admin/AdminPage';
 import ManageStudents from '../components/admin/widgets/ManageStudents';
 import ManagePersonnels from '../components/admin/widgets/ManagePersonnels';
+import ProfileView from '../components/user/widgets/ProfileView';
 import store from '../store';
 const routes = [
     {
@@ -59,6 +60,13 @@ const routes = [
                 },
                 name:'manage-personnels',
             },
+            {
+                path: '/admin/profile/:id/:type',
+                components:{
+                    admin: ProfileView
+                },
+                name:'person_details',
+            }
         ],
         meta: {requireAuth:true}
     },
