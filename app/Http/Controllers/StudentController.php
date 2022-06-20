@@ -151,11 +151,11 @@ class StudentController extends Controller
             // check if update is already done
             if($student->update($request->all())){
 
-               $user = User::where('membership_number','student_number')->first();
+               $user = User::where('membership_number', $student->student_number)->first();
 
                if($user)
                    $user->update([
-                     'name'=> $request->first_name.' '.$request->middle_name.' '.$request->last_name.' '+$request->suffix,
+                     'name'=> $request->first_name.' '.$request->middle_name.' '.$request->last_name.' '.$request->suffix,
                    ]);
 
                 return response()->json([

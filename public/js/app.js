@@ -43296,14 +43296,17 @@ var render = function () {
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [
             _c("h4", { staticClass: "card-title" }, [
-              _vm._v("Welcome, " + _vm._s(_vm.user.name)),
+              _vm._v("Welcome, "),
+              _c("span", { staticStyle: { "text-transform": "capitalize" } }, [
+                _vm._v(_vm._s(_vm.user.name)),
+              ]),
             ]),
           ]),
           _vm._v(" "),
           _c(
             "div",
             { staticClass: "card-body" },
-            [_vm.user.role === "admin" ? _c("admin-page") : _vm._e()],
+            [_vm.user.role == "admin" ? _c("admin-page") : _vm._e()],
             1
           ),
         ]),
@@ -43974,6 +43977,7 @@ var render = function () {
                 "a",
                 {
                   staticClass: "nav-link dropdown-toggle",
+                  staticStyle: { "text-transform": "capitalize" },
                   attrs: {
                     id: "navbarDropdown",
                     href: "#",

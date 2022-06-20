@@ -16,7 +16,7 @@
             <!-- Authentication Links -->
 
             <li class="nav-item dropdown" v-if="isAuthenticated">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                <a style="text-transform:capitalize;" id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     {{ user.role }}
                 </a>

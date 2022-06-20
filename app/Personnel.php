@@ -28,6 +28,18 @@ class Personnel extends Model
         return ucwords($v);
     }
 
+    public function setLastNameAttribute($value){
+        $this->attributes['last_name'] = ucwords($value);
+    }
+
+    public function setFirstNameAttribute($value){
+        $this->attributes['first_name'] = ucwords($value);
+    }
+
+    public function setMiddleNameAttribute($value){
+        $this->attributes['middle_name'] = ucwords($value);
+    }
+
     public function getCreatedAtAttribute($date){
         // return a carbon diffForHuman
         if($date)

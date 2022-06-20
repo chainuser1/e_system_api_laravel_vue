@@ -6,11 +6,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Welcome, {{user.name}}</h4>
+                        <h4 class="card-title">Welcome, <span style="text-transform:capitalize;">{{user.name}}</span></h4>
 
                     </div>
                     <div class="card-body">
-                        <admin-page v-if="user.role === 'admin'"></admin-page>
+                        <admin-page v-if="user.role=='admin'"></admin-page>
                     </div>
                 </div>
             </div>

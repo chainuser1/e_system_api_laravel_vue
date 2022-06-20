@@ -150,11 +150,11 @@ class PersonnelController extends Controller
             // check if update is already done
             if($personnel->update($request->all())){
 
-              $user = User::where('membership_number','employee_number')->first();
+              $user = User::where('membership_number',$personnel->employee_number)->first();
 
               if($user)
                   $user->update([
-                    'name'=> $request->first_name.' '.$request->middle_name.' '.$request->last_name.' '+$request->suffix,
+                    'name'=> $request->first_name.' '.$request->middle_name.' '.$request->last_name.' '.$request->suffix,
                   ]);
 
 
