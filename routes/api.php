@@ -24,9 +24,12 @@ Route::post('/register','Auth\RegisterController@create')->name('api.auth.regist
 Route::post('/login','Auth\LoginController@store')->name('api.auth.login');
 Route::middleware('auth:api')->delete('/logout','Auth\LoginController@destroy')->name('api.auth.logout');
 // verify_srns
-
+Route::get('/instructors', 'UserController@getInstructors')->middleware('auth:api');
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('students', 'StudentController');
     Route::apiResource('personnels', 'PersonnelController');
+    Route::apiResource('subjects', 'SubjectController');
+    // get instructors from users
+    
 });
 

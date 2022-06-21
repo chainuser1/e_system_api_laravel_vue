@@ -43,7 +43,7 @@
                             <div class="form-group row">
                                 <label for="suffix">Suffix</label>
                                 <select v-model="new_student.suffix" class="form-control">
-                                    <option selected value="">--Select--</option>
+                                    <option selected >--Select--</option>
                                     <option value="Jr." :selected="new_student.suffix=='Jr.'">Jr.</option>
                                     <option value="Sr." :selected="new_student.suffix=='Sr.'">Sr.</option>
                                     <option value="II" :selected="new_student.suffix=='II'">II</option>

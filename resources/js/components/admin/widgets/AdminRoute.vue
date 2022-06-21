@@ -18,6 +18,12 @@
                 Manage Personnel<span v-show="link=='manage_personnels'" class="sr-only">(current)</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link bg-secondary" href="#" @click.prevent="actionGoTo('manage_subjects')">
+                <span data-feather="home"></span>
+                Manage Subjects<span v-show="link=='manage_subjects'" class="sr-only">(current)</span>
+            </a>
+        </li>
         <!-- <li class="nav-item">
                     <a class="nav-link" href="#">
                         <span data-feather="users"></span>

@@ -77,7 +77,7 @@ export default {
 </script>
 
 <style scoped>
-.ui-w-100 {
+/* .ui-w-100 {
     width: 100px !important;
     height: auto;
 }
@@ -113,5 +113,5 @@ export default {
 
 .text-xlarge {
     font-size: 170% !important;
-}
+} */
 </style>

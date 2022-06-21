@@ -17,14 +17,14 @@
                 <auth-nav v-on:logging-out="this.logout"></auth-nav>
             </div>
         </nav>
-        <aside class="main-sidebar  elevation-4" :class="!user?'':'sidebar-dark-primary'">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" >
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <!-- <div class="image">
                         <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div> -->
                     <div class="info">
-                        <a href="#" class="d-block tex-white">{{!user?'':user.name}}</a>
+                        <a href="#" class="d-block">{{!user?'Guest':user.name}}</a>
                     </div>
                 </div>
                 <nav class="mt-2">
@@ -36,7 +36,7 @@
 
         </aside>
 
-        <div class="content-wrapper" >
+        <div class="content-wrapper">
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">

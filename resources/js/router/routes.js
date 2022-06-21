@@ -6,6 +6,7 @@ import ManageStudents from '../components/admin/widgets/ManageStudents';
 import ManagePersonnels from '../components/admin/widgets/ManagePersonnels';
 import DashBoard from '../components/admin/widgets/DashBoard';
 import ProfileView from '../components/user/widgets/ProfileView';
+import ManageSubjects from '../components/admin/widgets/ManageSubjects';
 import store from '../store';
 const routes = [
     {
@@ -43,27 +44,34 @@ const routes = [
     },
     
     {
-        path: '/manage-students',
+        path: '/admin/manage-students',
         component: ManageStudents,
         name: 'manage_students',
         meta: { requiresAuth: true }
     },
     {
-        path: '/admin-personnel-management',
+        path: '/admin/personnel-management',
         component: ManagePersonnels,
         name: 'manage_personnels',
         meta: { requiresAuth: true }
     },
     {
-        path: '/admin-profile/:id/:type',
+        path: '/admin/profile/:id/:type',
         component: ProfileView,
         name: 'person_details',
         meta: { requiresAuth: true }
     },
     {
-        path: '/admin-dashboard',
+        path: '/admin/dashboard',
         component: DashBoard,
         name: 'admin_dashboard',
+        meta: { requiresAuth: true }
+    },
+    {
+        // for managing subjects
+        path: '/admin/manage-subjects',
+        component: ManageSubjects,
+        name: 'manage_subjects',
         meta: { requiresAuth: true }
     }
     
