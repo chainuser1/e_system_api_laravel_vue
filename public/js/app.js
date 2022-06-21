@@ -1972,7 +1972,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'AdminRoute',
   data: function data() {
@@ -2009,414 +2008,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -4029,6 +3620,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4043,10 +3638,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     user: function user() {
-      return this.$store.getters.user;
+      // return user from store or null
+      return this.$store.getters.user ? this.$store.getters.user : null;
     },
     isAuthenticated: function isAuthenticated() {
       return this.$store.getters.isAuthenticated;
+    },
+    isAdmin: function isAdmin() {
+      return this.$store.getters.user ? this.$store.getters.user.role == 'admin' : false;
     }
   },
   methods: {
@@ -4068,11 +3667,16 @@ __webpack_require__.r(__webpack_exports__);
         _this.$store.commit('setIsAuthenticated', false);
 
         _this.$toast.success(data.message, 'Success');
-      }); // route to
+      });
     }
   },
   created: function created() {
-    console.log(this.user.name);
+    // if user is admin route to dashboard
+    if (this.isAdmin) {
+      this.$router.push({
+        name: 'admin_dashboard'
+      });
+    }
   }
 });
 
@@ -4106,12 +3710,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-// import AdminPage from '../components/admin/AdminPage.vue';
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'HomePage',
-  // components: {
-  //     'admin-page':AdminPage
-  // },
   data: function data() {
     return {};
   },
@@ -41246,7 +40846,7 @@ var render = function () {
         _c(
           "a",
           {
-            staticClass: "nav-link active",
+            staticClass: "nav-link bg-secondary",
             attrs: { href: "#" },
             on: {
               click: function ($event) {
@@ -41281,7 +40881,7 @@ var render = function () {
         _c(
           "a",
           {
-            staticClass: "nav-link active",
+            staticClass: "nav-link bg-secondary",
             attrs: { href: "#" },
             on: {
               click: function ($event) {
@@ -41316,7 +40916,7 @@ var render = function () {
         _c(
           "a",
           {
-            staticClass: "nav-link active",
+            staticClass: "nav-link bg-secondary",
             attrs: { href: "#" },
             on: {
               click: function ($event) {
@@ -41327,7 +40927,7 @@ var render = function () {
           },
           [
             _c("span", { attrs: { "data-feather": "home" } }),
-            _vm._v("\n            Manage Students"),
+            _vm._v("\n            Manage Personnel"),
             _c(
               "span",
               {
@@ -41378,1107 +40978,118 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "container bootdey flex-grow-1 container-p-y" },
-      [
-        _c("div", { staticClass: "content-wrapper" }, [
-          _c("div", { staticClass: "content-header" }, [
-            _c("div", { staticClass: "container-fluid" }, [
-              _c("div", { staticClass: "row mb-2" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("h1", { staticClass: "m-0" }, [_vm._v("Dashboard")]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("ol", { staticClass: "breadcrumb float-sm-right" }, [
-                    _c("li", { staticClass: "breadcrumb-item" }, [
-                      _c("a", { attrs: { href: "#" } }, [_vm._v("Home")]),
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "breadcrumb-item active" }, [
-                      _vm._v("Dashboard v1"),
-                    ]),
-                  ]),
-                ]),
-              ]),
-            ]),
+    return _c("div", { staticClass: "row py-2" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _c("h4", { staticClass: "card-title" }, [_vm._v("Dashboard")]),
           ]),
           _vm._v(" "),
-          _c("section", { staticClass: "content" }, [
-            _c("div", { staticClass: "container-fluid" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-lg-3 col-6" }, [
-                  _c("div", { staticClass: "small-box bg-info" }, [
-                    _c("div", { staticClass: "inner" }, [
-                      _c("h3", [_vm._v("150")]),
-                      _vm._v(" "),
-                      _c("p", [_vm._v("New Orders")]),
-                    ]),
+          _c(
+            "div",
+            { staticClass: "card-body d-flex justify-content-around" },
+            [
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c("div", { staticClass: "small-box bg-info" }, [
+                  _c("div", { staticClass: "inner" }, [
+                    _c("h3", [_vm._v("150")]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "icon" }, [
-                      _c("i", { staticClass: "ion ion-bag" }),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      { staticClass: "small-box-footer", attrs: { href: "#" } },
-                      [
-                        _vm._v("More info "),
-                        _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-                      ]
-                    ),
+                    _c("p", [_vm._v("New Orders")]),
                   ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-lg-3 col-6" }, [
-                  _c("div", { staticClass: "small-box bg-success" }, [
-                    _c("div", { staticClass: "inner" }, [
-                      _c("h3", [
-                        _vm._v("53"),
-                        _c("sup", { staticStyle: { "font-size": "20px" } }, [
-                          _vm._v("%"),
-                        ]),
-                      ]),
-                      _vm._v(" "),
-                      _c("p", [_vm._v("Bounce Rate")]),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "icon" }, [
-                      _c("i", { staticClass: "ion ion-stats-bars" }),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      { staticClass: "small-box-footer", attrs: { href: "#" } },
-                      [
-                        _vm._v("More info "),
-                        _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-                      ]
-                    ),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-lg-3 col-6" }, [
-                  _c("div", { staticClass: "small-box bg-warning" }, [
-                    _c("div", { staticClass: "inner" }, [
-                      _c("h3", [_vm._v("44")]),
-                      _vm._v(" "),
-                      _c("p", [_vm._v("User Registrations")]),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "icon" }, [
-                      _c("i", { staticClass: "ion ion-person-add" }),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      { staticClass: "small-box-footer", attrs: { href: "#" } },
-                      [
-                        _vm._v("More info "),
-                        _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-                      ]
-                    ),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-lg-3 col-6" }, [
-                  _c("div", { staticClass: "small-box bg-danger" }, [
-                    _c("div", { staticClass: "inner" }, [
-                      _c("h3", [_vm._v("65")]),
-                      _vm._v(" "),
-                      _c("p", [_vm._v("Unique Visitors")]),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "icon" }, [
-                      _c("i", { staticClass: "ion ion-pie-graph" }),
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      { staticClass: "small-box-footer", attrs: { href: "#" } },
-                      [
-                        _vm._v("More info "),
-                        _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-                      ]
-                    ),
-                  ]),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("section", { staticClass: "col-lg-7 connectedSortable" }, [
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-header" }, [
-                      _c("h3", { staticClass: "card-title" }, [
-                        _c("i", { staticClass: "fas fa-chart-pie mr-1" }),
-                        _vm._v(
-                          "\n                                        Sales\n                                    "
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "card-tools" }, [
-                        _c("ul", { staticClass: "nav nav-pills ml-auto" }, [
-                          _c("li", { staticClass: "nav-item" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "nav-link active",
-                                attrs: {
-                                  href: "#revenue-chart",
-                                  "data-toggle": "tab",
-                                },
-                              },
-                              [_vm._v("Area")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("li", { staticClass: "nav-item" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "nav-link",
-                                attrs: {
-                                  href: "#sales-chart",
-                                  "data-toggle": "tab",
-                                },
-                              },
-                              [_vm._v("Donut")]
-                            ),
-                          ]),
-                        ]),
-                      ]),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "card-body" }, [
-                      _c("div", { staticClass: "tab-content p-0" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "chart tab-pane active",
-                            staticStyle: {
-                              position: "relative",
-                              height: "300px",
-                            },
-                            attrs: { id: "revenue-chart" },
-                          },
-                          [
-                            _c("canvas", {
-                              staticStyle: { height: "300px" },
-                              attrs: {
-                                id: "revenue-chart-canvas",
-                                height: "300",
-                              },
-                            }),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "chart tab-pane",
-                            staticStyle: {
-                              position: "relative",
-                              height: "300px",
-                            },
-                            attrs: { id: "sales-chart" },
-                          },
-                          [
-                            _c("canvas", {
-                              staticStyle: { height: "300px" },
-                              attrs: {
-                                id: "sales-chart-canvas",
-                                height: "300",
-                              },
-                            }),
-                          ]
-                        ),
-                      ]),
-                    ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "icon" }, [
+                    _c("i", { staticClass: "ion ion-bag" }),
                   ]),
                   _vm._v(" "),
                   _c(
-                    "div",
-                    { staticClass: "card direct-chat direct-chat-primary" },
+                    "a",
+                    { staticClass: "small-box-footer", attrs: { href: "#" } },
                     [
-                      _c("div", { staticClass: "card-header" }, [
-                        _c("h3", { staticClass: "card-title" }, [
-                          _vm._v("Direct Chat"),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "card-tools" }, [
-                          _c(
-                            "span",
-                            {
-                              staticClass: "badge badge-primary",
-                              attrs: { title: "3 New Messages" },
-                            },
-                            [_vm._v("3")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-tool",
-                              attrs: {
-                                type: "button",
-                                "data-card-widget": "collapse",
-                              },
-                            },
-                            [_c("i", { staticClass: "fas fa-minus" })]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-tool",
-                              attrs: {
-                                type: "button",
-                                title: "Contacts",
-                                "data-widget": "chat-pane-toggle",
-                              },
-                            },
-                            [_c("i", { staticClass: "fas fa-comments" })]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-tool",
-                              attrs: {
-                                type: "button",
-                                "data-card-widget": "remove",
-                              },
-                            },
-                            [_c("i", { staticClass: "fas fa-times" })]
-                          ),
-                        ]),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "card-body" }, [
-                        _c("div", { staticClass: "direct-chat-messages" }, [
-                          _c("div", { staticClass: "direct-chat-msg" }, [
-                            _c(
-                              "div",
-                              { staticClass: "direct-chat-infos clearfix" },
-                              [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass: "direct-chat-name float-left",
-                                  },
-                                  [_vm._v("Alexander Pierce")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "direct-chat-timestamp float-right",
-                                  },
-                                  [
-                                    _vm._v(
-                                      "23 Jan 2:00\n                                                    pm"
-                                    ),
-                                  ]
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("img", {
-                              staticClass: "direct-chat-img",
-                              attrs: {
-                                src: "dist/img/user1-128x128.jpg",
-                                alt: "message user image",
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "direct-chat-text" }, [
-                              _vm._v(
-                                "\n                                                Is this template really for free? That's unbelievable!\n                                            "
-                              ),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "direct-chat-msg right" }, [
-                            _c(
-                              "div",
-                              { staticClass: "direct-chat-infos clearfix" },
-                              [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass: "direct-chat-name float-right",
-                                  },
-                                  [_vm._v("Sarah Bullock")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "direct-chat-timestamp float-left",
-                                  },
-                                  [_vm._v("23 Jan 2:05 pm")]
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("img", {
-                              staticClass: "direct-chat-img",
-                              attrs: {
-                                src: "dist/img/user3-128x128.jpg",
-                                alt: "message user image",
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "direct-chat-text" }, [
-                              _vm._v(
-                                "\n                                                You better believe it!\n                                            "
-                              ),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "direct-chat-msg" }, [
-                            _c(
-                              "div",
-                              { staticClass: "direct-chat-infos clearfix" },
-                              [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass: "direct-chat-name float-left",
-                                  },
-                                  [_vm._v("Alexander Pierce")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "direct-chat-timestamp float-right",
-                                  },
-                                  [
-                                    _vm._v(
-                                      "23 Jan 5:37\n                                                    pm"
-                                    ),
-                                  ]
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("img", {
-                              staticClass: "direct-chat-img",
-                              attrs: {
-                                src: "dist/img/user1-128x128.jpg",
-                                alt: "message user image",
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "direct-chat-text" }, [
-                              _vm._v(
-                                "\n                                                Working with AdminLTE on a great new app! Wanna join?\n                                            "
-                              ),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "direct-chat-msg right" }, [
-                            _c(
-                              "div",
-                              { staticClass: "direct-chat-infos clearfix" },
-                              [
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass: "direct-chat-name float-right",
-                                  },
-                                  [_vm._v("Sarah Bullock")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "direct-chat-timestamp float-left",
-                                  },
-                                  [_vm._v("23 Jan 6:10 pm")]
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("img", {
-                              staticClass: "direct-chat-img",
-                              attrs: {
-                                src: "dist/img/user3-128x128.jpg",
-                                alt: "message user image",
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "direct-chat-text" }, [
-                              _vm._v(
-                                "\n                                                I would love to.\n                                            "
-                              ),
-                            ]),
-                          ]),
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "direct-chat-contacts" }, [
-                          _c("ul", { staticClass: "contacts-list" }, [
-                            _c("li", [
-                              _c("a", { attrs: { href: "#" } }, [
-                                _c("img", {
-                                  staticClass: "contacts-list-img",
-                                  attrs: {
-                                    src: "dist/img/user1-128x128.jpg",
-                                    alt: "User Avatar",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "contacts-list-info" },
-                                  [
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-name" },
-                                      [
-                                        _vm._v(
-                                          "\n                                                            Count Dracula\n                                                            "
-                                        ),
-                                        _c(
-                                          "small",
-                                          {
-                                            staticClass:
-                                              "contacts-list-date float-right",
-                                          },
-                                          [_vm._v("2/28/2015")]
-                                        ),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-msg" },
-                                      [
-                                        _vm._v(
-                                          "How have you been? I\n                                                            was..."
-                                        ),
-                                      ]
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                            ]),
-                            _vm._v(" "),
-                            _c("li", [
-                              _c("a", { attrs: { href: "#" } }, [
-                                _c("img", {
-                                  staticClass: "contacts-list-img",
-                                  attrs: {
-                                    src: "dist/img/user7-128x128.jpg",
-                                    alt: "User Avatar",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "contacts-list-info" },
-                                  [
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-name" },
-                                      [
-                                        _vm._v(
-                                          "\n                                                            Sarah Doe\n                                                            "
-                                        ),
-                                        _c(
-                                          "small",
-                                          {
-                                            staticClass:
-                                              "contacts-list-date float-right",
-                                          },
-                                          [_vm._v("2/23/2015")]
-                                        ),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-msg" },
-                                      [
-                                        _vm._v(
-                                          "I will be waiting\n                                                            for..."
-                                        ),
-                                      ]
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                            ]),
-                            _vm._v(" "),
-                            _c("li", [
-                              _c("a", { attrs: { href: "#" } }, [
-                                _c("img", {
-                                  staticClass: "contacts-list-img",
-                                  attrs: {
-                                    src: "dist/img/user3-128x128.jpg",
-                                    alt: "User Avatar",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "contacts-list-info" },
-                                  [
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-name" },
-                                      [
-                                        _vm._v(
-                                          "\n                                                            Nadia Jolie\n                                                            "
-                                        ),
-                                        _c(
-                                          "small",
-                                          {
-                                            staticClass:
-                                              "contacts-list-date float-right",
-                                          },
-                                          [_vm._v("2/20/2015")]
-                                        ),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-msg" },
-                                      [
-                                        _vm._v(
-                                          "I'll call you back\n                                                            at..."
-                                        ),
-                                      ]
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                            ]),
-                            _vm._v(" "),
-                            _c("li", [
-                              _c("a", { attrs: { href: "#" } }, [
-                                _c("img", {
-                                  staticClass: "contacts-list-img",
-                                  attrs: {
-                                    src: "dist/img/user5-128x128.jpg",
-                                    alt: "User Avatar",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "contacts-list-info" },
-                                  [
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-name" },
-                                      [
-                                        _vm._v(
-                                          "\n                                                            Nora S. Vans\n                                                            "
-                                        ),
-                                        _c(
-                                          "small",
-                                          {
-                                            staticClass:
-                                              "contacts-list-date float-right",
-                                          },
-                                          [_vm._v("2/10/2015")]
-                                        ),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-msg" },
-                                      [_vm._v("Where is your new...")]
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                            ]),
-                            _vm._v(" "),
-                            _c("li", [
-                              _c("a", { attrs: { href: "#" } }, [
-                                _c("img", {
-                                  staticClass: "contacts-list-img",
-                                  attrs: {
-                                    src: "dist/img/user6-128x128.jpg",
-                                    alt: "User Avatar",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "contacts-list-info" },
-                                  [
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-name" },
-                                      [
-                                        _vm._v(
-                                          "\n                                                            John K.\n                                                            "
-                                        ),
-                                        _c(
-                                          "small",
-                                          {
-                                            staticClass:
-                                              "contacts-list-date float-right",
-                                          },
-                                          [_vm._v("1/27/2015")]
-                                        ),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-msg" },
-                                      [
-                                        _vm._v(
-                                          "Can I take a look\n                                                            at..."
-                                        ),
-                                      ]
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                            ]),
-                            _vm._v(" "),
-                            _c("li", [
-                              _c("a", { attrs: { href: "#" } }, [
-                                _c("img", {
-                                  staticClass: "contacts-list-img",
-                                  attrs: {
-                                    src: "dist/img/user8-128x128.jpg",
-                                    alt: "User Avatar",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "contacts-list-info" },
-                                  [
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-name" },
-                                      [
-                                        _vm._v(
-                                          "\n                                                            Kenneth M.\n                                                            "
-                                        ),
-                                        _c(
-                                          "small",
-                                          {
-                                            staticClass:
-                                              "contacts-list-date float-right",
-                                          },
-                                          [_vm._v("1/4/2015")]
-                                        ),
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "span",
-                                      { staticClass: "contacts-list-msg" },
-                                      [_vm._v("Never mind I found...")]
-                                    ),
-                                  ]
-                                ),
-                              ]),
-                            ]),
-                          ]),
-                        ]),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "card-footer" }, [
-                        _c("form", { attrs: { action: "#", method: "post" } }, [
-                          _c("div", { staticClass: "input-group" }, [
-                            _c("input", {
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "text",
-                                name: "message",
-                                placeholder: "Type Message ...",
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "input-group-append" }, [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-primary",
-                                  attrs: { type: "button" },
-                                },
-                                [_vm._v("Send")]
-                              ),
-                            ]),
-                          ]),
-                        ]),
-                      ]),
+                      _vm._v("More info "),
+                      _c("i", { staticClass: "fas fa-arrow-circle-right" }),
                     ]
                   ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-header" }, [
-                      _c("h3", { staticClass: "card-title" }, [
-                        _c("i", { staticClass: "ion ion-clipboard mr-1" }),
-                        _vm._v(
-                          "\n                                        To Do List\n                                    "
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "card-tools" }, [
-                        _c("ul", { staticClass: "pagination pagination-sm" }, [
-                          _c("li", { staticClass: "page-item" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "page-link",
-                                attrs: { href: "#" },
-                              },
-                              [_vm._v("«")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("li", { staticClass: "page-item" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "page-link",
-                                attrs: { href: "#" },
-                              },
-                              [_vm._v("1")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("li", { staticClass: "page-item" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "page-link",
-                                attrs: { href: "#" },
-                              },
-                              [_vm._v("2")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("li", { staticClass: "page-item" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "page-link",
-                                attrs: { href: "#" },
-                              },
-                              [_vm._v("3")]
-                            ),
-                          ]),
-                          _vm._v(" "),
-                          _c("li", { staticClass: "page-item" }, [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "page-link",
-                                attrs: { href: "#" },
-                              },
-                              [_vm._v("»")]
-                            ),
-                          ]),
-                        ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c("div", { staticClass: "small-box bg-success" }, [
+                  _c("div", { staticClass: "inner" }, [
+                    _c("h3", [
+                      _vm._v("53"),
+                      _c("sup", { staticStyle: { "font-size": "20px" } }, [
+                        _vm._v("%"),
                       ]),
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "card-body" }, [
-                      _c(
-                        "ul",
-                        {
-                          staticClass: "todo-list",
-                          attrs: { "data-widget": "todo-list" },
-                        },
-                        [
-                          _c("li", [
-                            _c("span", { staticClass: "handle" }, [
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "icheck-primary d-inline ml-2" },
-                              [
-                                _c("input", {
-                                  attrs: {
-                                    type: "checkbox",
-                                    value: "",
-                                    name: "todo1",
-                                    id: "todoCheck1",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c("label", { attrs: { for: "todoCheck1" } }),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "text" }, [
-                              _vm._v("Design a nice theme"),
-                            ]),
-                            _vm._v(" "),
-                            _c("small", { staticClass: "badge badge-danger" }, [
-                              _c("i", { staticClass: "far fa-clock" }),
-                              _vm._v(
-                                " 2\n                                                mins"
-                              ),
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "tools" }, [
-                              _c("i", { staticClass: "fas fa-edit" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-trash-o" }),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("span", { staticClass: "handle" }, [
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "icheck-primary d-inline ml-2" },
-                              [
-                                _c("input", {
-                                  attrs: {
-                                    type: "checkbox",
-                                    value: "",
-                                    name: "todo2",
-                                    id: "todoCheck2",
-                                    checked: "",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c("label", { attrs: { for: "todoCheck2" } }),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "text" }, [
-                              _vm._v("Make the theme responsive"),
-                            ]),
-                            _vm._v(" "),
-                            _c("small", { staticClass: "badge badge-info" }, [
-                              _c("i", { staticClass: "far fa-clock" }),
-                              _vm._v(
-                                " 4\n                                                hours"
-                              ),
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "tools" }, [
-                              _c("i", { staticClass: "fas fa-edit" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-trash-o" }),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("span", { staticClass: "handle" }, [
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "icheck-primary d-inline ml-2" },
-                              [
-                                _c("input", {
-                                  attrs: {
-                                    type: "checkbox",
-                                    value: "",
-                                    name: "todo3",
-                                    id: "todoCheck3",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c("label", { attrs: { for: "todoCheck3" } }),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "text" }, [
-                              _vm._v("Let theme shine like a star"),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "small",
-                              { staticClass: "badge badge-warning" },
-                              [
-                                _c("i", { staticClass: "far fa-clock" }),
-                                _vm._v(
-                                  " 1\n                                                day"
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "tools" }, [
-                              _c("i", { staticClass: "fas fa-edit" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-trash-o" }),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("span", { staticClass: "handle" }, [
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "icheck-primary d-inline ml-2" },
-                              [
-                                _c("input", {
-                                  attrs: {
-                                    type: "checkbox",
-                                    value: "",
-                                    name: "todo4",
-                                    id: "todoCheck4",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c("label", { attrs: { for: "todoCheck4" } }),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "text" }, [
-                              _vm._v("Let theme shine like a star"),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "small",
-                              { staticClass: "badge badge-success" },
-                              [
-                                _c("i", { staticClass: "far fa-clock" }),
-                                _vm._v(
-                                  " 3\n                                                days"
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "tools" }, [
-                              _c("i", { staticClass: "fas fa-edit" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-trash-o" }),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("span", { staticClass: "handle" }, [
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "icheck-primary d-inline ml-2" },
-                              [
-                                _c("input", {
-                                  attrs: {
-                                    type: "checkbox",
-                                    value: "",
-                                    name: "todo5",
-                                    id: "todoCheck5",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c("label", { attrs: { for: "todoCheck5" } }),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "text" }, [
-                              _vm._v("Check your messages and notifications"),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "small",
-                              { staticClass: "badge badge-primary" },
-                              [
-                                _c("i", { staticClass: "far fa-clock" }),
-                                _vm._v(
-                                  " 1\n                                                week"
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "tools" }, [
-                              _c("i", { staticClass: "fas fa-edit" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-trash-o" }),
-                            ]),
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("span", { staticClass: "handle" }, [
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-ellipsis-v" }),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "icheck-primary d-inline ml-2" },
-                              [
-                                _c("input", {
-                                  attrs: {
-                                    type: "checkbox",
-                                    value: "",
-                                    name: "todo6",
-                                    id: "todoCheck6",
-                                  },
-                                }),
-                                _vm._v(" "),
-                                _c("label", { attrs: { for: "todoCheck6" } }),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "text" }, [
-                              _vm._v("Let theme shine like a star"),
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "small",
-                              { staticClass: "badge badge-secondary" },
-                              [
-                                _c("i", { staticClass: "far fa-clock" }),
-                                _vm._v(
-                                  " 1\n                                                month"
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "tools" }, [
-                              _c("i", { staticClass: "fas fa-edit" }),
-                              _vm._v(" "),
-                              _c("i", { staticClass: "fas fa-trash-o" }),
-                            ]),
-                          ]),
-                        ]
-                      ),
-                    ]),
+                    _c("p", [_vm._v("Bounce Rate")]),
                   ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "icon" }, [
+                    _c("i", { staticClass: "ion ion-stats-bars" }),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    { staticClass: "small-box-footer", attrs: { href: "#" } },
+                    [
+                      _vm._v("More info "),
+                      _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+                    ]
+                  ),
                 ]),
               ]),
-            ]),
-          ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c("div", { staticClass: "small-box bg-warning" }, [
+                  _c("div", { staticClass: "inner" }, [
+                    _c("h3", [_vm._v("44")]),
+                    _vm._v(" "),
+                    _c("p", [_vm._v("User Registrations")]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "icon" }, [
+                    _c("i", { staticClass: "ion ion-person-add" }),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    { staticClass: "small-box-footer", attrs: { href: "#" } },
+                    [
+                      _vm._v("More info "),
+                      _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+                    ]
+                  ),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-lg-3 col-6" }, [
+                _c("div", { staticClass: "small-box bg-danger" }, [
+                  _c("div", { staticClass: "inner" }, [
+                    _c("h3", [_vm._v("65")]),
+                    _vm._v(" "),
+                    _c("p", [_vm._v("Unique Visitors")]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "icon" }, [
+                    _c("i", { staticClass: "ion ion-pie-graph" }),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    { staticClass: "small-box-footer", attrs: { href: "#" } },
+                    [
+                      _vm._v("More info "),
+                      _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+                    ]
+                  ),
+                ]),
+              ]),
+            ]
+          ),
         ]),
-      ]
-    )
+      ]),
+    ])
   },
 ]
 render._withStripped = true
@@ -44897,34 +43508,22 @@ var render = function () {
           _c(
             "nav",
             { staticClass: "mt-2" },
-            [_vm.user.role == "admin" ? _c("admin-route") : _vm._e()],
+            [_vm.isAdmin ? _c("admin-route") : _vm._e()],
             1
           ),
         ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "content-wrapper",
-            staticStyle: {
-              "min-height": "1302.12px",
-              "max-height": "100vh",
-              height: "27em",
-            },
-          },
-          [
-            _c("div", { staticClass: "content" }, [
-              _c(
-                "div",
-                { staticClass: "container-fluid" },
-                [_c("router-view")],
-                1
-              ),
-            ]),
-          ]
-        ),
       ]
     ),
+    _vm._v(" "),
+    _c("div", { staticClass: "content-wrapper" }, [
+      _c("div", { staticClass: "content" }, [
+        _c("div", { staticClass: "container-fluid" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col" }, [_c("router-view")], 1),
+          ]),
+        ]),
+      ]),
+    ]),
     _vm._v(" "),
     _vm._m(1),
   ])
@@ -64401,14 +63000,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_auths_LoginPage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pages/auths/LoginPage */ "./resources/js/pages/auths/LoginPage.vue");
 /* harmony import */ var _pages_auths_RegisterPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../pages/auths/RegisterPage */ "./resources/js/pages/auths/RegisterPage.vue");
 /* harmony import */ var _pages_HomePage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../pages/HomePage */ "./resources/js/pages/HomePage.vue");
-/* harmony import */ var _components_admin_widgets_AdminRoute__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/admin/widgets/AdminRoute */ "./resources/js/components/admin/widgets/AdminRoute.vue");
-/* harmony import */ var _components_admin_widgets_ManageStudents__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/admin/widgets/ManageStudents */ "./resources/js/components/admin/widgets/ManageStudents.vue");
-/* harmony import */ var _components_admin_widgets_ManagePersonnels__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/admin/widgets/ManagePersonnels */ "./resources/js/components/admin/widgets/ManagePersonnels.vue");
-/* harmony import */ var _components_admin_widgets_DashBoard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/admin/widgets/DashBoard */ "./resources/js/components/admin/widgets/DashBoard.vue");
-/* harmony import */ var _components_user_widgets_ProfileView__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/user/widgets/ProfileView */ "./resources/js/components/user/widgets/ProfileView.vue");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
+/* harmony import */ var _components_admin_widgets_ManageStudents__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/admin/widgets/ManageStudents */ "./resources/js/components/admin/widgets/ManageStudents.vue");
+/* harmony import */ var _components_admin_widgets_ManagePersonnels__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/admin/widgets/ManagePersonnels */ "./resources/js/components/admin/widgets/ManagePersonnels.vue");
+/* harmony import */ var _components_admin_widgets_DashBoard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/admin/widgets/DashBoard */ "./resources/js/components/admin/widgets/DashBoard.vue");
+/* harmony import */ var _components_user_widgets_ProfileView__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/user/widgets/ProfileView */ "./resources/js/components/user/widgets/ProfileView.vue");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
 // import pages
-
 
 
 
@@ -64423,7 +63020,7 @@ var routes = [{
   name: 'login',
   // redirect if authenticated
   beforeEnter: function beforeEnter(to, from, next) {
-    if (_store__WEBPACK_IMPORTED_MODULE_8__["default"].getters.isAutneticated) {
+    if (_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters.isAutneticated) {
       next('/');
     } else {
       next();
@@ -64435,7 +63032,7 @@ var routes = [{
   name: 'register',
   // redirect if authenticated
   beforeEnter: function beforeEnter(to, from, next) {
-    if (_store__WEBPACK_IMPORTED_MODULE_8__["default"].getters.isAutneticated) {
+    if (_store__WEBPACK_IMPORTED_MODULE_7__["default"].getters.isAutneticated) {
       next('/');
     } else {
       next();
@@ -64449,29 +63046,29 @@ var routes = [{
     requiresAuth: true
   }
 }, {
-  path: '/admin-dashboard',
-  component: _components_admin_widgets_ManageStudents__WEBPACK_IMPORTED_MODULE_4__["default"],
+  path: '/manage-students',
+  component: _components_admin_widgets_ManageStudents__WEBPACK_IMPORTED_MODULE_3__["default"],
   name: 'manage_students',
   meta: {
     requiresAuth: true
   }
 }, {
   path: '/admin-personnel-management',
-  component: _components_admin_widgets_ManagePersonnels__WEBPACK_IMPORTED_MODULE_5__["default"],
+  component: _components_admin_widgets_ManagePersonnels__WEBPACK_IMPORTED_MODULE_4__["default"],
   name: 'manage_personnels',
   meta: {
     requiresAuth: true
   }
 }, {
   path: '/admin-profile/:id/:type',
-  component: _components_user_widgets_ProfileView__WEBPACK_IMPORTED_MODULE_7__["default"],
+  component: _components_user_widgets_ProfileView__WEBPACK_IMPORTED_MODULE_6__["default"],
   name: 'person_details',
   meta: {
     requiresAuth: true
   }
 }, {
   path: '/admin-dashboard',
-  component: _components_admin_widgets_DashBoard__WEBPACK_IMPORTED_MODULE_6__["default"],
+  component: _components_admin_widgets_DashBoard__WEBPACK_IMPORTED_MODULE_5__["default"],
   name: 'admin_dashboard',
   meta: {
     requiresAuth: true

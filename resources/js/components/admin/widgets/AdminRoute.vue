@@ -1,22 +1,21 @@
 <template>
-    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-        data-accordion="false">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
-            <a class="nav-link active" href="#" @click.prevent="actionGoTo('admin_dashboard')">
+            <a class="nav-link bg-secondary" href="#" @click.prevent="actionGoTo('admin_dashboard')">
                 <span data-feather="home"></span>
                 Dashboard <span v-show="link=='admin_dashboard'" class="sr-only">(current)</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="#" @click.prevent="actionGoTo('manage_students')">
+            <a class="nav-link bg-secondary" href="#" @click.prevent="actionGoTo('manage_students')">
                 <span data-feather="home"></span>
                 Manage Students<span v-show="link=='manage_students'" class="sr-only">(current)</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="#" @click.prevent="actionGoTo('manage_personnels')">
+            <a class="nav-link bg-secondary" href="#" @click.prevent="actionGoTo('manage_personnels')">
                 <span data-feather="home"></span>
-                Manage Students<span v-show="link=='manage_personnels'" class="sr-only">(current)</span>
+                Manage Personnel<span v-show="link=='manage_personnels'" class="sr-only">(current)</span>
             </a>
         </li>
         <!-- <li class="nav-item">

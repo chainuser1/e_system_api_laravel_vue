@@ -29,21 +29,25 @@
                 </div>
                 <nav class="mt-2">
                     <!-- <router-view name="routes_main"></router-view> -->
-                    <admin-route v-if="user.role=='admin'"></admin-route>
+                    <admin-route v-if="isAdmin"></admin-route>
                 </nav>
             </div>
 
-            <div class="content-wrapper" style="min-height: 1302.12px; max-height:100vh; height:27em;">
-                <div class="content">
-                    <div class="container-fluid">
-                        <router-view></router-view>
-                    </div>  
-                </div>
 
-            </div>
         </aside>
 
+        <div class="content-wrapper" >
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <router-view></router-view>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+        </div>
         <footer class="main-footer">
             <strong>Copyright &copy; 2022 <a href="#">E-Systems</a>.</strong>
             All rights reserved.
@@ -71,10 +75,14 @@ export default {
     },
     computed:{
         user(){
-            return this.$store.getters.user;
+            // return user from store or null
+            return this.$store.getters.user?this.$store.getters.user:null;
         },
         isAuthenticated(){
             return this.$store.getters.isAuthenticated;
+        },
+        isAdmin(){
+            return this.$store.getters.user ? this.$store.getters.user.role =='admin':false;
         }
     },
     methods:{
@@ -93,13 +101,15 @@ export default {
                 this.$toast.success(data.message, 'Success');
 
             });
-            // route to
 
         }
 
     },
     created(){
-      console.log(this.user.name)
+        // if user is admin route to dashboard
+        if(this.isAdmin){
+            this.$router.push({name:'admin_dashboard'});
+        }
     }
 
 }

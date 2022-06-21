@@ -2,7 +2,6 @@
 import LoginPage from '../pages/auths/LoginPage';
 import RegisterPage from '../pages/auths/RegisterPage';
 import HomePage from '../pages/HomePage';
-import AdminRoute from '../components/admin/widgets/AdminRoute';
 import ManageStudents from '../components/admin/widgets/ManageStudents';
 import ManagePersonnels from '../components/admin/widgets/ManagePersonnels';
 import DashBoard from '../components/admin/widgets/DashBoard';
@@ -44,7 +43,7 @@ const routes = [
     },
     
     {
-        path: '/admin-dashboard',
+        path: '/manage-students',
         component: ManageStudents,
         name: 'manage_students',
         meta: { requiresAuth: true }

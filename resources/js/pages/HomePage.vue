@@ -18,12 +18,9 @@
     </div>
 </template>
 <script>
-// import AdminPage from '../components/admin/AdminPage.vue';
+
 export default {
     name: 'HomePage',
-    // components: {
-    //     'admin-page':AdminPage
-    // },
     data() {
         return {
 

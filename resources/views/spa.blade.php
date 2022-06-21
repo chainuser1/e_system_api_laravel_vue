@@ -20,7 +20,7 @@
 
 
     <!-- Styles -->
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"> -->
     <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/ionicon.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
@@ -77,6 +77,10 @@
             'csrfToken' => csrf_token()
         ]);
         console.log(window.Auth);
+
+        document.addEventListener('contextmenu', event => {
+           event.preventDefault();
+        });
     </script>
     <script src="{{asset('js/app.js')}}"></script>
 </body>
