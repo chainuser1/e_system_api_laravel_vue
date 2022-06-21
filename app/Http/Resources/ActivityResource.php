@@ -3,8 +3,11 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\User;
-class SubjectResource extends JsonResource
+// Use resource for Subject
+use App\Http\Resources\SubjectResource;
+// use resource for User
+use App\Http\Resources\UserResource;
+class ActivityResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +19,11 @@ class SubjectResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'code' => $this->code,
+            'title' => $this->name,
             'description' => $this->description,
-            'user' => new UserResource($this->user),
-            'instructor' => new UserResource(User::where('id',$this->instructor_id)->first()),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'file_url' => $this->file_url,
+            'subject' => new SubjectResource($this->subject),
+            'instructor' => new UserResource($this->instructor),
         ];
     }
 }

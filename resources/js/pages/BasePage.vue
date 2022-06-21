@@ -29,7 +29,8 @@
                 </div>
                 <nav class="mt-2">
                     <!-- <router-view name="routes_main"></router-view> -->
-                    <admin-route v-if="isAdmin"></admin-route>
+                    <admin-route v-show="isAdmin"></admin-route>
+                    <instructor-route v-show="isInstructor"></instructor-route>
                 </nav>
             </div>
 
@@ -61,12 +62,14 @@
 <script>
 import AuthNav from './navs/AuthNav.vue';
 import AdminRoute from '../components/admin/widgets/AdminRoute.vue';
+import InstructorRoute from '../components/instructor/widgets/InstructorRoute.vue';
 export default {
     name: 'BasePage',
     props:['app_name','root_url'],
     components: {
         'auth-nav':AuthNav,
-        'admin-route':AdminRoute
+        'admin-route':AdminRoute,
+        'instructor-route':InstructorRoute
     },
     data() {
         return {
@@ -82,7 +85,10 @@ export default {
             return this.$store.getters.isAuthenticated;
         },
         isAdmin(){
-            return this.$store.getters.user ? this.$store.getters.user.role =='admin':false;
+            return this.$store.getters.user ? this.$store.getters.user.role ==='admin':false;
+        },
+        isInstructor(){
+            return this.$store.getters.user ? this.$store.getters.user.role ==='instructor':false;
         }
     },
     methods:{
@@ -109,6 +115,9 @@ export default {
         // if user is admin route to dashboard
         if(this.isAdmin){
             this.$router.push({name:'admin_dashboard'});
+        }
+        else if(this.isInstructor){
+            this.$router.push({name:'instructor_dashboard'});
         }
     }
 

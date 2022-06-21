@@ -49,7 +49,11 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        //
+        // return the subject resource
+        return response()->json(
+            new SubjectResource($subject),
+            Response::HTTP_OK
+        );
     }
 
     /**

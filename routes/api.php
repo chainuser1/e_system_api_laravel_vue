@@ -29,7 +29,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('students', 'StudentController');
     Route::apiResource('personnels', 'PersonnelController');
     Route::apiResource('subjects', 'SubjectController');
-    // get instructors from users
-    
+    Route::get('/instructors/{id}/subjects', 'InstructorController@getMySubjects')->name('api.instructors.subjects');
+    Route::apiResource('activities', 'ActivityController');
 });
 

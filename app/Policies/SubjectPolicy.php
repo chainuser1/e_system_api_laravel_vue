@@ -30,7 +30,9 @@ class SubjectPolicy
      */
     public function view(User $user, Subject $subject)
     {
-        
+        if ($user->role == 'instructor' || $user->role == 'admin') {
+            return $user->id == $subject->instructor_id;
+        }
     }
 
     /**
@@ -42,7 +44,11 @@ class SubjectPolicy
     public function create(User $user)
     {
         // if user is an admin 
-        
+        // if admin
+        if($user-hasRole('admin'))
+        {
+            return true;
+        }
     }
 
     /**

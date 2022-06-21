@@ -7,6 +7,9 @@ import ManagePersonnels from '../components/admin/widgets/ManagePersonnels';
 import DashBoard from '../components/admin/widgets/DashBoard';
 import ProfileView from '../components/user/widgets/ProfileView';
 import ManageSubjects from '../components/admin/widgets/ManageSubjects';
+// import components from instructor widgets
+import InstructorDashboard from '../components/instructor/widgets/InstructorDashboard';
+import LearnSubject from '../components/instructor/widgets/LearnSubject';
 import store from '../store';
 const routes = [
     {
@@ -56,7 +59,7 @@ const routes = [
         meta: { requiresAuth: true }
     },
     {
-        path: '/admin/profile/:id/:type',
+        path: '/persona/profile/:id/:type',
         component: ProfileView,
         name: 'person_details',
         meta: { requiresAuth: true }
@@ -72,6 +75,18 @@ const routes = [
         path: '/admin/manage-subjects',
         component: ManageSubjects,
         name: 'manage_subjects',
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/instructor/instructors-dashboard',
+        component: InstructorDashboard,
+        name: 'instructor_dashboard',
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/instructor/instructor-subject-ilearn/:id',
+        component: LearnSubject,
+        name: 'instructor-subject-ilearn',
         meta: { requiresAuth: true }
     }
     

@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 class Subject extends Model
 {
     //
@@ -28,6 +28,14 @@ class Subject extends Model
 
     public function instructor()
     {
-        return $this->belongsTo('App\User', 'membership_number','instructor_id');
+        return $this->belongsTo('App\User','id','instructor_id');
     }
+
+    public function getCreatedAtAttribute($new_date)
+    {
+         //new date from carbon 
+         //short word format like Jan 02, 2021
+        return Carbon::parse($new_date)->format('M d, Y');
+    }
+
 }
