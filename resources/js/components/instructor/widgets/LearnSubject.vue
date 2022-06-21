@@ -58,7 +58,7 @@
                               <li class="nav-item">
                                 <router-link :to="{name:'instructor-subject-students'}" class="nav-link">
                                     <i class="fas fa-users"></i>
-                                    <span>Students</span>
+                                    <span>Students Enrolled to Subject</span>
                                 </router-link>
                               </li>
                               <li class="nav-item">
@@ -67,12 +67,12 @@
                                     <span>Activities</span>
                                 </router-link>
                               </li>
-                              <li class="nav-item">
+                              <!-- <li class="nav-item">
                                 <router-link :to="{name:'instructor-subject-submissions'}" class="nav-link">
                                     <i class="fas fa-book"></i>
                                     <span>Submissions</span>
                                 </router-link>
-                              </li>
+                              </li> -->
                               <!-- <li class="nav-item">
                                 <a class="nav-link disabled">Disabled</a>
                               </li> -->

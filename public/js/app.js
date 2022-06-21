@@ -44974,7 +44974,7 @@ var render = function () {
                         [
                           _c("i", { staticClass: "fas fa-users" }),
                           _vm._v(" "),
-                          _c("span", [_vm._v("Students")]),
+                          _c("span", [_vm._v("Students Enrolled to Subject")]),
                         ]
                       ),
                     ],
@@ -44997,28 +44997,6 @@ var render = function () {
                           _c("i", { staticClass: "fas fa-book" }),
                           _vm._v(" "),
                           _c("span", [_vm._v("Activities")]),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { staticClass: "nav-item" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "nav-link",
-                          attrs: {
-                            to: { name: "instructor-subject-submissions" },
-                          },
-                        },
-                        [
-                          _c("i", { staticClass: "fas fa-book" }),
-                          _vm._v(" "),
-                          _c("span", [_vm._v("Submissions")]),
                         ]
                       ),
                     ],
@@ -65384,7 +65362,15 @@ var routes = [{
   name: 'instructor-subject-ilearn',
   meta: {
     requiresAuth: true
-  }
+  },
+  // children here
+  children: [{
+    path: '/instructor/instructor-subject-ilearn/activities',
+    components: {
+      ilearn: _components_instructor_widgets_LearnSubject__WEBPACK_IMPORTED_MODULE_9__["default"]
+    },
+    name: 'instructor-subject-activities'
+  }]
 }];
 /* harmony default export */ __webpack_exports__["default"] = (routes);
 

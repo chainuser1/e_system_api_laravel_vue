@@ -87,7 +87,17 @@ const routes = [
         path: '/instructor/instructor-subject-ilearn/:id',
         component: LearnSubject,
         name: 'instructor-subject-ilearn',
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true },
+        // children here
+        children: [
+            {
+                path: '/instructor/instructor-subject-ilearn/activities',
+                components: {
+                    ilearn: LearnSubject,
+                },
+                name: 'instructor-subject-activities',
+            },
+        ]
     }
     
 

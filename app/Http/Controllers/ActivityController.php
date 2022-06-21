@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Activity;
 use Illuminate\Http\Request;
-
+// use Resource
+use App\Http\Resources\ActivityResource;
 class ActivityController extends Controller
 {
     /**
@@ -14,7 +15,12 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        //
+        $activities = Activity::all();
+        if ($activities->count() > 0) {
+            return response()->json(new ActivityResource::collection($activities), 200);
+        } else {
+            return response()->json(['message' => 'No activities found'], 404);
+        }
     }
 
     /**
