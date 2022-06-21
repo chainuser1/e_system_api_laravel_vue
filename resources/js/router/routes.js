@@ -10,6 +10,7 @@ import ManageSubjects from '../components/admin/widgets/ManageSubjects';
 // import components from instructor widgets
 import InstructorDashboard from '../components/instructor/widgets/InstructorDashboard';
 import LearnSubject from '../components/instructor/widgets/LearnSubject';
+import LearnActivities from '../components/instructor/widgets/LearnActivities';
 import store from '../store';
 const routes = [
     {
@@ -93,7 +94,7 @@ const routes = [
             {
                 path: '/instructor/instructor-subject-ilearn/activities',
                 components: {
-                    ilearn: LearnSubject,
+                    ilearn: LearnActivities,
                 },
                 name: 'instructor-subject-activities',
             },

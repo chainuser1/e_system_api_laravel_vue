@@ -6,12 +6,13 @@ import VueToastr$1 from "vue-toastr";
 
 // create a store
 export default {
-    
+
             state: {
                 user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
                 isAuthenticated: localStorage.getItem('token') ? true : false,
                 isLoading: false,
                 person: null,
+                subject: null
             },
             mutations: {
                 setUser(state, user) {
@@ -25,6 +26,9 @@ export default {
                 },
                 setPerson(state, person) {
                     state.person = person;
+                },
+                setSubject(state,subject){
+                  state.subject = subject
                 }
             },
             getters: {
@@ -39,13 +43,15 @@ export default {
                 },
                 person(state) {
                     return state.person
+                },
+                subject(state){
+                  return state.subject
                 }
 
             },
 
             actions: {
-                
+
             }
-            
+
 }
-    

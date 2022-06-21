@@ -117,6 +117,7 @@ export default {
             })
             .then(({data})=>{
                 this.subject = data;
+                this.$store.commit('setSubject',this.subject);
                 this.$toast.success(this.subject.name+' loaded successfully');
             })
             .catch(error=>{
