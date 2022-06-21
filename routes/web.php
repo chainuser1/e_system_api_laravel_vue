@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 // any web route goes here
 // where any not equal to api or login or register goes to spa.blade.php
 // Route::view('/{path?}', 'spa')->where('path', '^(?!api).*$');
-Route::view('/{path?}', 'spa')->where('path', '^(?!api|register|login|home|assets/background).*$');
+Route::view('/{path?}', 'spa')
+->where('path', '^(?!api|register|login|home|assets/background|admin|student|instructor).*$');
 
 // Route::get('/', function () {
 //     return view('spa');

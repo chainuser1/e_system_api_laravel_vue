@@ -45,12 +45,12 @@
                                                     <button @click="actionShow('show','add')" type="button"
                                                         class="btn btn-outline-danger" data-bs-toggle="modal"
                                                         data-bs-target="#modelId">
-                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                        <i class="fa fa-plus text-danger" aria-hidden="true"></i>
                                                     </button>
 
                                                     <a @click.prevent="getStudents" type="button"
                                                         class="btn btn-outline-secondary">
-                                                        <i class="fa fa-rotate" aria-hidden="true"></i>
+                                                        <i class="fa fa-rotate text-secondary" aria-hidden="true"></i>
                                                     </a>
                                                 </div>
                                             </form>
@@ -104,7 +104,7 @@
                                                 <td>
                                                     <a href="#"
                                                          @click.prevent="view_details('student',student)" > {{ student.student_number
-                                                    }}</a> 
+                                                    }}</a>
                                                 </td>
                                                 <td>
                                                     {{ student.first_name }}

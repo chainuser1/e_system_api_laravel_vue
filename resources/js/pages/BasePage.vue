@@ -1,37 +1,68 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand " :href="root_url">
-                    {{this.app_name}}
-                </a>
-
-                  <a class="nav-link " href="#" target="__blank">About Us</a>
-
-                  <a class="nav-link" href="#"  target="__blank">Notifications</a>
-
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <a class="navbar-brand" :href="root_url">E-Systems
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <router-link class="nav-link active ms-0" to="/">Home</router-link>
+                    </li>
+                </ul>
                 <auth-nav v-on:logging-out="this.logout"></auth-nav>
             </div>
         </nav>
+        <aside class="main-sidebar  elevation-4" :class="!user?'':'sidebar-dark-primary'">
+            <div class="sidebar">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <!-- <div class="image">
+                        <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div> -->
+                    <div class="info">
+                        <a href="#" class="d-block tex-white">{{!user?'':user.name}}</a>
+                    </div>
+                </div>
+                <nav class="mt-2">
+                    <!-- <router-view name="routes_main"></router-view> -->
+                    <admin-route v-if="user.role=='admin'"></admin-route>
+                </nav>
+            </div>
 
-        <main class="py-4 main-page" >
-            <router-view></router-view>
-        </main>
+            <div class="content-wrapper" style="min-height: 1302.12px; max-height:100vh; height:27em;">
+                <div class="content">
+                    <div class="container-fluid">
+                        <router-view></router-view>
+                    </div>  
+                </div>
+
+            </div>
+        </aside>
+
+
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2022 <a href="#">E-Systems</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0
+            </div>
+        </footer>
     </div>
+
 </template>
 <script>
 import AuthNav from './navs/AuthNav.vue';
-
+import AdminRoute from '../components/admin/widgets/AdminRoute.vue';
 export default {
     name: 'BasePage',
     props:['app_name','root_url'],
     components: {
-        'auth-nav':AuthNav
+        'auth-nav':AuthNav,
+        'admin-route':AdminRoute
     },
     data() {
         return {
@@ -65,6 +96,10 @@ export default {
             // route to
 
         }
+
+    },
+    created(){
+      console.log(this.user.name)
     }
 
 }

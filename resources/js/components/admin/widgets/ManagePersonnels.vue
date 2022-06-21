@@ -45,12 +45,12 @@
                                                     <button @click="actionShow('show','add')" type="button"
                                                         class="btn btn-outline-primary" data-bs-toggle="modal"
                                                         data-bs-target="#modelId">
-                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                        <i class="fa fa-plus text-danger" aria-hidden="true"></i>
                                                     </button>
 
                                                     <button style="margin-left:1px;" @click.prevent="getPersonnels"
                                                         type="button" class="btn btn-outline-success">
-                                                        <i class="fa fa-rotate"></i>
+                                                        <i class="fa fa-rotate text-success"></i>
                                                     </button>
                                                 </div>
                                             </form>

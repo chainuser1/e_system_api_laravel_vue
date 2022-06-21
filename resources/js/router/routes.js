@@ -2,9 +2,10 @@
 import LoginPage from '../pages/auths/LoginPage';
 import RegisterPage from '../pages/auths/RegisterPage';
 import HomePage from '../pages/HomePage';
-import AdminPage from '../components/admin/AdminPage';
+import AdminRoute from '../components/admin/widgets/AdminRoute';
 import ManageStudents from '../components/admin/widgets/ManageStudents';
 import ManagePersonnels from '../components/admin/widgets/ManagePersonnels';
+import DashBoard from '../components/admin/widgets/DashBoard';
 import ProfileView from '../components/user/widgets/ProfileView';
 import store from '../store';
 const routes = [
@@ -41,35 +42,32 @@ const routes = [
         name:'home',
         meta: { requiresAuth: true }
     },
+    
     {
-        path: '/admin',
-        component: AdminPage,
-        name:'admin',
-        children:[
-            {
-                path: '/admin/manage-students',
-                components:{
-                    admin: ManageStudents
-                },
-                name:'manage-students',
-            },
-            {
-                path: '/admin/manage-personnels',
-                components:{
-                    admin: ManagePersonnels
-                },
-                name:'manage-personnels',
-            },
-            {
-                path: '/admin/profile/:id/:type',
-                components:{
-                    admin: ProfileView
-                },
-                name:'person_details',
-            }
-        ],
-        meta: {requireAuth:true}
+        path: '/admin-dashboard',
+        component: ManageStudents,
+        name: 'manage_students',
+        meta: { requiresAuth: true }
     },
+    {
+        path: '/admin-personnel-management',
+        component: ManagePersonnels,
+        name: 'manage_personnels',
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/admin-profile/:id/:type',
+        component: ProfileView,
+        name: 'person_details',
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/admin-dashboard',
+        component: DashBoard,
+        name: 'admin_dashboard',
+        meta: { requiresAuth: true }
+    }
+    
 
 ];
 

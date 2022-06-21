@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -15,12 +15,18 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+
 
     <!-- Styles -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/ionicon.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    
-    <!-- <link href="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/css/light-bootstrap-dashboard.css?v=2.0.1" rel="stylesheet" /> 
+
+    <!-- <link href="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/css/light-bootstrap-dashboard.css?v=2.0.1" rel="stylesheet" />
 
     <link href="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/css/demo.css" rel="stylesheet" />  -->
     <!-- Font Awesome -->
@@ -43,32 +49,19 @@
         }
     </style>
 </head>
-<body>
+<body  class="hold-transition sidebar-mini">
     <!-- <div class="main-page">
 
     </div> -->
-    <div id="app">
+    <div id="app" class="wrapper">
         <base-page :app_name="'{{config('app.name', 'Laravel')}}'"
         :root_url="'{{url('/')}}'"></base-page>
     </div>
-
-    <script src="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/js/plugins/bootstrap-switch.js"></script>
-    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2Yno10-YTnLjjn_Vtk0V8cdcY5lC4plU"></script> -->
-    <!-- <script src="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/js/plugins/jquery.sharrre.js"></script> -->
-    <!-- <script src="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/js/plugins/bootstrap-notify.js"></script> -->
-
-    <script src="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script>
-
-    <script src="https://demos.creative-tim.com/light-bootstrap-dashboard/assets/js/demo.js"></script>
-    <script   script type="text/javascript">
-        $(document).ready(function() {
-            // Javascript method's body can be found in assets/js/demos.js
-            demo.initDashboardPageCharts();
-
-            demo.showNotification();
-
-        });
-    </script>
+    <script src="{{asset('js/jquery.min.js')}}"></script>
+    <!-- <script src="{{asset('js/bootstrap.min.js')}}"></script> -->
+    <script src="{{asset('js/aminlte.js')}}"></script>
+    <script src="{{asset('js/chart.min.js')}}"></script>
+    <script src="{{asset('js/mangampo.min.js')}}"></script>
     <script>
         // window Auth
         window.Auth = {!! json_encode([
