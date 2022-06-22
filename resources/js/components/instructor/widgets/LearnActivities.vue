@@ -106,14 +106,13 @@
                                 <textarea v-model="activity.description" class="form-control" id="description"
                                     rows="3"></textarea>
                             </div>
-                            <!-- if file upload -->
-                            <!-- <div class="form-group">
+                            
+                            <div class="form-group">
                                 <label for="file">File Upload</label>
-                                <!-- input file and use change event -->
-                                <!-- <input type="file" @change="onFileChange" class="form-control-file" id="file"
-                                    accept=".zip">
-
-                            </div> --> -->
+                                input file and use change event
+                                <input type="file" name="filename" @change="onFileChange" class="form-control-file" id="file"
+                                    > 
+                           </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -144,7 +143,7 @@ export default {
                 subject_id:this.$store.getters.subject,
                 title: '',
                 description: '',
-                // file_url: null
+                file: null,
                 instructor_id:this.$store.getters.user.id
             },
             loading: true,
@@ -178,8 +177,9 @@ export default {
                 subject_id: this.$store.getters.subject.id,
                 title: '',
                 description: '',
-                // file_url: null,
-                instructor_id:this.$store.getters.user.id
+                file_url: null,
+                instructor_id:this.$store.getters.user.id,
+                filename: null
             }
         },
         openModal(action,activity={}){
@@ -192,21 +192,23 @@ export default {
         },
         createActivity(){
             this.loading = true;
-            // use axios to send data to server as well as upload file
-            // create a new formData
+            // use form data to create activity
+            let formData = new FormData();
+            // get the file from the input
+            let file = this.activity.filename;
+            // add the file to the form data
+            formData.append('file_url', file);
+            // add the other fields to the form data
+            formData.append('title', this.activity.title);
+            formData.append('description', this.activity.description);
+            formData.append('subject_id', this.activity.subject_id);
+            formData.append('instructor_id', this.activity.instructor_id);
+            // send the form data to the server
 
-            // send formData to server
-            // console.log(formData.get('title'));
-            axios.put('/activities/'+this.activity.id, {
-              subject_id: this.$store.getters.subject.id,
-              title: this.activity.title,
-              description: this.activity.description,
-              // file_url: null,
-              instructor_id:this.$store.getters.user.id
-            },{
+            axios.put('/activities/'+this.activity.id, formData,{
                 headers: {
-                    'Accept': 'application/json',
                     'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'multipart/form-data',
                 },
             })
             .then(response => {
@@ -224,6 +226,7 @@ export default {
 
         onFileChange(){
             this.activity.file = this.$refs.file.files[0];
+            this.activity.filename = this.$refs.file.files[0].name;
         },
         getActivities(){
             axios.get('/activities',{

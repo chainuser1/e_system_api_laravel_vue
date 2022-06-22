@@ -122,8 +122,11 @@ export default {
             console.log(this.user.role)
             this.$router.push({name:'admin_dashboard'});
         }
-        else if(this.user.role==='instructor'){
-            this.$router.push({name:'instructor_dashboard'});
+        else if(this.isInstructor){
+            console.log(this.user.role)
+            this.$router.push({
+                name: 'instructor_dashboard'
+            })
         }
         else if(this.isStudent){
             console.log(this.user.role)

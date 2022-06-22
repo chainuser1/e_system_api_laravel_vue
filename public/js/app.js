@@ -4009,7 +4009,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'LearnActivities',
   data: function data() {
@@ -4020,7 +4019,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         subject_id: this.$store.getters.subject,
         title: '',
         description: '',
-        // file_url: null
+        file: null,
         instructor_id: this.$store.getters.user.id
       },
       loading: true,
@@ -4056,8 +4055,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         subject_id: this.$store.getters.subject.id,
         title: '',
         description: '',
-        // file_url: null,
-        instructor_id: this.$store.getters.user.id
+        file_url: null,
+        instructor_id: this.$store.getters.user.id,
+        filename: null
       };
     },
     openModal: function openModal(action) {
@@ -4073,21 +4073,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     createActivity: function createActivity() {
       var _this2 = this;
 
-      this.loading = true; // use axios to send data to server as well as upload file
-      // create a new formData
-      // send formData to server
-      // console.log(formData.get('title'));
+      this.loading = true; // use form data to create activity
 
-      axios.put('/activities/' + this.activity.id, {
-        subject_id: this.$store.getters.subject.id,
-        title: this.activity.title,
-        description: this.activity.description,
-        // file_url: null,
-        instructor_id: this.$store.getters.user.id
-      }, {
+      var formData = new FormData(); // get the file from the input
+
+      var file = this.activity.filename; // add the file to the form data
+
+      formData.append('file_url', file); // add the other fields to the form data
+
+      formData.append('title', this.activity.title);
+      formData.append('description', this.activity.description);
+      formData.append('subject_id', this.activity.subject_id);
+      formData.append('instructor_id', this.activity.instructor_id); // send the form data to the server
+
+      axios.put('/activities/' + this.activity.id, formData, {
         headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
+          'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          'Content-Type': 'multipart/form-data'
         }
       }).then(function (response) {
         _this2.getActivities();
@@ -4104,6 +4106,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     onFileChange: function onFileChange() {
       this.activity.file = this.$refs.file.files[0];
+      this.activity.filename = this.$refs.file.files[0].name;
     },
     getActivities: function getActivities() {
       var _this3 = this;
@@ -5134,7 +5137,8 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.push({
         name: 'admin_dashboard'
       });
-    } else if (this.user.role === 'instructor') {
+    } else if (this.isInstructor) {
+      console.log(this.user.role);
       this.$router.push({
         name: 'instructor_dashboard'
       });
@@ -45868,7 +45872,19 @@ var render = function () {
                       }),
                     ]),
                     _vm._v(" "),
-                    _vm._v(" -->\n                    "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "file" } }, [
+                        _vm._v("File Upload"),
+                      ]),
+                      _vm._v(
+                        "\n                            input file and use change event\n                            "
+                      ),
+                      _c("input", {
+                        staticClass: "form-control-file",
+                        attrs: { type: "file", name: "filename", id: "file" },
+                        on: { change: _vm.onFileChange },
+                      }),
+                    ]),
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [

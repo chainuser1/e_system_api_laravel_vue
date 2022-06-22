@@ -7,8 +7,6 @@ use App\User;
 use App\Subject;
 class Activity extends Model
 {
-    //
-
     protected $fillable = [
         'title',
         'description',

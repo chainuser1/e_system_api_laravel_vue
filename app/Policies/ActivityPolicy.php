@@ -66,8 +66,9 @@ class ActivityPolicy
      */
     public function delete(User $user, Activity $activity)
     {
-        //
-        return $user->id === $activity->user_id;
+        if($user->hasRole('instructor')){
+            return $user->id === $activity->user_id;
+        }
     }
 
     /**

@@ -70,41 +70,9 @@ class ActivityController extends Controller
     public function update(Request $request)
     {
         if($request->user()->can('create', Activity::class)){
-            $validator = Validator::make($request->all(),
-                [
-                'title' => 'required|string|max:75',
-                'description' => 'required|string|max:512',
-                // 0file url must be a valid file of zip, pdf, docx, doc, png, jpg, jpeg, gif
-                //excel files are allowed but videos are not
-                // 'file_url' => 'nullable|string|file|mimes:zip,pdf,docx,png,jpg,jpeg,gif,pptx,xlsx|max:5120',
-                'instructor_id' => 'required|integer|exists:users,id',
-                'subject_id' => 'required|integer|exists:subjects,id',
-            ]
-            );
-
-            if ($validator->fails()) {
-                return response()->json(['message'=>'Check your input, something went wrong',
-                'errors'=>$validator->errors()], 400);
-            }
-
-            $activity = Activity::updateOrCreate([
-                    'id' => $request->id,
-                    'title' => $request->title,
-                   ],[
-
-                'description' => $request->description,
-                'instructor_id' => $request->user()->id,
-                'subject_id' => $request->subject_id,
-
-            ]);
-            if($activity)
-                return response()->json(
-                    new ActivityResource($activity), 201
-                );
-            else
-              return response()->json(
-                  ['message'=>'An error occurred'], 201
-              );
+        //    get data request from form-data and put it in an array
+            $data = $request->all();
+            dd($data);
 
 
         }else{
@@ -118,19 +86,16 @@ class ActivityController extends Controller
      * @param  \App\Activity  $activity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,Activity $activity)
+    public function destroy(Request $request, Activity $activity)
     {
-        if($request->user()->can('delete', $activity)){
-            // delete the file if it exists
-            if($activity->file_url){
-                unlink($activity->file_url);
-            }
-            // delete the activity
-            $activity->delete();
-            return response()->json(['message'=>'Activity deleted successfully'], 200);
+        
+        // delete the file if it exists
+        if($activity->file_url){
+            unlink($activity->file_url);
         }
-        else{
-            return response()->json(['message'=>'You are not authorized to delete this activity'], 401);
-        }
+        // delete the activity
+        $activity->delete();
+        return response()->json(['message'=>'Activity deleted successfully'], 200);
+
     }
 }
