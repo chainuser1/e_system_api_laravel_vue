@@ -4072,6 +4072,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     createActivity: function createActivity() {
+      var _this2 = this;
+
       this.loading = true; // use form data to create activity
 
       var formData = new FormData(); // get the file from the input
@@ -4091,57 +4093,47 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         'Content-Type': 'multipart/form-data'
       }; // use xmlthttp to send the form data
 
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open('PUT', '/activities', true); // set request header for multipart/form-data and authorization
+      axios.put('/activities/' + this.activity.id, formData, {
+        headers: headers
+      }).then(function (_ref3) {
+        var data = _ref3.data;
 
-      xmlhttp.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
-      xmlhttp.setRequestHeader('Content-Type', 'multipart/form-data'); // send the form data
+        _this2.$toast.success(data.message, 'Success');
 
-      xmlhttp.send(formData); // listen for the response
+        _this2.loading = false;
 
-      xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          // get the response from the server
-          var response = JSON.parse(xmlhttp.responseText); // show the success message
+        _this2.getActivities();
+      })["catch"](function (error) {
+        _this2.$toast.error(error.response.data.message, 'Error');
 
-          this.$toast.success(response.message, 'Success'); // close the modal
-
-          $('#create-activity-modal').modal('hide'); // reset the form
-
-          this.resetActivity(); // reload the activities
-
-          this.getActivities();
-        } else if (xmlhttp.readyState == 4 && xmlhttp.status == 422) {
-          // get the response from the server
-          var _response = JSON.parse(xmlhttp.responseText); // show the error message
-
-
-          this.$toast.error(_response.message, 'Error');
-        }
-      }.bind(this);
+        _this2.loading = false;
+      })["finally"](function () {
+        _this2.loading = false;
+        $('#create-activity-modal').modal('hide');
+      });
     },
     onFileChange: function onFileChange() {
       this.activity.file = this.$refs.file.files[0];
       this.activity.filename = this.$refs.file.files[0].name;
     },
     getActivities: function getActivities() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get('/activities', {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token'),
           'Accept': 'application/json'
         }
-      }).then(function (_ref3) {
-        var data = _ref3.data;
-        _this2.activities = data;
+      }).then(function (_ref4) {
+        var data = _ref4.data;
+        _this3.activities = data;
         console.info(data);
 
-        _this2.$toast.success('Activities loaded successfully');
+        _this3.$toast.success('Activities loaded successfully');
       })["catch"](function (error) {
-        _this2.$toast.error(error.response.data.message, 'Error');
+        _this3.$toast.error(error.response.data.message, 'Error');
       })["finally"](function () {
-        _this2.loading = false;
+        _this3.loading = false;
       });
     }
   },
@@ -4150,20 +4142,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: {
     sortedActivities: function sortedActivities() {
-      var _this3 = this;
+      var _this4 = this;
 
       var activities = this.activities;
       return activities.sort(function (a, b) {
         //  for string sort
-        if (_this3.sort.sortBy == 'title') {
-          if (_this3.sort.sortOrder == 'asc') {
+        if (_this4.sort.sortBy == 'title') {
+          if (_this4.sort.sortOrder == 'asc') {
             return a.title.localeCompare(b.title);
           } else {
             return b.title.localeCompare(a.title);
           }
-        } else if (_this3.sort.sortBy == 'created_at') {
+        } else if (_this4.sort.sortBy == 'created_at') {
           // use number since this is a timsetamp
-          if (_this3.sort.sortOrder == 'asc') {
+          if (_this4.sort.sortOrder == 'asc') {
             return a.created_at - b.created_at;
           } else {
             return b.created_at - a.created_at;

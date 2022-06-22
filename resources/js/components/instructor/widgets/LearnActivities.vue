@@ -211,34 +211,20 @@ export default {
                 'Content-Type': 'multipart/form-data',
             }
             // use xmlthttp to send the form data
-            let xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('PUT', '/activities', true);
-            // set request header for multipart/form-data and authorization
-            xmlhttp.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
-            xmlhttp.setRequestHeader('Content-Type', 'multipart/form-data');
-            // send the form data
-            xmlhttp.send(formData);
-            // listen for the response
-            xmlhttp.onreadystatechange = function() {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    // get the response from the server
-                    let response = JSON.parse(xmlhttp.responseText);
-                    // show the success message
-                    this.$toast.success(response.message, 'Success');
-                    // close the modal
-                    $('#create-activity-modal').modal('hide');
-                    // reset the form
-                    this.resetActivity();
-                    // reload the activities
-                    this.getActivities();
-                } else if (xmlhttp.readyState == 4 && xmlhttp.status == 422) {
-                    // get the response from the server
-                    let response = JSON.parse(xmlhttp.responseText);
-                    // show the error message
-                    this.$toast.error(response.message, 'Error');
-                }
-            }.bind(this);
-            
+            axios.put('/activities/'+this.activity.id,formData,{
+                headers:headers
+            }).then(({data})=>{
+                this.$toast.success(data.message, 'Success');
+                this.loading = false;
+                
+                this.getActivities();
+            }).catch(error=>{
+                this.$toast.error(error.response.data.message,'Error');
+                this.loading = false;
+            }).finally(()=>{
+                this.loading = false;
+                $('#create-activity-modal').modal('hide');
+            })
             
         },
 
