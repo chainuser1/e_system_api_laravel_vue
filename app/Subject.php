@@ -38,4 +38,12 @@ class Subject extends Model
         return Carbon::parse($new_date)->format('M d, Y');
     }
 
+    public function enrollments(){
+        return $this->hasMany('App\Enrollment');
+    }
+
+    public function activities(){
+        return $this->hasMany('App\Activity');
+    }
+
 }

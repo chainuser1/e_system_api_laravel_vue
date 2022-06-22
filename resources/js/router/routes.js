@@ -11,6 +11,10 @@ import ManageSubjects from '../components/admin/widgets/ManageSubjects';
 import InstructorDashboard from '../components/instructor/widgets/InstructorDashboard';
 import LearnSubject from '../components/instructor/widgets/LearnSubject';
 import LearnActivities from '../components/instructor/widgets/LearnActivities';
+
+// import components from student widgets
+import StudentDashboard from '../components/students/widgets/StudentDashboard';
+import LearnSubjectPage from '../components/students/widgets/LearnSubjectPage';
 import store from '../store';
 const routes = [
     {
@@ -78,12 +82,7 @@ const routes = [
         name: 'manage_subjects',
         meta: { requiresAuth: true }
     },
-    {
-        path: '/instructor/instructors-dashboard',
-        component: InstructorDashboard,
-        name: 'instructor_dashboard',
-        meta: { requiresAuth: true }
-    },
+  
     {
         path: '/instructor/instructor-subject-ilearn/:id',
         component: LearnSubject,
@@ -99,6 +98,25 @@ const routes = [
                 name: 'instructor-subject-activities',
             },
         ]
+    },
+    {
+        path: '/instructor/instructors-dashboard',
+        component: InstructorDashboard,
+        name: 'instructor_dashboard',
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/student/students-dashboard',
+        component: StudentDashboard,
+        name: 'student_dashboard',
+        meta: { requiresAuth: true }
+    },
+
+    {
+        path: '/student/student-subject-ilearn/:id',
+        component: LearnSubjectPage,
+        name: 'student_ilearn_subject',
+        meta: { requiresAuth: true },
     }
     
 

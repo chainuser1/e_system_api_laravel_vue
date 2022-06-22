@@ -31,5 +31,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('subjects', 'SubjectController');
     Route::get('/instructors/{id}/subjects', 'InstructorController@getMySubjects')->name('api.instructors.subjects');
     Route::apiResource('activities', 'ActivityController');
+    Route::get('/students/{id}/subjects', 'StudentController@getMySubjects')->name('api.students.subjects');
+    Route::apiResource('enrollments', 'EnrollmentController');
+    Route::apiResource('submissions', 'SubmissionController');
 });
 

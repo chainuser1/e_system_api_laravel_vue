@@ -31,6 +31,7 @@
                     <!-- <router-view name="routes_main"></router-view> -->
                     <admin-route v-show="isAdmin"></admin-route>
                     <instructor-route v-show="isInstructor"></instructor-route>
+                    <student-route v-show="isStudent"></student-route>
                 </nav>
             </div>
 
@@ -63,13 +64,15 @@
 import AuthNav from './navs/AuthNav.vue';
 import AdminRoute from '../components/admin/widgets/AdminRoute.vue';
 import InstructorRoute from '../components/instructor/widgets/InstructorRoute.vue';
+import StudentRoutes from '../components/students/widgets/StudentRoutes.vue';
 export default {
     name: 'BasePage',
     props:['app_name','root_url'],
     components: {
         'auth-nav':AuthNav,
         'admin-route':AdminRoute,
-        'instructor-route':InstructorRoute
+        'instructor-route':InstructorRoute,
+        'student-route':StudentRoutes
     },
     data() {
         return {
@@ -89,6 +92,9 @@ export default {
         },
         isInstructor(){
             return this.$store.getters.user ? this.$store.getters.user.role ==='instructor':false;
+        },
+        isStudent(){
+            return this.$store.getters.user ? this.$store.getters.user.role ==='student':false;
         }
     },
     methods:{
@@ -105,7 +111,6 @@ export default {
                 this.$store.commit('setUser', null);
                 this.$store.commit('setIsAuthenticated', false);
                 this.$toast.success(data.message, 'Success');
-
             });
 
         }
@@ -114,10 +119,15 @@ export default {
     created(){
         // if user is admin route to dashboard
         if(this.isAdmin){
+            console.log(this.user.role)
             this.$router.push({name:'admin_dashboard'});
         }
-        else if(this.isInstructor){
+        else if(this.user.role==='instructor'){
             this.$router.push({name:'instructor_dashboard'});
+        }
+        else if(this.isStudent){
+            console.log(this.user.role)
+            this.$router.push({name:'student_dashboard'});
         }
     }
 

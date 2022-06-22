@@ -67,7 +67,9 @@ class User extends Authenticatable implements MustVerifyEmail
       $this->attributes['role'] = strtolower($value);
     }
 
-
+    public function enrollments(){
+        return $this->hasMany('App\Enrollment');
+    }
     // public function getRoleAttribute($value){
     //   return ucwords($value);
     // }

@@ -21,10 +21,10 @@ class ActivityResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            // 'file_url' => $this->file_url,
+            'file_url' => $this->file_url,
             'created_at'=> $this->created_at,
-            'subject' => new SubjectResource($this->subject),
-            'instructor' => new UserResource($this->instructor),
+            'subject' => $this->subject_id,
+            'instructor' => $this->instructor_id,
         ];
     }
 }

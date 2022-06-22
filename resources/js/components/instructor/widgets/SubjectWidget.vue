@@ -10,7 +10,8 @@
             <i class="ion ion-bag"></i>
         </div>
         <router-link class="small-box-footer" 
-            :to="{name:'instructor-subject-ilearn',params:{id:this.subject.id}}">More info 
+            :to="{name:'instructor-subject-ilearn',params:{id:this.subject.id}}">
+            More info 
             <i class="fas fa-arrow-circle-right">
             </i>
         </router-link>

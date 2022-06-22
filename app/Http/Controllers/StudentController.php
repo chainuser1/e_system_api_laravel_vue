@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\StudentCollection;
+use App\Http\Resources\SubjectResource;
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Validator;
 use App\User;
+use App\Subject;
 class StudentController extends Controller
 {
 
@@ -216,4 +218,21 @@ class StudentController extends Controller
             return $randomStudentNumber;
         }
     }
+
+
+    public function getMySubjects(Request $request){
+        // get the user
+        $user = $request->user();
+        // get the student
+       
+        // get the subjects
+        $subjects = Subject::all();
+        // return the subjects
+        return response()->json([
+            'message' => 'Subjects retrieved successfully',
+            'subjects' => SubjectResource::collection($subjects)
+        ], Response::HTTP_OK);
+    }
+
+    
 }
