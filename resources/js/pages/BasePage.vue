@@ -128,7 +128,7 @@ export default {
                 name: 'instructor_dashboard'
             })
         }
-        else if(this.isStudent){
+        else{
             console.log(this.user.role)
             this.$router.push({name:'student_dashboard'});
         }

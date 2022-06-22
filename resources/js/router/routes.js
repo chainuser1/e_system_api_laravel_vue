@@ -109,7 +109,15 @@ const routes = [
         path: '/student/students-dashboard',
         component: StudentDashboard,
         name: 'student_dashboard',
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true },
+        beforeEnter: (to, from, next) => {
+            if (store.getters.user.role === 'student') {
+                next();
+            } else {
+                next('/');
+            }
+
+        }
     },
 
     {

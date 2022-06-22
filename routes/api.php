@@ -34,5 +34,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/students/{id}/subjects', 'StudentController@getMySubjects')->name('api.students.subjects');
     Route::apiResource('enrollments', 'EnrollmentController');
     Route::apiResource('submissions', 'SubmissionController');
+    
+    // Route to download  a file from the server
+   
 });
+ Route::get('/activities/{id}/file', 'ActivityController@downloadFile')->name('api.activities.file');
 

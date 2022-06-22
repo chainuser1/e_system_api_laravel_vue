@@ -4019,9 +4019,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         subject_id: this.$store.getters.subject.id,
         title: '',
         description: '',
-        file_url: null,
+        file_url: '',
         instructor_id: this.$store.getters.user.id,
-        filename: null
+        filename: '',
+        file: ''
       },
       loading: true,
       sort: {
@@ -4044,6 +4045,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var data = _ref2.data;
 
         _this.$toast.success(data.message, 'Success');
+
+        _this.getActivities();
       })["catch"](function (error) {
         _this.$toast.error(error.response.data.message, 'Error');
       })["finally"](function () {
@@ -4056,9 +4059,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         subject_id: this.$store.getters.subject.id,
         title: '',
         description: '',
-        file_url: null,
+        file_url: '',
         instructor_id: this.$store.getters.user.id,
-        filename: null
+        filename: ''
       };
     },
     openModal: function openModal(action) {
@@ -4071,50 +4074,43 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.resetActivity();
       }
     },
-    createActivity: function createActivity() {
+    createActivity: function createActivity(e) {
       var _this2 = this;
 
+      e.preventDefault();
       this.loading = true; // use form data to create activity
 
-      var formData = new FormData(); // get the file from the input
-
-      var file = this.activity.filename; // add the file to the form data
-
-      formData.append('file_url', this.activity.file_url, this.activity.filename); // add the other fields to the form data
-
+      var formData = new FormData();
+      formData.append('file_url', this.activity.file_url, this.activity.filename);
       formData.append('title', this.activity.title);
       formData.append('description', this.activity.description);
       formData.append('subject_id', this.activity.subject_id);
-      formData.append('instructor_id', this.activity.instructor_id); // send the form data to the server
-      // use promise instead of axios
-
-      var headers = {
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        'Content-Type': 'multipart/form-data'
+      formData.append('instructor_id', this.activity.instructor_id);
+      formData.append("_method", "put");
+      var config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
       }; // use xmlthttp to send the form data
 
-      axios.put('/activities/' + this.activity.id, formData, {
-        headers: headers
-      }).then(function (_ref3) {
+      axios.post('/activities/' + this.activity.id, formData, config).then(function (_ref3) {
         var data = _ref3.data;
 
         _this2.$toast.success(data.message, 'Success');
-
-        _this2.loading = false;
-
-        _this2.getActivities();
       })["catch"](function (error) {
         _this2.$toast.error(error.response.data.message, 'Error');
-
-        _this2.loading = false;
       })["finally"](function () {
         _this2.loading = false;
         $('#create-activity-modal').modal('hide');
+
+        _this2.getActivities();
       });
     },
-    onFileChange: function onFileChange() {
-      this.activity.file = this.$refs.file.files[0];
-      this.activity.filename = this.$refs.file.files[0].name;
+    onFileChange: function onFileChange(e) {
+      this.activity.file_url = e.target.files[0];
+      this.activity.filename = e.target.files[0].name;
     },
     getActivities: function getActivities() {
       var _this3 = this;
@@ -4456,6 +4452,22 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     actionGoBack: function actionGoBack() {
       this.$router.go(-1);
+    },
+    actionDownloadActivity: function actionDownloadActivity(activity) {
+      // using axios to download file from laravel
+      axios.get("/activities/".concat(activity.id, "/file"), {
+        responseType: 'blob'
+      }).then(function (response) {
+        // download file
+        var url = window.URL.createObjectURL(new Blob([response.data]));
+        var link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', activity.title);
+        document.body.appendChild(link);
+        link.click();
+      })["catch"](function (error) {
+        console.log(error);
+      });
     },
     loadSubject: function loadSubject() {
       var _this = this;
@@ -5150,7 +5162,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.push({
         name: 'instructor_dashboard'
       });
-    } else if (this.isStudent) {
+    } else {
       console.log(this.user.role);
       this.$router.push({
         name: 'student_dashboard'
@@ -45787,12 +45799,7 @@ var render = function () {
       "form",
       {
         attrs: { enctype: "multipart/form-data" },
-        on: {
-          submit: function ($event) {
-            $event.preventDefault()
-            return _vm.createActivity.apply(null, arguments)
-          },
-        },
+        on: { submit: _vm.createActivity },
       },
       [
         _c(
@@ -67320,6 +67327,13 @@ var routes = [{
   name: 'student_dashboard',
   meta: {
     requiresAuth: true
+  },
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (_store__WEBPACK_IMPORTED_MODULE_13__["default"].getters.user.role === 'student') {
+      next();
+    } else {
+      next('/');
+    }
   }
 }, {
   path: '/student/student-subject-ilearn/:id',

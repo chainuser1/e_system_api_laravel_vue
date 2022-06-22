@@ -83,7 +83,7 @@
             </div>
         </div>
         <!-- create a modal form -->
-        <form @submit.prevent="createActivity" enctype="multipart/form-data">
+        <form @submit="createActivity" enctype="multipart/form-data">
             <div class="modal hide" id="create-activity-modal" tabindex="-1" role="dialog"
                 aria-labelledby="create-activity-modal-label" aria-hidden="true">
                 <!-- hidden input holds subject id   -->
@@ -143,9 +143,10 @@ export default {
                 subject_id: this.$store.getters.subject.id,
                 title: '',
                 description: '',
-                file_url: null,
+                file_url:'',
                 instructor_id:this.$store.getters.user.id,
-                filename: null
+                filename: '',
+                file: '',
             },
             loading: true,
             sort:{
@@ -166,6 +167,7 @@ export default {
               }
           }).then(({data})=>{
               this.$toast.success(data.message, 'Success');
+              this.getActivities()
           }).catch(error=>{
             this.$toast.error(error.response.data.message,'Error');
           }).finally(()=>{
@@ -178,9 +180,9 @@ export default {
                 subject_id: this.$store.getters.subject.id,
                 title: '',
                 description: '',
-                file_url: null,
+                file_url:'',
                 instructor_id:this.$store.getters.user.id,
-                filename: null
+                filename: '',
             }
         },
         openModal(action,activity={}){
@@ -191,46 +193,41 @@ export default {
                 this.resetActivity();
             }
         },
-        createActivity(){
+        createActivity(e){
+
+            e.preventDefault();
             this.loading = true;
             // use form data to create activity
             let formData = new FormData();
-            // get the file from the input
-            let file = this.activity.filename;
-            // add the file to the form data
             formData.append('file_url', this.activity.file_url, this.activity.filename);
-            // add the other fields to the form data
             formData.append('title', this.activity.title);
             formData.append('description', this.activity.description);
             formData.append('subject_id', this.activity.subject_id);
             formData.append('instructor_id', this.activity.instructor_id);
-            // send the form data to the server
-            // use promise instead of axios
-            let headers = {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                'Content-Type': 'multipart/form-data',
+            formData.append("_method", "put");
+            const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    }
             }
             // use xmlthttp to send the form data
-            axios.put('/activities/'+this.activity.id,formData,{
-                headers:headers
-            }).then(({data})=>{
-                this.$toast.success(data.message, 'Success');
-                this.loading = false;
-                
-                this.getActivities();
+            axios.post('/activities/'+this.activity.id,formData,config).then(({data})=>{
+                this.$toast.success(data.message, 'Success')
             }).catch(error=>{
                 this.$toast.error(error.response.data.message,'Error');
-                this.loading = false;
             }).finally(()=>{
                 this.loading = false;
                 $('#create-activity-modal').modal('hide');
+                this.getActivities();
             })
             
         },
 
-        onFileChange(){
-            this.activity.file = this.$refs.file.files[0];
-            this.activity.filename = this.$refs.file.files[0].name;
+        onFileChange(e){
+            this.activity.file_url = e.target.files[0];
+            this.activity.filename = e.target.files[0].name;
         },
         getActivities(){
             axios.get('/activities',{
