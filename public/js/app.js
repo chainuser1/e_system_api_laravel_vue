@@ -4016,11 +4016,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       activities: [],
       activity: {
         id: 0,
-        subject_id: this.$store.getters.subject,
+        subject_id: this.$store.getters.subject.id,
         title: '',
         description: '',
-        file: null,
-        instructor_id: this.$store.getters.user.id
+        file_url: null,
+        instructor_id: this.$store.getters.user.id,
+        filename: null
       },
       loading: true,
       sort: {
@@ -4071,45 +4072,60 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     createActivity: function createActivity() {
-      var _this2 = this;
-
       this.loading = true; // use form data to create activity
 
       var formData = new FormData(); // get the file from the input
 
       var file = this.activity.filename; // add the file to the form data
 
-      formData.append('file_url', file); // add the other fields to the form data
+      formData.append('file_url', this.activity.file_url, this.activity.filename); // add the other fields to the form data
 
       formData.append('title', this.activity.title);
       formData.append('description', this.activity.description);
       formData.append('subject_id', this.activity.subject_id);
       formData.append('instructor_id', this.activity.instructor_id); // send the form data to the server
+      // use promise instead of axios
 
-      axios.put('/activities/' + this.activity.id, formData, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-          'Content-Type': 'multipart/form-data'
+      var headers = {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'Content-Type': 'multipart/form-data'
+      }; // use xmlthttp to send the form data
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open('PUT', '/activities', true); // set request header for multipart/form-data and authorization
+
+      xmlhttp.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+      xmlhttp.setRequestHeader('Content-Type', 'multipart/form-data'); // send the form data
+
+      xmlhttp.send(formData); // listen for the response
+
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+          // get the response from the server
+          var response = JSON.parse(xmlhttp.responseText); // show the success message
+
+          this.$toast.success(response.message, 'Success'); // close the modal
+
+          $('#create-activity-modal').modal('hide'); // reset the form
+
+          this.resetActivity(); // reload the activities
+
+          this.getActivities();
+        } else if (xmlhttp.readyState == 4 && xmlhttp.status == 422) {
+          // get the response from the server
+          var _response = JSON.parse(xmlhttp.responseText); // show the error message
+
+
+          this.$toast.error(_response.message, 'Error');
         }
-      }).then(function (response) {
-        _this2.getActivities();
-
-        _this2.resetActivity();
-
-        _this2.$toast.success('Activity created successfully');
-      })["catch"](function (error) {
-        _this2.$toast.error(error.response.data.message);
-      })["finally"](function () {
-        $('#create-activity-modal').modal('hide');
-        _this2.loading = false;
-      });
+      }.bind(this);
     },
     onFileChange: function onFileChange() {
       this.activity.file = this.$refs.file.files[0];
       this.activity.filename = this.$refs.file.files[0].name;
     },
     getActivities: function getActivities() {
-      var _this3 = this;
+      var _this2 = this;
 
       axios.get('/activities', {
         headers: {
@@ -4118,14 +4134,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }).then(function (_ref3) {
         var data = _ref3.data;
-        _this3.activities = data;
+        _this2.activities = data;
         console.info(data);
 
-        _this3.$toast.success('Activities loaded successfully');
+        _this2.$toast.success('Activities loaded successfully');
       })["catch"](function (error) {
-        _this3.$toast.error(error.response.data.message, 'Error');
+        _this2.$toast.error(error.response.data.message, 'Error');
       })["finally"](function () {
-        _this3.loading = false;
+        _this2.loading = false;
       });
     }
   },
@@ -4134,20 +4150,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: {
     sortedActivities: function sortedActivities() {
-      var _this4 = this;
+      var _this3 = this;
 
       var activities = this.activities;
       return activities.sort(function (a, b) {
         //  for string sort
-        if (_this4.sort.sortBy == 'title') {
-          if (_this4.sort.sortOrder == 'asc') {
+        if (_this3.sort.sortBy == 'title') {
+          if (_this3.sort.sortOrder == 'asc') {
             return a.title.localeCompare(b.title);
           } else {
             return b.title.localeCompare(a.title);
           }
-        } else if (_this4.sort.sortBy == 'created_at') {
+        } else if (_this3.sort.sortBy == 'created_at') {
           // use number since this is a timsetamp
-          if (_this4.sort.sortOrder == 'asc') {
+          if (_this3.sort.sortOrder == 'asc') {
             return a.created_at - b.created_at;
           } else {
             return b.created_at - a.created_at;

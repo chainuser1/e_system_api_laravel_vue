@@ -140,11 +140,12 @@ export default {
             activities: [],
             activity:{
                 id:0,
-                subject_id:this.$store.getters.subject,
+                subject_id: this.$store.getters.subject.id,
                 title: '',
                 description: '',
-                file: null,
-                instructor_id:this.$store.getters.user.id
+                file_url: null,
+                instructor_id:this.$store.getters.user.id,
+                filename: null
             },
             loading: true,
             sort:{
@@ -197,31 +198,48 @@ export default {
             // get the file from the input
             let file = this.activity.filename;
             // add the file to the form data
-            formData.append('file_url', file);
+            formData.append('file_url', this.activity.file_url, this.activity.filename);
             // add the other fields to the form data
             formData.append('title', this.activity.title);
             formData.append('description', this.activity.description);
             formData.append('subject_id', this.activity.subject_id);
             formData.append('instructor_id', this.activity.instructor_id);
             // send the form data to the server
-
-            axios.put('/activities/'+this.activity.id, formData,{
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-            .then(response => {
-                this.getActivities()
-                this.resetActivity();
-                this.$toast.success('Activity created successfully');
-            })
-            .catch(error => {
-                this.$toast.error(error.response.data.message);
-            }).finally(() => {
-                $('#create-activity-modal').modal('hide');
-                this.loading = false;
-            });
+            // use promise instead of axios
+            let headers = {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Content-Type': 'multipart/form-data',
+            }
+            // use xmlthttp to send the form data
+            let xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('PUT', '/activities', true);
+            // set request header for multipart/form-data and authorization
+            xmlhttp.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('token'));
+            xmlhttp.setRequestHeader('Content-Type', 'multipart/form-data');
+            // send the form data
+            xmlhttp.send(formData);
+            // listen for the response
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    // get the response from the server
+                    let response = JSON.parse(xmlhttp.responseText);
+                    // show the success message
+                    this.$toast.success(response.message, 'Success');
+                    // close the modal
+                    $('#create-activity-modal').modal('hide');
+                    // reset the form
+                    this.resetActivity();
+                    // reload the activities
+                    this.getActivities();
+                } else if (xmlhttp.readyState == 4 && xmlhttp.status == 422) {
+                    // get the response from the server
+                    let response = JSON.parse(xmlhttp.responseText);
+                    // show the error message
+                    this.$toast.error(response.message, 'Error');
+                }
+            }.bind(this);
+            
+            
         },
 
         onFileChange(){
