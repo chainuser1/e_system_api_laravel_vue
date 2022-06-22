@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\ActivityResource;
 // use Validator
 use Illuminate\Support\Facades\Validator;
+// use Storage
+use Illuminate\Support\Facades\Storage;
 class ActivityController extends Controller
 {
     /**
@@ -82,18 +84,20 @@ class ActivityController extends Controller
             if ($validator->fails()) {
                 return response()->json(['message' => $validator->errors()], 400);
             }
-           
-        
+
+            // 
+            $file_url = $request->file('file_url')->store('storage/files');
             
+
             $activity=Activity::updateOrCreate(
-                [
-                    'id' => $request->id],
-                [
+                    [
+                        'id' => $request->id],  // if id is null, create a new activity 
+                    [
                     'title' => $request->title,
                     'description' => $request->description,
                     'subject_id' => $request->subject_id,
                     'instructor_id' => $request->instructor_id,
-                    'file_url' => $request->file_url->store('activities'),
+                    'file_url' => $file_url,
                 ]);
 
             if($activity){
@@ -117,8 +121,9 @@ class ActivityController extends Controller
     {
         // if activity has a file_url, delete it
         if($activity->file_url){
-            $file_url = $activity->file_url;
-            $file_path = public_path($file_url);
+        //    delete file from public folder
+            $public_path = public_path();
+            $file_path = $public_path . '/files/activities/' . $activity->file_url;
             if(file_exists($file_path)){
                 unlink($file_path);
             }
@@ -130,15 +135,14 @@ class ActivityController extends Controller
 
     public function downloadFile(Activity $activity)
     {
-        // file
-        $file_url = $activity->file_url;
-        $file_path = storage_path($file_url);
-        $headers = array(
-        //    file can be a document or a picture
-            'Content-Type: application/pdf',
-            'Content-Disposition: attachment; filename="' . 
-            $file_url . '"',
-        );
-        return response()->download($file_path, $file_url, $headers);
+        $file_arr = explode('/', $activity->file_url);
+        // get the last part
+        $file_name = end($file_arr);
+
+        // locate for the file
+        $public_path = public_path();
+        $file_path = $public_path . '/storage/files/' . $activity->file_url;
+        dd($file_path);
+        return response()->download($file_path);
     }
 }

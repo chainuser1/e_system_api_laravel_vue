@@ -80,19 +80,22 @@ export default {
             this.$router.go(-1);
         },
         actionDownloadActivity(activity){
+            console.log(activity.file_url);
+            window.open(activity.file_url);
             // using axios to download file from laravel
-            axios.get(`/activities/${activity.id}/file`, {responseType: 'blob'})
-            .then((response) => {
-                // download file
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', activity.title);
-                document.body.appendChild(link);
-                link.click();
-            }).catch((error) => {
-                console.log(error);
-            });
+            // console.log(activity)
+            // axios.get(`/activities/${activity.id}/file`, {responseType: 'blob'})
+            // .then((response) => {
+            //     // download file
+            //     const url = window.URL.createObjectURL(new Blob([response.data]));
+            //     const link = document.createElement('a');
+            //     link.href = url;
+            //     link.setAttribute('download', activity.title);
+            //     document.body.appendChild(link);
+            //     link.click();
+            // }).catch((error) => {
+            //     console.log(error);
+            // });
         },
         loadSubject(){
             axios.get(`/subjects/${this.$route.params.id}`,{

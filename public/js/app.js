@@ -4454,20 +4454,21 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.go(-1);
     },
     actionDownloadActivity: function actionDownloadActivity(activity) {
-      // using axios to download file from laravel
-      axios.get("/activities/".concat(activity.id, "/file"), {
-        responseType: 'blob'
-      }).then(function (response) {
-        // download file
-        var url = window.URL.createObjectURL(new Blob([response.data]));
-        var link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', activity.title);
-        document.body.appendChild(link);
-        link.click();
-      })["catch"](function (error) {
-        console.log(error);
-      });
+      console.log(activity.file_url);
+      window.open(activity.file_url); // using axios to download file from laravel
+      // console.log(activity)
+      // axios.get(`/activities/${activity.id}/file`, {responseType: 'blob'})
+      // .then((response) => {
+      //     // download file
+      //     const url = window.URL.createObjectURL(new Blob([response.data]));
+      //     const link = document.createElement('a');
+      //     link.href = url;
+      //     link.setAttribute('download', activity.title);
+      //     document.body.appendChild(link);
+      //     link.click();
+      // }).catch((error) => {
+      //     console.log(error);
+      // });
     },
     loadSubject: function loadSubject() {
       var _this = this;
