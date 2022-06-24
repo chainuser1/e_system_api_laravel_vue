@@ -132,6 +132,10 @@ export default {
             console.log(this.user.role)
             this.$router.push({name:'student_dashboard'});
         }
+
+
+        // set the root_url in the store
+        this.$store.commit('setRootUrl',this.root_url);
     }
 
 }

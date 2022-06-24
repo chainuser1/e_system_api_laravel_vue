@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 // Route::view('/{path?}', 'spa')->where('path', '^(?!api).*$');
 // include public folders for downloading files
 
-Route::view('/{path?}', 'spa');
-// ->where('path', '^(?!api|register|login|home|assets|admin|student|instructor|activities).*$');
+Route::view('/{path?}', 'spa')
+->where('path', '^(?!api|register|login|home|assets|admin|student|instructor|activities).*$');
 
 // Route::get('/', function () {
 //     return view('spa');
@@ -38,4 +38,8 @@ Route::get('/assets/background', function () {
     return response()->file(public_path('assets/images/background_image.jpg'));
 });
 
+Route::get('/activities/{filename}/download', function ($filename) {
+    return response()->download(storage_path('app/activities/files/').$filename);
+});
 // Storage path for uploaded files
+

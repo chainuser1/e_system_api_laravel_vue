@@ -52,7 +52,6 @@
                             <div v-if="activity.reply" class="card-text">
                                 <p class="card-text">
                                     <i class="fas fa-comment"></i>
-                                    
                                 </p>
                             </div>
                         </div>
@@ -80,22 +79,27 @@ export default {
             this.$router.go(-1);
         },
         actionDownloadActivity(activity){
-            console.log(activity.file_url);
-            window.open(activity.file_url);
-            // using axios to download file from laravel
-            // console.log(activity)
-            // axios.get(`/activities/${activity.id}/file`, {responseType: 'blob'})
-            // .then((response) => {
-            //     // download file
-            //     const url = window.URL.createObjectURL(new Blob([response.data]));
-            //     const link = document.createElement('a');
-            //     link.href = url;
-            //     link.setAttribute('download', activity.title);
-            //     document.body.appendChild(link);
-            //     link.click();
-            // }).catch((error) => {
-            //     console.log(error);
-            // });
+        //    use XmlHttpRequest to download the file
+            let root_url = this.$store.getters.rootUrl;
+            console.log(root_url);
+            // use fetch
+            fetch(activity.file_url+'/download',{
+                method:'GET',
+                headers:{
+                    'Authorization':'Bearer '+this.$store.getters.token,
+                    'X-CSRF-TOKEN':window.Laravel.csrfToken,
+                    // accept file download li
+                }
+            })//create a blob
+            .then(response => response.blob())
+            .then(blob => {
+                // create a link to download the file
+                let a = document.createElement('a');
+                a.href = window.URL.createObjectURL(blob);
+                a.download = activity.title;
+                a.click();
+            })
+            
         },
         loadSubject(){
             axios.get(`/subjects/${this.$route.params.id}`,{

@@ -10,6 +10,7 @@ use App\Http\Resources\ActivityResource;
 use Illuminate\Support\Facades\Validator;
 // use Storage
 use Illuminate\Support\Facades\Storage;
+use Webpatser\Uuid\Uuid;
 class ActivityController extends Controller
 {
     /**
@@ -85,10 +86,17 @@ class ActivityController extends Controller
                 return response()->json(['message' => $validator->errors()], 400);
             }
 
-            // 
-            $file_url = $request->file('file_url')->store('storage/files');
+            // upload file with uuid
+            $file_url = '';
+            if ($request->hasFile('file_url')) {
+                $uuid = (string)Uuid::generate()->string . '.' . $request->file_url->getClientOriginalExtension();
+                //  use move() to move the file to a new location
+                $file_url = $request->file_url->move(storage_path('app/activities/files/'), $uuid);
+            }
             
-
+            $file_arr_name = explode('/', $file_url);
+            $file_url ='/activities/'. end($file_arr_name);
+            
             $activity=Activity::updateOrCreate(
                     [
                         'id' => $request->id],  // if id is null, create a new activity 
@@ -122,8 +130,8 @@ class ActivityController extends Controller
         // if activity has a file_url, delete it
         if($activity->file_url){
         //    delete file from public folder
-            $public_path = public_path();
-            $file_path = $public_path . '/files/activities/' . $activity->file_url;
+            $public_path = storage_path('app/activities/files/');
+            $file_path = $public_path  . $activity->file_url;
             if(file_exists($file_path)){
                 unlink($file_path);
             }
@@ -133,16 +141,15 @@ class ActivityController extends Controller
 
     }
 
-    public function downloadFile(Activity $activity)
-    {
-        $file_arr = explode('/', $activity->file_url);
-        // get the last part
-        $file_name = end($file_arr);
-
-        // locate for the file
-        $public_path = public_path();
-        $file_path = $public_path . '/storage/files/' . $activity->file_url;
-        dd($file_path);
-        return response()->download($file_path);
-    }
+    // public function downloadFile(Activity $activity)
+    // {
+    //     // use uuid to download file
+    //     $uuid = $activity->file_url;
+    //     $file_path = public_path() . '/files/activities/' . $uuid;
+    //     if(file_exists($file_path)){
+    //         return response()->download($file_path);
+    //     } else {
+    //         return response()->json(['message'=>'File not found'], 404);
+    //     }
+    // }
 }

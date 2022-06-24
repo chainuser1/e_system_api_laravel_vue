@@ -12,7 +12,8 @@ export default {
                 isAuthenticated: localStorage.getItem('token') ? true : false,
                 isLoading: false,
                 person: null,
-                subject: null
+                subject: null,
+                rootUrl: 'http://localhost:8000/api/',
             },
             mutations: {
                 setUser(state, user) {
@@ -29,6 +30,9 @@ export default {
                 },
                 setSubject(state,subject){
                   state.subject = subject
+                },
+                setRootUrl(state, rootUrl) {
+                    state.rootUrl = rootUrl;
                 }
             },
             getters: {
@@ -46,6 +50,9 @@ export default {
                 },
                 subject(state){
                   return state.subject
+                },
+                rootUrl(state) {
+                    return state.rootUrl;
                 }
 
             },

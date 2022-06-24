@@ -38,5 +38,5 @@ Route::middleware(['auth:api'])->group(function () {
     // Route to download  a file from the server
    
 });
- Route::get('/activities/{id}/file', 'ActivityController@downloadFile')->name('api.activities.file');
+//  Route::get('/activities/{id}/file', 'ActivityController@downloadFile')->name('api.activities.file');
 

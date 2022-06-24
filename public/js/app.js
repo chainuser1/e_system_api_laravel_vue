@@ -4439,7 +4439,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'LearnSubjectPage',
   data: function data() {
@@ -4454,21 +4453,27 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.go(-1);
     },
     actionDownloadActivity: function actionDownloadActivity(activity) {
-      console.log(activity.file_url);
-      window.open(activity.file_url); // using axios to download file from laravel
-      // console.log(activity)
-      // axios.get(`/activities/${activity.id}/file`, {responseType: 'blob'})
-      // .then((response) => {
-      //     // download file
-      //     const url = window.URL.createObjectURL(new Blob([response.data]));
-      //     const link = document.createElement('a');
-      //     link.href = url;
-      //     link.setAttribute('download', activity.title);
-      //     document.body.appendChild(link);
-      //     link.click();
-      // }).catch((error) => {
-      //     console.log(error);
-      // });
+      //    use XmlHttpRequest to download the file
+      var root_url = this.$store.getters.rootUrl;
+      console.log(root_url); // use fetch
+
+      fetch(activity.file_url + '/download', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + this.$store.getters.token,
+          'X-CSRF-TOKEN': window.Laravel.csrfToken // accept file download li
+
+        }
+      }) //create a blob
+      .then(function (response) {
+        return response.blob();
+      }).then(function (blob) {
+        // create a link to download the file
+        var a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = activity.title;
+        a.click();
+      });
     },
     loadSubject: function loadSubject() {
       var _this = this;
@@ -5168,7 +5173,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.push({
         name: 'student_dashboard'
       });
-    }
+    } // set the root_url in the store
+
+
+    this.$store.commit('setRootUrl', this.root_url);
   }
 });
 
@@ -67392,7 +67400,8 @@ __webpack_require__.r(__webpack_exports__);
     isAuthenticated: localStorage.getItem('token') ? true : false,
     isLoading: false,
     person: null,
-    subject: null
+    subject: null,
+    rootUrl: 'http://localhost:8000/api/'
   },
   mutations: {
     setUser: function setUser(state, user) {
@@ -67409,6 +67418,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     setSubject: function setSubject(state, subject) {
       state.subject = subject;
+    },
+    setRootUrl: function setRootUrl(state, rootUrl) {
+      state.rootUrl = rootUrl;
     }
   },
   getters: {
@@ -67426,6 +67438,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     subject: function subject(state) {
       return state.subject;
+    },
+    rootUrl: function rootUrl(state) {
+      return state.rootUrl;
     }
   },
   actions: {}
