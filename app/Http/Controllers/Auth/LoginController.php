@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
+use DB;
+use Exception;
 class LoginController extends Controller
 {
     /*
@@ -43,18 +45,23 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
-        $request->request->add([
-            'grant_type' => 'password',
-            'client_id' => 2,
-            'client_secret' => "DsOz3QC5G970F5SGjs5A2DsdZQeDrjxUd5XLAPQx",
-            'username' => $request->username,
-            // include password
-            'password'=>$request->password,
-        ]);
+            $key = LoginController::getKey(); 
+            // dd($key);
+            if($key == null)
+                throw new Exception('Key is invalid');    
+            $request->request->add([
+                'grant_type' => 'password',
+                'client_id' => $key->id,
+                'client_secret' => $key->secret,
+                'username' => $request->username,
+                // include password
+                'password'=>$request->password,
+            ]);
 
-        $requestToken = Request::create(env('APP_URL').'/oauth/token', 'POST');
-        $response = Route::dispatch($requestToken);
-        return $response;
+            $requestToken = Request::create(env('APP_URL').'/oauth/token', 'POST');
+            $response = Route::dispatch($requestToken);
+            return $response;
+       
     }
 
     public function getToken(Request $request)
@@ -102,4 +109,17 @@ class LoginController extends Controller
     //     // redirect to login page
     //     return redirect('/');
     // }
+
+    protected static function getKey(){
+        try{
+            $maxId =  DB::table('oauth_clients')->max('id');
+            $key = DB::table('oauth_clients')->find($maxId);
+            if($key)
+                return $key;
+            else
+                return null;
+        }catch(Exception $e){
+            return null;
+        }
+    }
 }
